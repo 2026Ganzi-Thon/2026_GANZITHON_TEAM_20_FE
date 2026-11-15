@@ -1,0 +1,118 @@
+import test from 'node:test'
+import assert from 'node:assert/strict'
+import { createMockEngine } from '../src/features/fe2/mockEngine.js'
+import { canComplete, countCharacters, isNight, isValidSummary, remainingSeconds } from '../src/features/fe2/domain.js'
+
+const setup = () => {
+  let now = Date.parse('2026-11-15T12:00:00Z')
+  const engine = createMockEngine(() => now)
+  return { call: engine.dispatch, advance: ms => { now += ms }, now: () => now }
+}
+const throwsCode = (fn, code) => assert.throws(fn, e => e.code === code)
+
+test('잠김 목록·잠금 API는 민감 필드를 직렬화하지 않는다', () => {
+  const { call } = setup()
+  const locked = call('get', '/vault/worries').locked[0]
+  assert.deepEqual(Object.keys(locked).sort(), ['created_at', 'id', 'release_at', 'status'])
+  throwsCode(() => call('get', `/worries/${locked.id}`), 'WORRY_LOCKED')
+  assert.equal(call('get', `/worries/${locked.id}/lock`).worry_text, undefined)
+  assert.equal(call('get', '/records').items.some(w => w.id === locked.id), false)
+})
+test('목록은 최초 열람을 만들지 않고 실제 상세 진입에서만 만든다', () => {
+  const { call } = setup()
+  assert.equal(call('get', '/vault/worries').available.find(w => w.id === 'example-presentation').is_unviewed, true)
+  call('get', '/worries/example-presentation')
+  assert.equal(call('get', '/vault/worries').available.find(w => w.id === 'example-presentation').is_unviewed, false)
+})
+test('공개 시각 도달은 서버 상태만 바꾸고 재잠금을 허용하지 않는다', () => {
+  const { call, advance, now } = setup()
+  advance(3600001)
+  assert.equal(call('get', '/worries/example-locked/lock').status, 'AVAILABLE')
+  throwsCode(() => call('patch', '/worries/example-locked/release', { release_at: new Date(now() + 3600000).toISOString() }), 'ALREADY_AVAILABLE')
+})
+test('정리 수정은 원문·추천·도움 콘텐츠를 바꾸지 않는다', () => {
+  const { call } = setup()
+  const before = call('get', '/worries/example-presentation')
+  call('patch', '/worries/example-presentation/summary', { display_summary: '수정한 정리' })
+  const after = call('get', '/worries/example-presentation')
+  assert.equal(after.worry_text, before.worry_text)
+  assert.equal(after.ai_content.recommended_help, before.ai_content.recommended_help)
+  assert.deepEqual(after.ai_content.action_steps, before.ai_content.action_steps)
+  assert.equal(call('get', '/vault/worries').available.find(w => w.id === before.id).display_summary, '수정한 정리')
+  throwsCode(() => call('patch', '/worries/example-presentation/summary', { display_summary: ' \n ' }), 'VALIDATION_FAILED')
+})
+test('삭제 접수/진행과 완료를 분리하고 관련 기록·추천도 제거한다', () => {
+  const { call, advance } = setup()
+  const job = call('delete', '/worries/example-history')
+  assert.equal(job.status, 'PENDING')
+  assert.equal(call('get', `/deletion-jobs/${job.deletion_job_id}`).status, 'RUNNING')
+  throwsCode(() => call('get', '/records/example-history'), 'NOT_FOUND')
+  advance(701)
+  assert.equal(call('get', `/deletion-jobs/${job.deletion_job_id}`).status, 'COMPLETED')
+  assert.equal(call('get', '/worries/example-presentation/similar-experience'), null)
+  throwsCode(() => call('get', '/activities/example-completed'), 'NOT_FOUND')
+})
+test('액션 생성 멱등성과 3체크 후 명시적 완료·평가 분리', () => {
+  const { call, now } = setup()
+  const a = call('post', '/worries/example-presentation/activities', { type: 'ACTION' }, 'same')
+  assert.equal(call('post', '/worries/example-presentation/activities', { type: 'ACTION' }, 'same').activity_id, a.activity_id)
+  throwsCode(() => call('post', `/activities/${a.activity_id}/complete`), 'ACTIVITY_NOT_READY')
+  for (const n of [3, 1, 2]) call('patch', `/activities/${a.activity_id}/steps/${n}`, { completed: true })
+  const checked = call('get', `/activities/${a.activity_id}`)
+  assert.equal(canComplete(checked, now()), true)
+  assert.equal(checked.status, 'IN_PROGRESS')
+  const done = call('post', `/activities/${a.activity_id}/complete`)
+  assert.equal(done.status, 'COMPLETED')
+  assert.equal(done.helpfulness, undefined)
+  call('put', `/activities/${a.activity_id}/rating`, { helpfulness: 'UNSURE' })
+  assert.equal(call('get', `/activities/${a.activity_id}`).status, 'COMPLETED')
+})
+test('활동 전환은 명시적 확인 전까지 기존 체크를 보존한다', () => {
+  const { call } = setup()
+  const a = call('post', '/worries/example-presentation/activities', { type: 'ACTION' })
+  call('patch', `/activities/${a.activity_id}/steps/1`, { completed: true })
+  throwsCode(() => call('post', '/worries/example-presentation/help-selections', { help_type: 'REST', confirm_switch: false }), 'ACTIVITY_SWITCH_CONFIRM_REQUIRED')
+  assert.equal(call('get', `/activities/${a.activity_id}`).status, 'IN_PROGRESS')
+  call('post', '/worries/example-presentation/help-selections', { help_type: 'REST', confirm_switch: true, expected_active_activity_id: a.activity_id })
+  const stopped = call('get', `/activities/${a.activity_id}`)
+  assert.equal(stopped.status, 'STOPPED')
+  assert.equal(stopped.steps[0].checked, true)
+})
+test('REST 일시정지 시간 고정·재개·0초와 완료 분리·stop 후 새180초', () => {
+  const { call, advance, now } = setup()
+  const a = call('post', '/worries/example-presentation/activities', { type: 'REST' })
+  advance(46000)
+  assert.equal(remainingSeconds(call('get', `/activities/${a.activity_id}`), now()), 134)
+  call('post', `/activities/${a.activity_id}/pause`)
+  advance(50000)
+  assert.equal(call('get', `/activities/${a.activity_id}`).remaining_seconds, 134)
+  call('post', `/activities/${a.activity_id}/resume`)
+  advance(134001)
+  assert.equal(call('get', `/activities/${a.activity_id}`).status, 'READY_TO_COMPLETE')
+  call('post', `/activities/${a.activity_id}/stop`, { reason: 'USER_QUIT' })
+  const fresh = call('post', '/worries/example-presentation/activities', { type: 'REST' }, 'fresh')
+  assert.equal(fresh.remaining_seconds, 180)
+  assert.notEqual(fresh.activity_id, a.activity_id)
+})
+test('회고 대상은 현재 걱정과 다르고 건너뛰면 현지 날짜 동안 숨긴다', () => {
+  const { call } = setup()
+  const candidate = call('get', '/reflections/candidate?current_worry_id=example-presentation')
+  assert.equal(candidate.worry_id, 'example-history')
+  call('post', '/reflections/skip-today', { timezone: 'Asia/Seoul' })
+  assert.equal(call('get', '/reflections/candidate?current_worry_id=example-presentation'), null)
+})
+test('문자 수는 코드포인트·공백 최소값, 나이트는22~06 경계', () => {
+  assert.equal(countCharacters('😀가'), 2)
+  assert.equal(isValidSummary('　 \n'), false)
+  assert.equal(isValidSummary('가'.repeat(500)), true)
+  assert.equal(isValidSummary('가'.repeat(501)), false)
+  const local = hour => new Date(2026, 10, 15, hour)
+  assert.equal(isNight(local(22)), true); assert.equal(isNight(local(5)), true)
+  assert.equal(isNight(local(6)), false); assert.equal(isNight(local(21)), false)
+})
+
+test('REST 시작 응답과 화면 시계 갱신 차이에도 3분을 넘겨 표시하지 않는다', () => {
+  const now = Date.parse('2026-11-15T12:00:00Z')
+  assert.equal(remainingSeconds({ status: 'IN_PROGRESS', ends_at: new Date(now + 180300).toISOString() }, now), 180)
+  assert.equal(remainingSeconds({ status: 'IN_PROGRESS', ends_at: new Date(now - 100).toISOString() }, now), 0)
+})

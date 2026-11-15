@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-15",
+  "backendRepository": "2026Ganzi-Thon/2026_GANZITHON_TEAM_20_BE",
+  "backendCommit": "213b5a7a13c33378cf7fa16a3780382a802ca79c",
+  "mode": "production-build-with-intercepted-synthetic-Spring-responses",
+  "liveBackendVerified": false,
+  "checks": {
+    "lint": true,
+    "unitTests": 24,
+    "build": true,
+    "productionFixtureExcluded": true,
+    "summary503PreservesDraft": true,
+    "csrf403UserRetryRefetchesToken": true,
+    "markViewedSeparatePost": true,
+    "actionStepsExplicitCompleteAndRating": true,
+    "noRepeatedStartOnRefresh": true,
+    "notFoundRoute": true,
+    "calendarKeyboardAndResponsive": true
+  },
+  "browserErrors": [],
+  "interceptErrors": []
+}
