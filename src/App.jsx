@@ -1,45 +1,67 @@
+import { useEffect, useState } from 'react'
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom'
+import Layout from './layouts/Layout'
+import Start from './pages/fe1/Start'
+import Home from './pages/fe1/Home'
+import Settings from './pages/fe1/Settings'
+import Records from './pages/fe2/Records'
+import { checkGuest } from './api/guest'
+import Fe2Layout from './features/fe2/Layout.jsx'
+import Vault from './features/fe2/Vault.jsx'
+import Detail from './features/fe2/Detail.jsx'
+import EditSummary from './features/fe2/EditSummary.jsx'
+import { ActionPage, RestPage, EmpathyPage, ShredPage, ResultPage, ActivityLink } from './features/fe2/Activities.jsx'
+import { RecordDetail } from './features/fe2/Records.jsx'
+import Demo from './features/fe2/Demo.jsx'
+import NotFound from './features/fe2/NotFound.jsx'
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import Layout from "./layouts/Layout";
-import Home from "./pages/fe1/Home";
-import Settings from "./pages/fe1/Settings";
-import Records from "./pages/fe2/Records";
-import Fe2Layout from './features/fe2/Layout.jsx';
-import Vault from './features/fe2/Vault.jsx';
-import Detail from './features/fe2/Detail.jsx';
-import EditSummary from './features/fe2/EditSummary.jsx';
-import { ActionPage, RestPage, EmpathyPage, ShredPage, ResultPage, ActivityLink } from './features/fe2/Activities.jsx';
-import { RecordDetail } from './features/fe2/Records.jsx';
-import Demo from './features/fe2/Demo.jsx';
-import NotFound from './features/fe2/NotFound.jsx';
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/settings" element={<Settings />} />
-        </Route>
-        <Route element={<Fe2Layout />}>
-          <Route path="/vault" element={<Vault />} />
-          <Route path="/worries/:worryId" element={<Detail />} />
-          <Route path="/worries/:worryId/edit" element={<EditSummary />} />
-          <Route path="/worries/:worryId/shred" element={<ShredPage />} />
-          <Route path="/worries/:worryId/action" element={<ActionPage />} />
-          <Route path="/worries/:worryId/rest" element={<RestPage />} />
-          <Route path="/worries/:worryId/empathy" element={<EmpathyPage />} />
-          <Route path="/activities/:activityId" element={<ActivityLink />} />
-          <Route path="/activities/:activityId/result" element={<ResultPage />} />
-          <Route path="/records" element={<Records />} />
-          <Route path="/records/:worryId" element={<RecordDetail />} />
-          <Route path="/demo" element={<Demo />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-  );
+function WorryInputPlaceholder() {
+  return <div style={{ padding: '40px 24px' }}><h1>걱정 입력 화면</h1><p>이곳에 S-03 걱정 입력 화면을 구현할 예정입니다.</p></div>
 }
 
-export default App;
+// FE1 guest gate. FE2 retains its own session/error handling; demo uses its operator gate.
+function GuestGate() {
+  const location = useLocation()
+  const [status, setStatus] = useState('CHECKING')
+  const [retry, setRetry] = useState(0)
+  useEffect(() => {
+    let active = true
+    checkGuest().then(value => { if (active) setStatus(value) })
+      .catch(() => { if (active) setStatus('ERROR') })
+    return () => { active = false }
+  }, [retry])
+  if (status === 'CHECKING') return <div style={{ padding: '40px 24px', textAlign: 'center' }}>금고를 확인하고 있어요...</div>
+  if (status === 'ERROR') return <div style={{ padding: '40px 24px', textAlign: 'center' }}><p>서버에 연결할 수 없어요.</p><button onClick={() => { setStatus('CHECKING'); setRetry(value => value + 1) }}>다시 시도</button></div>
+  if (status === 'NEED_START') return location.pathname === '/start' ? <Start /> : <Navigate to="/start" replace />
+  if (status === 'INVALID') return location.pathname === '/start' && new URLSearchParams(location.search).get('mode') === 'restart' ? <Start /> : <Navigate to="/start?mode=restart" replace />
+  return location.pathname === '/start' ? <Navigate to="/" replace /> : <Outlet />
+}
+function AppRoutes() {
+  const location = useLocation()
+  return <Routes>
+    <Route element={<GuestGate key={location.pathname} />}>
+      <Route path="/start" element={<Start />} />
+      <Route path="/worry-input" element={<WorryInputPlaceholder />} />
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/settings" element={<Settings />} />
+      </Route>
+    </Route>
+    <Route element={<Fe2Layout />}>
+      <Route path="/vault" element={<Vault />} />
+      <Route path="/worries/:worryId" element={<Detail />} />
+      <Route path="/worries/:worryId/edit" element={<EditSummary />} />
+      <Route path="/worries/:worryId/shred" element={<ShredPage />} />
+      <Route path="/worries/:worryId/action" element={<ActionPage />} />
+      <Route path="/worries/:worryId/rest" element={<RestPage />} />
+      <Route path="/worries/:worryId/empathy" element={<EmpathyPage />} />
+      <Route path="/activities/:activityId" element={<ActivityLink />} />
+      <Route path="/activities/:activityId/result" element={<ResultPage />} />
+      <Route path="/records" element={<Records />} />
+      <Route path="/records/:worryId" element={<RecordDetail />} />
+      <Route path="/demo" element={<Demo />} />
+    </Route>
+    <Route path="*" element={<NotFound />} />
+  </Routes>
+}
+export default function App() { return <BrowserRouter><AppRoutes /></BrowserRouter> }

@@ -19,7 +19,7 @@ export default function Records() {
     {items.length ? <div className="fe2-record-list">{items.map(w => <Link className="fe2-record-row" to={`/records/${w.id}`} key={w.id}>
       <div className="fe2-row-meta"><time>{dateLabel(w.created_at)}</time><Icon name="chevron" size={16} /></div><strong className="fe2-ellipsis">{w.display_summary}</strong>
       <div className="fe2-record-chips"><span>불안도 {w.distress_before ?? '미기록'} → {w.distress_after ?? '미기록'}</span>{w.latest_help_type && <span>{HELP[w.latest_help_type]?.title}</span>}</div></Link>)}</div> :
-      <EmptyState placeholder title="아직 공개된 기록이 없어요" description={<>맡긴 걱정이 공개되면<br />여기에 하나씩 쌓여요</>} action={<Link className="fe2-button fe2-primary" to="/" state={{ intent: 'create-worry' }}>걱정 맡기기</Link>} />}
+      <EmptyState placeholder title="아직 공개된 기록이 없어요" description={<>맡긴 걱정이 공개되면<br />여기에 하나씩 쌓여요</>} action={<Link className="fe2-button fe2-primary" to="/worry-input">걱정 맡기기</Link>} />}
     {(cursor !== 'END' && (cursor || resource.data?.next_cursor)) && <Button secondary onClick={more} disabled={mutation.busy}>더 보기</Button>}<Feedback error>{mutation.error}</Feedback>
   </ResourceState></main><BottomTabs /></>
 }

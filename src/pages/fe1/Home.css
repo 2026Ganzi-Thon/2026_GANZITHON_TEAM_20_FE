@@ -1,0 +1,263 @@
+
+.nv-home {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  color: #25243a;
+  font-family: "SUITE", sans-serif;
+}
+
+.nv-home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 30px 20px;
+}
+
+.nv-home-header h1 {
+  margin: 0;
+  font-size: 23px;
+  font-weight: 800;
+  color: #25243a;
+}
+
+.nv-home-settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #999bb8;
+  cursor: pointer;
+}
+
+.nv-home-empty {
+  flex: 1;
+  min-height: calc(100dvh - 230px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 30px 30px;
+}
+
+.nv-home-empty-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-bottom: 25px;
+}
+
+.nv-home-illustration {
+  width: 100%;
+  min-height: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 45px;
+  background: radial-gradient(
+    ellipse at center,
+    #f2e9c9 0%,
+    #faf7ec 40%,
+    #ffffff 73%
+  );
+}
+
+.nv-home-empty-center h2 {
+  font-size: 21px;
+  font-weight: 800;
+  color: #1d1d24;
+  margin: 0 0 14px;
+}
+
+.nv-home-empty-center p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.9;
+  color: #999bb8;
+}
+
+.nv-home-primary {
+  width: 100%;
+  min-height: 65px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 14px;
+  background: #25243a;
+  color: white;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.nv-home-primary:hover {
+  background: #34334e;
+}
+
+/* 기록이 있는 홈 화면 */
+
+.nv-home-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px 30px 35px;
+}
+
+.nv-home-info-card {
+  width: 100%;
+  min-height: 94px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 20px;
+  border: none;
+  border-radius: 16px;
+  background: #eeedf7;
+  color: #7d7e9e;
+  font-family: inherit;
+  text-align: left;
+}
+
+button.nv-home-info-card {
+  cursor: pointer;
+}
+
+.nv-home-info-card > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.nv-home-info-card span {
+  font-size: 13px;
+  color: #81829d;
+}
+
+.nv-home-info-card strong {
+  font-size: 17px;
+  font-weight: 700;
+  color: #25243a;
+  line-height: 1.4;
+}
+
+.nv-home-cancel {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: #a2a3bc;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.nv-home-vault-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 34px 26px 30px;
+  border: 1px solid #e4e4e9;
+  border-radius: 24px;
+  background: white;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.09);
+  text-align: center;
+}
+
+.nv-home-vault-icon {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #25243a;
+  margin-bottom: 16px;
+}
+
+.nv-home-vault-icon svg:last-child {
+  position: absolute;
+  top: 16px;
+  left: 17px;
+}
+
+.nv-home-vault-card h2 {
+  margin: 0 0 9px;
+  font-size: 19px;
+  font-weight: 800;
+  color: #25243a;
+}
+
+.nv-home-vault-card p {
+  margin: 0 0 28px;
+  font-size: 14px;
+  color: #8889a3;
+}
+
+.nv-home-vault-card > button {
+  width: 100%;
+  min-height: 60px;
+  border: none;
+  border-radius: 13px;
+  background: #9d9fbb;
+  color: white;
+  font-family: inherit;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.nv-home-vault-public {
+  background: #eeedf7;
+  border-color: #eeedf7;
+}
+
+.nv-home-dev {
+  display: flex;
+  gap: 8px;
+  padding: 0 30px;
+}
+
+.nv-home-dev button {
+  flex: 1;
+  padding: 8px 4px;
+  border: 1px solid #dedee8;
+  border-radius: 8px;
+  background: #f7f7fb;
+  color: #555671;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+@media (max-width: 380px) {
+  .nv-home-header {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .nv-home-content,
+  .nv-home-empty {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .nv-home-dev {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .nv-home-info-card strong {
+    font-size: 15px;
+  }
+}
+
+.nv-home-processing-message {
+  margin: 20px 0;
+  color: #8889a3;
+  font-size: 14px;
+  line-height: 1.8;
+  text-align: center;
+}
