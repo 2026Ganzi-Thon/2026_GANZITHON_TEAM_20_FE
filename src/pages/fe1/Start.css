@@ -1,0 +1,285 @@
+
+/* ========================================
+   S-01 시작 화면
+======================================== */
+
+.start-page {
+  width: 100%;
+  min-height: 100dvh;
+
+  background-color: var(--white, #ffffff);
+  color: var(--navy-400, #24243a);
+
+  box-sizing: border-box;
+}
+
+.start-page *,
+.start-page *::before,
+.start-page *::after {
+  box-sizing: border-box;
+}
+
+/* ========================================
+   전체 컨테이너
+======================================== */
+
+.start-container {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+
+  margin: 0 auto;
+  padding: 24px 24px 30px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ========================================
+   로고 및 서비스 소개
+======================================== */
+
+.start-intro {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  padding: 32px 0 48px;
+}
+
+/* 금고 로고 */
+
+.start-logo {
+  width: 76px;
+  height: 86px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 64px;
+
+  color: var(--navy-400, #24243a);
+}
+
+.start-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 서비스 제목 */
+
+.start-title {
+  margin: 0 0 16px;
+
+  font-family: "SUITE", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0;
+
+  color: var(--navy-400, #24243a);
+}
+
+/* 서비스 설명 */
+
+.start-description {
+  margin: 0;
+
+  font-family: "SUITE", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0;
+
+  color: var(--navy-300, #6e6f8a);
+}
+
+/* ========================================
+   하단 영역
+======================================== */
+
+.start-bottom {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 20px;
+}
+
+/* ========================================
+   안내 상자
+   Figma: 342px x 180px
+======================================== */
+
+.start-guide {
+  width: 342px;
+  max-width: 100%;
+  height: 180px;
+
+  padding: 18px 20px;
+  border-radius: 14px;
+
+  background-color: #f5f5f7;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* 안내 상자 제목 */
+
+.start-guide-title {
+  margin: 0 0 12px;
+
+  font-family: "SUITE", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+
+  color: var(--navy-400, #24243a);
+}
+
+/* 안내 목록 */
+
+.start-guide-list {
+  margin: 0;
+  padding-left: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  font-family: "SUITE", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+
+  color: var(--navy-300, #6e6f8a);
+}
+
+.start-guide-list li {
+  padding-left: 0;
+}
+
+.start-guide-list li::marker {
+  color: var(--navy-300, #6e6f8a);
+}
+
+/* ========================================
+   시작하기 버튼
+   Figma: 342px x 56px
+======================================== */
+
+.start-button {
+  width: 342px;
+  max-width: 100%;
+
+  height: 56px;
+  min-height: 56px;
+
+  border: none;
+  border-radius: 12px;
+
+  background-color: var(--navy-400, #24243a);
+  color: var(--white, #ffffff);
+
+  font-family: "SUITE", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.start-button:hover {
+  background-color: var(--navy-500, #1e2240);
+}
+
+.start-button:focus-visible {
+  outline: 3px solid var(--gold-300, #ddb872);
+  outline-offset: 3px;
+}
+
+.start-button:active {
+  transform: scale(0.99);
+}
+
+/* ========================================
+   작은 모바일 화면
+======================================== */
+
+@media (max-width: 375px) {
+  .start-container {
+    padding: 20px 16px 24px;
+  }
+
+  .start-logo {
+    width: 70px;
+    height: 80px;
+    margin-bottom: 48px;
+  }
+
+  .start-title {
+    font-size: 22px;
+  }
+
+  .start-description {
+    font-size: 13px;
+  }
+
+  .start-guide {
+    padding: 16px;
+  }
+
+  .start-guide-title {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .start-guide-list {
+    font-size: 11px;
+    line-height: 18px;
+    gap: 6px;
+  }
+}
+
+/* ========================================
+   높이가 낮은 화면
+======================================== */
+
+@media (max-height: 700px) {
+  .start-intro {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+
+  .start-logo {
+    margin-bottom: 40px;
+  }
+}
+
+/* API 요청 중 버튼 */
+.start-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* API 오류 메시지 */
+.start-error {
+  width: 342px;
+  max-width: 100%;
+  margin: 0;
+  color: #c9788a;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
