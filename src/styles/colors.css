@@ -1,0 +1,58 @@
+
+:root {
+  /* Primary - Gold */
+  --gold-300: #DDB872;
+  --gold-200: #E8C98A;
+  --gold-100: #F3E5C4;
+  --gold-50: #FAF3E3;
+
+  /* Gray - Navy */
+  --navy-600: #14172B;
+  --navy-500: #1E2240;
+  --navy-400: #24243A;
+  --navy-300: #6E6F8A;
+  --navy-200: #9A9CB8;
+  --navy-100: #ECEBF5;
+
+  /* Background */
+  --white: #FFFFFF;
+  --cream: #FAF6EF;
+
+  /* Help */
+  --rose-300: #C9788A;
+  --rose-100: #F4E4E8;
+
+  --sage-300: #6E9E8B;
+  --sage-100: #E2ECE8;
+
+  --blue-300: #7C8FC4;
+  --blue-100: #E5E9F3;
+
+  --beige-300: #D4A373;
+  --beige-100: #F6EDE3;
+
+  /* Anxiety Level */
+  --anxiety-1: #D9D5F0;
+  --anxiety-2: #B9B2E3;
+  --anxiety-3: #988FD3;
+  --anxiety-4: #776BC2;
+  --anxiety-5: #5A4EA8;
+}
+
+/* Night Theme */
+.theme-night {
+  --bg: var(--navy-600);
+  --surface: var(--navy-500);
+  --text-primary: var(--navy-100);
+  --text-secondary: var(--navy-200);
+  --accent: var(--gold-200);
+}
+
+/* Morning Theme */
+.theme-morning {
+  --bg: var(--cream);
+  --surface: var(--white);
+  --text-primary: var(--navy-400);
+  --text-secondary: var(--navy-300);
+  --accent: #B88A3E;
+}
