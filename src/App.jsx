@@ -15,18 +15,12 @@ import Start from "./pages/fe1/Start";
 import Home from "./pages/fe1/Home";
 import Records from "./pages/fe2/Records";
 import Settings from "./pages/fe1/Settings";
+import WorryInput from "./pages/fe1/WorryInput";
+import WorryTime from "./pages/fe1/WorryTime";
+import WorryAnalysis from "./pages/fe1/WorryAnalysis";
+import WorryComplete from "./pages/fe1/WorryComplete";
 
 import { checkGuest } from "./api/guest";
-
-// 게스트 인증 API 연결 전 임시 화면
-function WorryInputPlaceholder() {
-  return (
-    <div style={{ padding: "40px 24px" }}>
-      <h1>걱정 입력 화면</h1>
-      <p>이곳에 S-03 걱정 입력 화면을 구현할 예정입니다.</p>
-    </div>
-  );
-}
 
 // 세션 확인 및 화면 접근 제어
 function AppRoutes() {
@@ -114,10 +108,18 @@ function AppRoutes() {
         element={<Navigate to="/" replace />}
       />
 
-      {/* 걱정 입력 화면 - 임시 */}
+      {/* 걱정 입력 화면 */}
       <Route
         path="/worry-input"
-        element={<WorryInputPlaceholder />}
+        element={<WorryInput />}
+      />
+      <Route path="/worry-confirm" element={<WorryTime />} />
+      {/* S-05 AI 분석 중 */}
+      <Route path="/worry-analysis" element={<WorryAnalysis />} />
+      {/* S-06 봉인 완료 */}
+      <Route
+        path="/worry-complete"
+        element={<WorryComplete />}
       />
 
       {/* 기존 메인 화면 */}

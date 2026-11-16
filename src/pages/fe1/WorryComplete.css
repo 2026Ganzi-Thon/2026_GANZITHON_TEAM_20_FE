@@ -1,0 +1,294 @@
+
+/* ========================================
+   S-06 봉인 완료 화면
+======================================== */
+
+.wc-page {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  margin: 0 auto;
+
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  font-family: "SUITE", sans-serif;
+  color: #22223f;
+}
+
+/* ========================================
+   중앙 콘텐츠
+======================================== */
+
+.wc-main {
+  flex: 1;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px 20px;
+  box-sizing: border-box;
+}
+
+.wc-center {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  transform: translateY(8px);
+}
+
+/* ========================================
+   봉인 아이콘
+======================================== */
+
+.wc-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #24243e;
+  margin-bottom: 64px;
+}
+
+.wc-icon svg {
+  width: 64px;
+  height: 64px;
+}
+
+/* ========================================
+   완료 문구
+======================================== */
+
+.wc-message {
+  width: 100%;
+  text-align: center;
+}
+
+.wc-message h1 {
+  margin: 0;
+
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: -0.5px;
+
+  color: #24243e;
+}
+
+.wc-message p {
+  margin: 10px 0 0;
+
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+
+  color: #9899b5;
+}
+
+/* ========================================
+   공개 예정 시각
+======================================== */
+
+.wc-publish-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+  margin-top: 24px;
+  padding: 10px 15px;
+
+  min-height: 36px;
+  max-width: 100%;
+
+  box-sizing: border-box;
+  background: #eeedf5;
+  border-radius: 999px;
+
+  color: #272740;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.wc-publish-pill svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* ========================================
+   하단 버튼 영역
+======================================== */
+
+.wc-footer {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+  width: 100%;
+
+  padding: 0 24px 24px;
+  box-sizing: border-box;
+}
+
+.wc-footer button {
+  width: 100%;
+  min-height: 56px;
+
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+/* 홈으로 버튼 */
+
+.wc-home-button {
+  border: none;
+  background: #24243f;
+  color: #ffffff;
+}
+
+.wc-home-button:hover {
+  background: #343453;
+}
+
+/* 새 걱정 맡기기 버튼 */
+
+.wc-new-button {
+  background: #ffffff;
+  border: 1px solid #d7d7df;
+  color: #24243f;
+}
+
+.wc-new-button:hover {
+  background: #f8f8fa;
+}
+
+/* 조금 뒤에 다시 알려주세요 버튼 */
+
+.wc-reminder-button {
+  background: #eeedf5;
+  color: #8889a5;
+  border: none;
+}
+
+.wc-reminder-button:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+/* ========================================
+   완료 정보가 없는 경우
+======================================== */
+
+.wc-invalid {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 20px;
+  padding: 24px;
+  box-sizing: border-box;
+
+  font-family: "SUITE", sans-serif;
+  text-align: center;
+  color: #24243f;
+}
+
+.wc-invalid p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.wc-invalid button {
+  padding: 14px 24px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #24243f;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ========================================
+   작은 모바일 화면 대응
+======================================== */
+
+@media (max-width: 375px) {
+  .wc-main {
+    padding: 20px 16px;
+  }
+
+  .wc-icon {
+    margin-bottom: 52px;
+  }
+
+  .wc-icon svg {
+    width: 58px;
+    height: 58px;
+  }
+
+  .wc-message h1 {
+    font-size: 19px;
+  }
+
+  .wc-message p {
+    font-size: 12px;
+  }
+
+  .wc-publish-pill {
+    font-size: 11px;
+    padding: 9px 12px;
+  }
+
+  .wc-footer {
+    padding: 0 20px 20px;
+    gap: 10px;
+  }
+
+  .wc-footer button {
+    min-height: 52px;
+    font-size: 13px;
+  }
+}
+
+/* ========================================
+   화면 높이가 작은 경우
+======================================== */
+
+@media (max-height: 700px) {
+  .wc-icon {
+    margin-bottom: 40px;
+  }
+
+  .wc-center {
+    transform: none;
+  }
+
+  .wc-footer {
+    padding-bottom: 16px;
+  }
+}

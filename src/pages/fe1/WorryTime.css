@@ -1,0 +1,324 @@
+
+.wt-page {
+  width: 100%;
+  max-width: 390px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  color: #25243a;
+  font-family: "SUITE", sans-serif;
+  box-sizing: border-box;
+}
+
+.wt-page button {
+  font-family: inherit;
+}
+
+.wt-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 24px 0;
+}
+
+.wt-header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.wt-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 0;
+  background: transparent;
+  color: #25243a;
+  cursor: pointer;
+}
+
+.wt-content {
+  flex: 1;
+  padding: 38px 24px 24px;
+}
+
+.wt-intro h2 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.wt-intro p {
+  margin: 0;
+  color: #8e8fa8;
+  font-size: 13px;
+}
+
+.wt-date-section {
+  position: relative;
+  margin-top: 30px;
+}
+
+.wt-date-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  color: #25243a;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.wt-date-trigger svg {
+  color: #a0a0af;
+}
+
+.wt-calendar {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 16px 12px;
+  background: #ffffff;
+  border: 1px solid #e5e4ef;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(25, 25, 45, 0.13);
+}
+
+.wt-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding: 0 8px;
+  font-size: 15px;
+}
+
+.wt-calendar-arrows {
+  display: flex;
+  gap: 6px;
+}
+
+.wt-calendar-arrows button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.wt-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px 2px;
+  text-align: center;
+}
+
+.wt-weekday {
+  padding: 7px 0;
+  color: #9999ab;
+  font-size: 11px;
+}
+
+.wt-calendar-grid button {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #25243a;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.wt-calendar-grid button.active {
+  background: #77758f;
+  color: #ffffff;
+}
+
+.wt-calendar-grid button:disabled {
+  color: #c7c7d0;
+  cursor: not-allowed;
+}
+
+.wt-time-section {
+  margin-top: 22px;
+}
+
+.wt-time-picker {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 180px;
+  padding: 14px 20px;
+  border-radius: 22px;
+  background: #efedf6;
+  overflow: hidden;
+}
+
+.wt-picker-highlight {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  right: 20px;
+  height: 50px;
+  transform: translateY(-50%);
+  background: #ffffff;
+  border-radius: 13px;
+  pointer-events: none;
+}
+
+.wt-picker-column {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 0;
+}
+
+.wt-picker-adjacent {
+  width: 100%;
+  height: 42px;
+  border: none;
+  background: transparent;
+  color: #9999ad;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.wt-picker-selected {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #77758f;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.wt-time-hint {
+  margin: 16px 0 0;
+  color: #9999ad;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.wt-notification {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.wt-notification-text {
+  flex: 1;
+}
+
+.wt-notification-text h2 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.wt-notification-text p {
+  margin: 0;
+  color: #9999ad;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.wt-switch {
+  flex-shrink: 0;
+  width: 54px;
+  height: 32px;
+  padding: 3px;
+  border: none;
+  border-radius: 20px;
+  background: #e1e0e9;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.wt-switch span {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s;
+}
+
+.wt-switch.on {
+  background: #77758f;
+}
+
+.wt-switch.on span {
+  transform: translateX(22px);
+}
+
+.wt-footer {
+  margin-top: auto;
+  padding: 20px 24px 32px;
+}
+
+.wt-submit {
+  width: 100%;
+  height: 58px;
+  border: none;
+  border-radius: 13px;
+  background: #25243a;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wt-submit:disabled {
+  background: #c9c8d4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 350px) {
+  .wt-header {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .wt-content {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .wt-footer {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+
+/* 걱정 등록 API 오류 메시지 */
+.wt-submit-error {
+  margin: 0 0 12px;
+  color: #c0392b;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+
