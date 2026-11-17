@@ -13,14 +13,38 @@ import "./WorryTime.css";
 const HOUR = 60 * 60 * 1000;
 const DAY = 24 * HOUR;
 
+const DEFAULT_TIME_STORAGE_KEY =
+  "nightvault-default-publication-time";
+
 const pad = (value) => String(value).padStart(2, "0");
 
-// 현재부터 9시간 이후의 첫 오전 8시
+// 설정 화면에서 저장한 기본 공개 시간 조회
+const getSavedDefaultTime = () => {
+  try {
+    const saved = localStorage.getItem(
+      DEFAULT_TIME_STORAGE_KEY
+    );
+
+    if (/^([01]\d|2[0-3]):00$/.test(saved ?? "")) {
+      const [hour, minute] = saved.split(":").map(Number);
+
+      return { hour, minute };
+    }
+  } catch {
+    // 저장소에 접근할 수 없는 경우 기본값 사용
+  }
+
+  return { hour: 8, minute: 0 };
+};
+
+// 현재부터 9시간 이후의 첫 기본 공개 시각
 const getDefaultPublishDate = () => {
   const minimum = new Date(Date.now() + 9 * HOUR);
   const result = new Date(minimum);
 
-  result.setHours(8, 0, 0, 0);
+  const { hour, minute } = getSavedDefaultTime();
+
+  result.setHours(hour, minute, 0, 0);
 
   if (result < minimum) {
     result.setDate(result.getDate() + 1);
@@ -196,8 +220,12 @@ function WorryTime() {
         setSelectedDate(nextDate);
       }
     } else {
+      // 기존 선택 시간이 허용 범위를 벗어나면
+      // 설정 화면에서 저장한 기본 공개 시간 사용
       const defaultTime = new Date(date);
-      defaultTime.setHours(8, 0, 0, 0);
+      const { hour, minute } = getSavedDefaultTime();
+
+      defaultTime.setHours(hour, minute, 0, 0);
 
       if (isWithinRange(defaultTime)) {
         if (
@@ -265,6 +293,7 @@ function WorryTime() {
           notificationEnabled,
         },
       });
+
       return;
     }
 
@@ -335,7 +364,6 @@ function WorryTime() {
           retryPayload: payload,
         },
       });
-
     } catch (error) {
       console.error("걱정 접수 실패:", {
         status: error.response?.status,
@@ -356,7 +384,6 @@ function WorryTime() {
 
       // 응답 유실 가능성이 있으므로 실패해도
       // Idempotency-Key를 자동 변경하지 않음
-
     } finally {
       submittingRef.current = false;
       setIsSubmitting(false);
