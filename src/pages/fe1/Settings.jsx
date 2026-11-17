@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import {
   getNotificationSettings,
+  updatePublicationNotification,
   getReminder,
   cancelReminder,
   disableAllNotifications,
@@ -216,13 +217,12 @@ function Settings() {
     setNotice("");
 
     try {
-      await disableAllNotifications();
+      await updatePublicationNotification(false);
 
       const result = await getNotificationSettings();
       setNotificationSettings(result);
-      setReminder(null);
 
-      setNotice("모든 알림을 껐어요.");
+      setNotice("공개 알림을 껐어요.");
     } catch (error) {
       setNotice(getErrorMessage(error));
     } finally {
