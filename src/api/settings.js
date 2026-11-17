@@ -42,7 +42,7 @@ export const getReminder = async () => {
     "/notifications/reminder"
   );
 
-  return response.data;
+  return response.status === 204 ? null : response.data;
 };
 
 // 예약된 재알림 취소

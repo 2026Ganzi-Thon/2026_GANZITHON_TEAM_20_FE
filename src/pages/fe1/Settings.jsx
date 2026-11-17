@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   getNotificationSettings,
@@ -118,6 +118,7 @@ function Settings() {
     useState(null);
 
   const [reminder, setReminder] = useState(null);
+  const [reminderError, setReminderError] = useState("");
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -126,55 +127,47 @@ function Settings() {
   const [timeModalOpen, setTimeModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  // 설정 화면 진입 시 알림 설정 및 재알림 조회
+  // Partial writes must be followed by server reads, including after a failed request.
+  const refreshNotifications = useCallback(async (isActive = () => true) => {
+    const [settingsResult, reminderResult] = await Promise.allSettled([
+      getNotificationSettings(), getReminder(),
+    ]);
+    if (!isActive()) return null;
+    const settings = settingsResult.status === "fulfilled" ? settingsResult.value : null;
+    const reminderLoaded = reminderResult.status === "fulfilled";
+    const currentReminder = reminderLoaded ? reminderResult.value : null;
+    setNotificationSettings(settings);
+    if (reminderLoaded) {
+      setReminder(currentReminder);
+      setReminderError("");
+    } else {
+      setReminderError("재알림 정보를 확인하지 못했어요. 다시 조회해 주세요.");
+    }
+    if (!settings || !reminderLoaded) return null;
+    return { settings, reminder: currentReminder };
+  }, []);
+
   useEffect(() => {
     let active = true;
-
-    const loadSettings = async () => {
-      const [notificationResult, reminderResult] =
-        await Promise.allSettled([
-          getNotificationSettings(),
-          getReminder(),
-        ]);
-
+    Promise.resolve().then(() => active ? refreshNotifications(() => active) : null).then(result => {
       if (!active) return;
-
-      if (notificationResult.status === "fulfilled") {
-        setNotificationSettings(notificationResult.value);
-      } else {
-        console.error(
-          "공개 알림 설정 조회 실패:",
-          notificationResult.reason
-        );
-
-        setNotice(
-          getErrorMessage(notificationResult.reason)
-        );
-      }
-
-      if (reminderResult.status === "fulfilled") {
-        setReminder(reminderResult.value);
-      } else if (
-        reminderResult.reason?.response?.status === 204 ||
-        reminderResult.reason?.response?.status === 404
-      ) {
-        setReminder(null);
-      } else {
-        console.error(
-          "재알림 조회 실패:",
-          reminderResult.reason
-        );
-      }
-
+      if (!result) setNotice("알림 상태를 확인하지 못했어요. 다시 조회해 주세요.");
       setLoading(false);
-    };
+    });
+    return () => { active = false; };
+  }, [refreshNotifications]);
 
-    loadSettings();
-
-    return () => {
-      active = false;
-    };
-  }, []);
+  const handleRefreshNotifications = async () => {
+    if (saving) return;
+    setSaving(true);
+    setNotice("");
+    try {
+      const result = await refreshNotifications();
+      setNotice(result ? "알림 상태를 다시 확인했어요." : "알림 상태를 확인하지 못했어요. 다시 조회해 주세요.");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   // 기본 공개 시간 저장
   // 현재 서버에 기본 공개 시간 변경 API가 없으므로
@@ -249,24 +242,21 @@ function Settings() {
     }
   };
 
-  // 모든 알림 끄기
+  // The backend disable endpoint removes subscriptions, but does not cancel reminders.
   const handleDisableAllNotifications = async () => {
     if (saving || !notificationSettings) return;
-
     setSaving(true);
     setNotice("");
-
     try {
-      await disableAllNotifications();
-
-      const result = await getNotificationSettings();
-
-      setNotificationSettings(result);
-      setReminder(null);
-
-      setNotice("모든 알림을 껐어요.");
-    } catch (error) {
-      setNotice(getErrorMessage(error));
+      const writes = await Promise.allSettled([
+        disableAllNotifications(), cancelReminder(),
+      ]);
+      const current = await refreshNotifications();
+      const confirmed = writes.every(result => result.status === "fulfilled") &&
+        current && !current.settings.publicationEnabled &&
+        current.settings.subscriptionCount === 0 && current.reminder === null;
+      setNotice(confirmed ? "모든 알림을 껐어요." :
+        "모든 알림 끄기를 완료하지 못했어요. 상태를 확인한 뒤 다시 시도해 주세요.");
     } finally {
       setSaving(false);
     }
@@ -318,13 +308,8 @@ function Settings() {
   const notificationAvailable =
     notificationSettings !== null;
 
-  // API 응답의 예약 객체 필드가 확정되면
-  // 이 부분을 실제 응답 형식에 맞춰 조정
-  const reminderTime =
-    reminder?.scheduledAt ??
-    reminder?.scheduled_at ??
-    reminder?.remindAt ??
-    null;
+  // Current Spring Reminder DTO: { worryId, sendAt }.
+  const reminderTime = reminder?.sendAt ?? null;
 
   const hasReminder = Boolean(
     reminder && typeof reminder === "object"
@@ -444,7 +429,7 @@ function Settings() {
               <strong>예약된 재알림</strong>
 
               <p>
-                {hasReminder
+                {reminderError ? reminderError : hasReminder
                   ? reminderTime
                     ? formatReminderTime(reminderTime)
                     : "예약 정보를 확인해 주세요."
@@ -456,7 +441,7 @@ function Settings() {
               type="button"
               className="nv-settings-cancel"
               onClick={handleCancelReminder}
-              disabled={!hasReminder || saving}
+              disabled={!hasReminder || Boolean(reminderError) || saving}
             >
               취소
             </button>
@@ -534,6 +519,12 @@ function Settings() {
             삭제 후 처음 화면으로 돌아가요.
           </p>
         </section>
+
+        {(!notificationAvailable || reminderError) && !loading && (
+          <button type="button" className="nv-settings-primary" onClick={handleRefreshNotifications} disabled={saving}>
+            알림 상태 다시 조회
+          </button>
+        )}
 
         {notice && (
           <p
