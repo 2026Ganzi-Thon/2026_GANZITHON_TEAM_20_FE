@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import "./WorryInput.css";
 
@@ -14,10 +14,23 @@ const ANXIETY_OPTIONS = [
 
 function WorryInput() {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [worry, setWorry] = useState("");
-  const [anxietyLevel, setAnxietyLevel] = useState(null);
-  const [tomorrowCheck, setTomorrowCheck] = useState("");
+  // S-04에서 뒤로가기 시 전달받은 입력 데이터
+  const restoredData = location.state ?? {};
+
+  // 기존 입력값이 있으면 복원, 없으면 초기값 사용
+  const [worry, setWorry] = useState(
+    () => restoredData.worry ?? ""
+  );
+
+  const [anxietyLevel, setAnxietyLevel] = useState(
+    () => restoredData.anxietyLevel ?? null
+  );
+
+  const [tomorrowCheck, setTomorrowCheck] = useState(
+    () => restoredData.tomorrowCheck ?? ""
+  );
 
   // 필수 항목 검증
   const isValid =
@@ -28,9 +41,11 @@ function WorryInput() {
   const handleNext = () => {
     if (!isValid) return;
 
-    // 다음 화면에 입력 데이터 전달
+    // S-04로 입력 데이터 전달
+    // 복원된 공개 시간 및 알림 상태도 유지
     navigate("/worry-confirm", {
       state: {
+        ...restoredData,
         worry: worry.trim(),
         anxietyLevel,
         tomorrowCheck: tomorrowCheck.trim(),
@@ -57,7 +72,10 @@ function WorryInput() {
       <main className="worry-input-content">
         {/* 걱정 내용 */}
         <section className="worry-field">
-          <label htmlFor="worry-content" className="worry-field-title">
+          <label
+            htmlFor="worry-content"
+            className="worry-field-title"
+          >
             지금 어떤 걱정이 떠오르나요?
           </label>
 
@@ -78,7 +96,9 @@ function WorryInput() {
         {/* 불안도 */}
         <section className="worry-field">
           <div className="worry-anxiety-title">
-            <h2 className="worry-field-title">지금 불안도</h2>
+            <h2 className="worry-field-title">
+              지금 불안도
+            </h2>
             <span className="worry-required">필수</span>
           </div>
 
@@ -92,10 +112,16 @@ function WorryInput() {
                 key={option.value}
                 type="button"
                 className={`worry-anxiety-option ${
-                  anxietyLevel === option.value ? "selected" : ""
+                  anxietyLevel === option.value
+                    ? "selected"
+                    : ""
                 }`}
-                onClick={() => setAnxietyLevel(option.value)}
-                aria-pressed={anxietyLevel === option.value}
+                onClick={() =>
+                  setAnxietyLevel(option.value)
+                }
+                aria-pressed={
+                  anxietyLevel === option.value
+                }
               >
                 <span className="worry-anxiety-number">
                   {option.value}
@@ -111,7 +137,10 @@ function WorryInput() {
 
         {/* 내일 확인할 것 */}
         <section className="worry-field">
-          <label htmlFor="tomorrow-check" className="worry-field-title">
+          <label
+            htmlFor="tomorrow-check"
+            className="worry-field-title"
+          >
             내일 확인할 것 (선택)
           </label>
 
@@ -121,7 +150,9 @@ function WorryInput() {
             className="worry-tomorrow-input"
             placeholder="예) 발표 자료 분량 확인하기"
             value={tomorrowCheck}
-            onChange={(e) => setTomorrowCheck(e.target.value)}
+            onChange={(e) =>
+              setTomorrowCheck(e.target.value)
+            }
             maxLength={100}
           />
 

@@ -22,7 +22,7 @@ function WorryAnalysis() {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const startTimeRef = useRef(Date.now());
+  const startTimeRef = useRef(null);
   const finishedRef = useRef(false);
   const checkingRef = useRef(false);
 
@@ -92,19 +92,12 @@ function WorryAnalysis() {
         }
 
         // S-16 도움 안내 분기
+        // 정식 화면 구현 전까지 임시 안내 표시
         if (nextStatus === "SUPPORT_GUIDANCE") {
           finishedRef.current = true;
           setStatus("SUPPORT_GUIDANCE");
+          setErrorMessage("");
 
-          // S-16 화면 구현 후 경로 변경
-          // navigate("/support-guidance", {
-          //   replace: true,
-          //   state: {
-          //     guidanceCode: data.guidanceCode,
-          //   },
-          // });
-
-          navigate("/", { replace: true });
           return;
         }
 
@@ -210,6 +203,60 @@ function WorryAnalysis() {
     elapsedSeconds * 1000 >= DELAY_NOTICE_MS;
 
   const isFailed = status === "FAILED";
+  const isSupportGuidance = status === "SUPPORT_GUIDANCE";
+
+  // S-16 구현 전 임시 도움 안내 화면
+  if (isSupportGuidance) {
+    return (
+      <div className="wa-page">
+        <header className="wa-header">
+          <button
+            type="button"
+            className="wa-close"
+            onClick={handleClose}
+            aria-label="닫기"
+          >
+            <X size={25} strokeWidth={1.8} />
+          </button>
+        </header>
+
+        <main className="wa-main">
+          <section className="wa-message">
+            <h1>지금은 다른 도움이 필요할 수 있어요</h1>
+
+            <p>
+              걱정을 혼자 정리하기 어려울 때는
+              믿을 수 있는 사람에게 이야기해 보세요.
+            </p>
+
+            <p>
+              자세한 도움 안내 화면은 준비 중이에요.
+            </p>
+          </section>
+
+          <button
+            type="button"
+            className="wa-retry-button"
+            onClick={handleClose}
+          >
+            홈으로 이동
+          </button>
+        </main>
+
+        <footer className="wa-footer">
+          <div className="wa-notice">
+            <p className="wa-notice-title">
+              도움이 필요할 때
+            </p>
+            <p>
+              가까운 사람이나 신뢰할 수 있는
+              지원 기관에 도움을 요청할 수 있어요.
+            </p>
+          </div>
+        </footer>
+      </div>
+    );
+  }
 
   return (
     <div className="wa-page">

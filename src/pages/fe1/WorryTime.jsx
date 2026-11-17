@@ -93,9 +93,8 @@ function WorryTime() {
       )
   );
 
-  // 공개 알림 (기본 OFF)
-  const [notificationEnabled, setNotificationEnabled] =
-    useState(() => inputData.notificationEnabled ?? false);
+  // 공개 알림 API 미연동: 항상 OFF
+  const notificationEnabled = false;
 
   // 등록 진행 상태
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -630,33 +629,23 @@ function WorryTime() {
           </p>
         </section>
 
-        {/* 공개 알림 */}
+        {/* 공개 알림 - API 연동 전까지 비활성화 */}
         <section className="wt-notification">
           <div className="wt-notification-text">
             <h2>공개되면 알려드릴까요?</h2>
 
             <p>
-              기본은 꺼짐. 켜면 공개 시각에
-              한 번만 알려드려요
+              공개 알림 기능은 준비 중이에요.
             </p>
           </div>
 
           <button
             type="button"
             role="switch"
-            aria-checked={notificationEnabled}
-            aria-label="공개 알림"
-            className={`wt-switch ${
-              notificationEnabled ? "on" : ""
-            }`}
-            disabled={isSubmitting || submitted}
-            onClick={() => {
-              if (resetSubmission()) {
-                setNotificationEnabled(
-                  (prev) => !prev
-                );
-              }
-            }}
+            aria-checked={false}
+            aria-label="공개 알림 (준비 중)"
+            className="wt-switch"
+            disabled
           >
             <span />
           </button>

@@ -26,25 +26,36 @@ import { checkGuest } from "./api/guest";
 function AppRoutes() {
   const location = useLocation();
 
-  const [guestStatus, setGuestStatus] = useState("CHECKING");
+  const [guestCheck, setGuestCheck] = useState({
+    pathname: null,
+    retryCount: 0,
+    status: "CHECKING",
+  });
+
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     let active = true;
 
-    setGuestStatus("CHECKING");
-
     checkGuest()
       .then((status) => {
         if (active) {
-          setGuestStatus(status);
+          setGuestCheck({
+            pathname: location.pathname,
+            retryCount,
+            status,
+          });
         }
       })
       .catch((error) => {
         console.error("게스트 세션 확인 실패:", error);
 
         if (active) {
-          setGuestStatus("ERROR");
+          setGuestCheck({
+            pathname: location.pathname,
+            retryCount,
+            status: "ERROR",
+          });
         }
       });
 
@@ -52,6 +63,14 @@ function AppRoutes() {
       active = false;
     };
   }, [location.pathname, retryCount]);
+
+  // 현재 경로 또는 재시도 요청에 대한 세션 확인이
+  // 완료되지 않았다면 CHECKING 상태로 처리
+  const guestStatus =
+    guestCheck.pathname === location.pathname &&
+    guestCheck.retryCount === retryCount
+      ? guestCheck.status
+      : "CHECKING";
 
   // 세션 확인 중
   if (guestStatus === "CHECKING") {
@@ -113,9 +132,19 @@ function AppRoutes() {
         path="/worry-input"
         element={<WorryInput />}
       />
-      <Route path="/worry-confirm" element={<WorryTime />} />
+
+      {/* S-04 공개 시간 설정 */}
+      <Route
+        path="/worry-confirm"
+        element={<WorryTime />}
+      />
+
       {/* S-05 AI 분석 중 */}
-      <Route path="/worry-analysis" element={<WorryAnalysis />} />
+      <Route
+        path="/worry-analysis"
+        element={<WorryAnalysis />}
+      />
+
       {/* S-06 봉인 완료 */}
       <Route
         path="/worry-complete"
