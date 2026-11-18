@@ -1,0 +1,349 @@
+
+.nv-settings {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  color: #25243a;
+  font-family: "SUITE", sans-serif;
+}
+
+.nv-settings * {
+  box-sizing: border-box;
+}
+
+/* 헤더 */
+.nv-settings-header {
+  padding: 30px 24px 18px;
+}
+
+.nv-settings-header h1 {
+  margin: 0;
+  font-size: 23px;
+  font-weight: 800;
+  color: #25243a;
+}
+
+/* 본문 */
+.nv-settings-main {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding: 20px 24px 40px;
+}
+
+.nv-settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.nv-settings-section-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #737590;
+}
+
+/* 공통 카드 */
+.nv-settings-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid #e5e5ef;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #25243a;
+  font-family: inherit;
+  text-align: left;
+}
+
+.nv-settings-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.nv-settings-card-content strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 750;
+  line-height: 1.4;
+  color: #25243a;
+}
+
+.nv-settings-card-content p {
+  margin: 0 0 4px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #8587a3;
+}
+
+/* 기본 공개 시간 */
+.nv-settings-time-card {
+  min-height: 105px;
+  cursor: pointer;
+}
+
+.nv-settings-time-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 12px;
+  color: #7f819e;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.nv-settings-chevron {
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1;
+  color: #999bb8;
+}
+
+/* 공개 알림 */
+.nv-settings-notification-card {
+  min-height: 105px;
+}
+
+.nv-settings-coming-soon {
+  margin-top: 5px !important;
+  color: #999bb8 !important;
+}
+
+.nv-settings-switch {
+  position: relative;
+  width: 46px;
+  height: 28px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 999px;
+  background: #9d9fbb;
+  padding: 3px;
+}
+
+.nv-settings-switch:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.nv-settings-switch-knob {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+/* 예약된 재알림 */
+.nv-settings-reminder-card {
+  min-height: 85px;
+}
+
+.nv-settings-cancel {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: #999bb8;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.nv-settings-cancel:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* 공통 Primary 버튼 */
+.nv-settings-primary {
+  width: 100%;
+  min-height: 64px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 14px;
+  background: #25243a;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.nv-settings-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* 이용·보관 안내 */
+.nv-settings-info-box {
+  padding: 18px 16px;
+  border-radius: 14px;
+  background: #eeedf7;
+}
+
+.nv-settings-info-box ul {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.nv-settings-info-box li {
+  color: #777995;
+  font-size: 12px;
+  line-height: 1.85;
+  padding-left: 2px;
+}
+
+/* 금고 삭제 */
+.nv-settings-danger-section {
+  gap: 10px;
+}
+
+.nv-settings-danger-description {
+  margin: 0;
+  color: #8587a3;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.nv-settings-notice {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #eeedf7;
+  color: #555671;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* 모달 배경 */
+.nv-settings-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* 모달 본문 */
+.nv-settings-modal {
+  width: 100%;
+  max-width: 330px;
+  padding: 24px;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.nv-settings-modal h2 {
+  margin: 0 0 12px;
+  color: #25243a;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.nv-settings-modal p {
+  margin: 0 0 20px;
+  color: #777995;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.nv-settings-modal-primary,
+.nv-settings-modal-secondary {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.nv-settings-modal-primary {
+  border: none;
+  background: #25243a;
+  color: #ffffff;
+}
+
+.nv-settings-modal-secondary {
+  margin-top: 8px;
+  border: 1px solid #e5e5ef;
+  background: #ffffff;
+  color: #25243a;
+}
+
+/* 시간 선택 */
+.nv-settings-select-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #777995;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nv-settings-time-select {
+  width: 100%;
+  height: 48px;
+  margin-bottom: 16px;
+  padding: 0 12px;
+  border: 1px solid #e5e5ef;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #25243a;
+  font-family: inherit;
+  font-size: 15px;
+}
+
+/* 모바일 대응 */
+@media (max-width: 380px) {
+  .nv-settings-header {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .nv-settings-main {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .nv-settings-card {
+    padding: 15px;
+  }
+
+  .nv-settings-card-content strong {
+    font-size: 15px;
+  }
+
+  .nv-settings-card-content p {
+    font-size: 11px;
+  }
+}
+
+
+/* 알림 토글 애니메이션 */
+.nv-settings-switch-knob {
+  transition: transform 0.2s ease;
+}
+
+/* 버튼 비활성화 */
+.nv-settings-card:disabled,
+.nv-settings-primary:disabled,
+.nv-settings-modal-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+/* 모달에서 안내 문구 줄바꿈 */
+.nv-settings-modal p {
+  overflow-wrap: break-word;
+}

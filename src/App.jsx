@@ -15,42 +15,47 @@ import Start from "./pages/fe1/Start";
 import Home from "./pages/fe1/Home";
 import Records from "./pages/fe2/Records";
 import Settings from "./pages/fe1/Settings";
+import WorryInput from "./pages/fe1/WorryInput";
+import WorryTime from "./pages/fe1/WorryTime";
+import WorryAnalysis from "./pages/fe1/WorryAnalysis";
+import WorryComplete from "./pages/fe1/WorryComplete";
 
 import { checkGuest } from "./api/guest";
-
-// 게스트 인증 API 연결 전 임시 화면
-function WorryInputPlaceholder() {
-  return (
-    <div style={{ padding: "40px 24px" }}>
-      <h1>걱정 입력 화면</h1>
-      <p>이곳에 S-03 걱정 입력 화면을 구현할 예정입니다.</p>
-    </div>
-  );
-}
 
 // 세션 확인 및 화면 접근 제어
 function AppRoutes() {
   const location = useLocation();
 
-  const [guestStatus, setGuestStatus] = useState("CHECKING");
+  const [guestCheck, setGuestCheck] = useState({
+    pathname: null,
+    retryCount: 0,
+    status: "CHECKING",
+  });
+
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     let active = true;
 
-    setGuestStatus("CHECKING");
-
     checkGuest()
       .then((status) => {
         if (active) {
-          setGuestStatus(status);
+          setGuestCheck({
+            pathname: location.pathname,
+            retryCount,
+            status,
+          });
         }
       })
       .catch((error) => {
         console.error("게스트 세션 확인 실패:", error);
 
         if (active) {
-          setGuestStatus("ERROR");
+          setGuestCheck({
+            pathname: location.pathname,
+            retryCount,
+            status: "ERROR",
+          });
         }
       });
 
@@ -58,6 +63,14 @@ function AppRoutes() {
       active = false;
     };
   }, [location.pathname, retryCount]);
+
+  // 현재 경로 또는 재시도 요청에 대한 세션 확인이
+  // 완료되지 않았다면 CHECKING 상태로 처리
+  const guestStatus =
+    guestCheck.pathname === location.pathname &&
+    guestCheck.retryCount === retryCount
+      ? guestCheck.status
+      : "CHECKING";
 
   // 세션 확인 중
   if (guestStatus === "CHECKING") {
@@ -114,10 +127,28 @@ function AppRoutes() {
         element={<Navigate to="/" replace />}
       />
 
-      {/* 걱정 입력 화면 - 임시 */}
+      {/* 걱정 입력 화면 */}
       <Route
         path="/worry-input"
-        element={<WorryInputPlaceholder />}
+        element={<WorryInput />}
+      />
+
+      {/* S-04 공개 시간 설정 */}
+      <Route
+        path="/worry-confirm"
+        element={<WorryTime />}
+      />
+
+      {/* S-05 AI 분석 중 */}
+      <Route
+        path="/worry-analysis"
+        element={<WorryAnalysis />}
+      />
+
+      {/* S-06 봉인 완료 */}
+      <Route
+        path="/worry-complete"
+        element={<WorryComplete />}
       />
 
       {/* 기존 메인 화면 */}

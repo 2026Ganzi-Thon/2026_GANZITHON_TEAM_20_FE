@@ -1,0 +1,201 @@
+
+.worry-input-page {
+  width: 100%;
+  max-width: 390px;
+  min-height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+
+  margin: 0 auto;
+  background: #ffffff;
+  color: #25243a;
+  font-family: "SUITE", sans-serif;
+
+  box-sizing: border-box;
+}
+
+/* 헤더 */
+.worry-input-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 24px 0;
+}
+
+.worry-input-header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.worry-back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #25243a;
+  cursor: pointer;
+}
+
+/* 입력 영역 */
+.worry-input-content {
+  flex: 1;
+  padding: 40px 24px 24px;
+}
+
+.worry-field {
+  margin-bottom: 28px;
+}
+
+.worry-field-title {
+  display: block;
+  margin: 0 0 18px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #25243a;
+}
+
+/* 걱정 내용 */
+.worry-textarea {
+  width: 100%;
+  height: 166px;
+  padding: 18px 16px;
+  border: 1px solid #e4e3f1;
+  border-radius: 13px;
+  background: #fff;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #25243a;
+}
+
+.worry-textarea:focus,
+.worry-tomorrow-input:focus {
+  border-color: #77758f;
+}
+
+.worry-textarea::placeholder,
+.worry-tomorrow-input::placeholder {
+  color: #8889a5;
+}
+
+.worry-character-count {
+  margin-top: 8px;
+  text-align: right;
+  color: #777993;
+  font-size: 12px;
+}
+
+/* 불안도 */
+.worry-anxiety-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.worry-anxiety-title .worry-field-title {
+  margin: 0;
+}
+
+.worry-required {
+  padding: 4px 8px;
+  border-radius: 20px;
+  background: #f0eef8;
+  color: #8889a3;
+  font-size: 11px;
+}
+
+.worry-anxiety-options {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.worry-anxiety-option {
+  min-width: 0;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #e5e4f0;
+  border-radius: 13px;
+  background: #ffffff;
+  color: #777993;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.worry-anxiety-number {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.worry-anxiety-label {
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.worry-anxiety-option.selected {
+  background: #77758f;
+  border-color: #77758f;
+  color: #ffffff;
+}
+
+/* 내일 확인할 것 */
+.worry-tomorrow-input {
+  width: 100%;
+  height: 62px;
+  padding: 0 16px;
+  border: 1px solid #e4e3f1;
+  border-radius: 13px;
+  background: #fff;
+  outline: none;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: 14px;
+  color: #25243a;
+}
+
+/* 하단 버튼 */
+.worry-input-footer {
+  padding: 20px 24px 24px;
+  margin-top: auto;
+  background: #ffffff;
+}
+
+.worry-next-button {
+  width: 100%;
+  height: 63px;
+  border: none;
+  border-radius: 13px;
+  background: #25243a;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.worry-next-button:disabled {
+  background: #c9c8d4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 350px) {
+  .worry-anxiety-options {
+    gap: 5px;
+  }
+
+  .worry-anxiety-label {
+    font-size: 10px;
+  }
+}
