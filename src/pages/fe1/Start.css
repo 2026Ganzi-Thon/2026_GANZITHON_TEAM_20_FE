@@ -283,3 +283,70 @@
   line-height: 1.5;
   text-align: center;
 }
+
+
+/* ========================================
+   S-01 시작 화면 - NIGHT THEME
+======================================== */
+
+/* 전체 배경 */
+.theme-night .start-page {
+  background-color: var(--navy-600);
+  color: var(--navy-100);
+}
+
+/* 로고 */
+.theme-night .start-logo {
+  color: var(--navy-100);
+}
+
+/* 서비스 제목 */
+.theme-night .start-title {
+  color: var(--navy-100);
+}
+
+/* 서비스 설명 */
+.theme-night .start-description {
+  color: var(--navy-300);
+}
+
+/* 하단 안내 상자 */
+.theme-night .start-guide {
+  background-color: var(--navy-400);
+}
+
+/* 안내 상자 제목 */
+.theme-night .start-guide-title {
+  color: var(--navy-100);
+}
+
+/* 안내 목록 */
+.theme-night .start-guide-list {
+  color: var(--navy-200);
+}
+
+.theme-night .start-guide-list li::marker {
+  color: var(--navy-300);
+}
+
+/* 시작하기 버튼 */
+.theme-night .start-button {
+  background-color: var(--navy-100);
+  color: var(--navy-600);
+}
+
+/* 시작하기 버튼 Hover */
+.theme-night .start-button:hover:not(:disabled) {
+  background-color: #deddea;
+}
+
+/* API 요청 중 */
+.theme-night .start-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* API 오류 메시지 */
+.theme-night .start-error {
+  color: var(--rose-300);
+}

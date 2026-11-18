@@ -21,6 +21,9 @@ import WorryAnalysis from "./pages/fe1/WorryAnalysis";
 import WorryComplete from "./pages/fe1/WorryComplete";
 
 import { checkGuest } from "./api/guest";
+import useNightTheme from "./hooks/useNightTheme";
+
+import "./styles/colors.css";
 
 // 세션 확인 및 화면 접근 제어
 function AppRoutes() {
@@ -64,8 +67,6 @@ function AppRoutes() {
     };
   }, [location.pathname, retryCount]);
 
-  // 현재 경로 또는 재시도 요청에 대한 세션 확인이
-  // 완료되지 않았다면 CHECKING 상태로 처리
   const guestStatus =
     guestCheck.pathname === location.pathname &&
     guestCheck.retryCount === retryCount
@@ -75,7 +76,12 @@ function AppRoutes() {
   // 세션 확인 중
   if (guestStatus === "CHECKING") {
     return (
-      <div style={{ padding: "40px 24px", textAlign: "center" }}>
+      <div
+        style={{
+          padding: "40px 24px",
+          textAlign: "center",
+        }}
+      >
         금고를 확인하고 있어요...
       </div>
     );
@@ -84,12 +90,19 @@ function AppRoutes() {
   // 서버 연결 오류
   if (guestStatus === "ERROR") {
     return (
-      <div style={{ padding: "40px 24px", textAlign: "center" }}>
+      <div
+        style={{
+          padding: "40px 24px",
+          textAlign: "center",
+        }}
+      >
         <p>서버에 연결할 수 없어요.</p>
 
         <button
           type="button"
-          onClick={() => setRetryCount((count) => count + 1)}
+          onClick={() =>
+            setRetryCount((count) => count + 1)
+          }
         >
           다시 시도
         </button>
@@ -112,7 +125,12 @@ function AppRoutes() {
       location.pathname !== "/start" ||
       location.search !== "?mode=restart"
     ) {
-      return <Navigate to="/start?mode=restart" replace />;
+      return (
+        <Navigate
+          to="/start?mode=restart"
+          replace
+        />
+      );
     }
 
     return <Start />;
@@ -121,54 +139,64 @@ function AppRoutes() {
   // 세션이 유효한 사용자
   return (
     <Routes>
-      {/* 기존 사용자가 시작 화면에 접근하면 홈으로 이동 */}
       <Route
         path="/start"
         element={<Navigate to="/" replace />}
       />
 
-      {/* 걱정 입력 화면 */}
       <Route
         path="/worry-input"
         element={<WorryInput />}
       />
 
-      {/* S-04 공개 시간 설정 */}
       <Route
         path="/worry-confirm"
         element={<WorryTime />}
       />
 
-      {/* S-05 AI 분석 중 */}
       <Route
         path="/worry-analysis"
         element={<WorryAnalysis />}
       />
 
-      {/* S-06 봉인 완료 */}
       <Route
         path="/worry-complete"
         element={<WorryComplete />}
       />
 
-      {/* 기존 메인 화면 */}
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/records" element={<Records />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route
+          path="/records"
+          element={<Records />}
+        />
+        <Route
+          path="/settings"
+          element={<Settings />}
+        />
       </Route>
 
-      {/* 정의되지 않은 경로 */}
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route
+        path="*"
+        element={<Navigate to="/" replace />}
+      />
     </Routes>
   );
 }
 
 function App() {
+  const isNight = useNightTheme();
+
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <div
+      className={
+        isNight ? "theme-night" : "theme-morning"
+      }
+    >
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </div>
   );
 }
 

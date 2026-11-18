@@ -266,7 +266,7 @@
 }
 
 .wt-switch.on {
-  background: #77758f;
+  background: #25243a;
 }
 
 .wt-switch.on span {
@@ -321,4 +321,248 @@
   line-height: 1.5;
   text-align: center;
 }
+
+
+/* =========================================
+   AL-09 알림 오류 안내 Bottom Sheet
+========================================= */
+
+/* 화면 전체를 덮는 반투명 배경 */
+.wt-error-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(25, 24, 42, 0.48);
+}
+
+/* 아래에서 올라오는 팝업 */
+.wt-error-sheet {
+  width: 100%;
+  max-width: 390px;
+  padding: 12px 20px 28px;
+  box-sizing: border-box;
+  border-radius: 24px 24px 0 0;
+  background: #ffffff;
+  color: #25243a;
+  font-family: "SUITE", sans-serif;
+  animation: wt-sheet-up 0.25s ease-out;
+}
+
+/* 상단 드래그 표시 */
+.wt-error-handle {
+  width: 32px;
+  height: 4px;
+  margin: 0 auto 24px;
+  border-radius: 999px;
+  background: #e7e5ef;
+}
+
+/* 알림 오류 아이콘 */
+.wt-error-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: #efedf6;
+  color: #77758f;
+}
+
+/* 오류 제목 */
+.wt-error-title {
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+/* 오류 설명 */
+.wt-error-description {
+  margin: 0;
+  color: #8e8fa8;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* 하단 보조 안내 */
+.wt-error-notice {
+  margin-top: 18px;
+  padding: 16px 14px;
+  border-radius: 12px;
+  background: #efedf6;
+  color: #77758f;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* 알림 없이 계속하기 */
+.wt-error-continue {
+  width: 100%;
+  height: 56px;
+  margin-top: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #25243a;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wt-error-continue:active {
+  opacity: 0.9;
+}
+
+/* 등장 애니메이션 */
+@keyframes wt-sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wt-error-sheet {
+    animation: none;
+  }
+}
+
+
+/* ========================================
+   S-04 공개 시간 설정 - NIGHT THEME
+======================================== */
+
+/* 페이지 전체 */
+.theme-night .wt-page {
+  background-color: var(--navy-600);
+  color: var(--navy-100);
+}
+
+/* 헤더 */
+.theme-night .wt-header {
+  background-color: var(--navy-600);
+}
+
+.theme-night .wt-header h1,
+.theme-night .wt-back {
+  color: var(--navy-100);
+}
+
+/* 제목 및 설명 */
+.theme-night .wt-intro h2,
+.theme-night .wt-notification-text h2 {
+  color: var(--navy-100);
+}
+
+.theme-night .wt-intro p,
+.theme-night .wt-time-hint,
+.theme-night .wt-notification-text p {
+  color: var(--navy-200);
+}
+
+/* 날짜 선택 */
+.theme-night .wt-date-trigger {
+  color: var(--navy-100);
+}
+
+.theme-night .wt-date-trigger svg {
+  color: var(--navy-200);
+}
+
+/* 달력 팝업 */
+.theme-night .wt-calendar {
+  background-color: var(--navy-500);
+  border-color: var(--navy-400);
+  color: var(--navy-100);
+}
+
+.theme-night .wt-calendar-header,
+.theme-night .wt-calendar-arrows button {
+  color: var(--navy-100);
+}
+
+.theme-night .wt-weekday {
+  color: var(--navy-200);
+}
+
+.theme-night .wt-calendar-grid button {
+  color: var(--navy-100);
+}
+
+.theme-night .wt-calendar-grid button.active {
+  background-color: var(--navy-100);
+  color: var(--navy-600);
+}
+
+.theme-night .wt-calendar-grid button:disabled {
+  color: var(--navy-300);
+}
+
+/* 시간 선택 영역 전체 배경 제거 */
+.theme-night .wt-time-picker {
+  background-color: transparent;
+}
+
+/* 선택된 시간의 배경 */
+.theme-night .wt-picker-highlight {
+  background-color: var(--navy-400);
+}
+
+/* 선택되지 않은 시간 */
+.theme-night .wt-picker-adjacent {
+  color: var(--navy-200);
+}
+
+/* 선택된 시간 */
+.theme-night .wt-picker-selected {
+  color: var(--navy-100);
+}
+
+/* 알림 토글 OFF */
+.theme-night .wt-switch {
+  background-color: var(--navy-400);
+}
+
+.theme-night .wt-switch span {
+  background-color: var(--navy-100);
+}
+
+/* 알림 토글 ON */
+.theme-night .wt-switch.on {
+  background-color: var(--gold-200);
+}
+
+.theme-night .wt-switch.on span {
+  background-color: var(--navy-600);
+}
+
+/* 하단 버튼 영역 */
+.theme-night .wt-footer {
+  background-color: var(--navy-600);
+}
+
+/* 금고에 맡기기 버튼 */
+.theme-night .wt-submit:not(:disabled) {
+  background-color: var(--navy-100);
+  color: var(--navy-600);
+}
+
+.theme-night .wt-submit:disabled {
+  background-color: var(--navy-400);
+  color: var(--navy-300);
+}
+
+/* 오류 메시지 */
+.theme-night .wt-submit-error {
+  color: var(--rose-300);
+}
+
+
 

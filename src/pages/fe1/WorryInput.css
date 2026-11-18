@@ -199,3 +199,102 @@
     font-size: 10px;
   }
 }
+
+/* ========================================
+   S-03 걱정 입력 - NIGHT THEME
+======================================== */
+
+.theme-night .worry-input-page {
+  background: var(--navy-600);
+  color: var(--navy-100);
+}
+
+/* 헤더 */
+.theme-night .worry-input-header {
+  background: var(--navy-600);
+}
+
+.theme-night .worry-input-header h1,
+.theme-night .worry-back-button {
+  color: var(--navy-100);
+}
+
+/* 항목 제목 */
+.theme-night .worry-field-title {
+  color: var(--navy-100);
+}
+
+/* 걱정 입력창 */
+.theme-night .worry-textarea {
+  background: var(--navy-400);
+  color: var(--navy-100);
+  border: none;
+}
+
+.theme-night .worry-textarea::placeholder {
+  color: var(--navy-300);
+}
+
+/* 내일 확인할 것 */
+.theme-night .worry-tomorrow-input {
+  background: var(--navy-400);
+  color: var(--navy-100);
+  border: none;
+}
+
+.theme-night .worry-tomorrow-input::placeholder {
+  color: var(--navy-300);
+}
+
+/* 글자 수 */
+.theme-night .worry-character-count {
+  color: var(--navy-300);
+}
+
+/* 필수 표시 */
+.theme-night .worry-required {
+  background: var(--navy-100);
+  color: var(--navy-600);
+}
+
+/* 불안도 기본 상태 */
+.theme-night .worry-anxiety-option {
+  background: var(--navy-400);
+  border: none;
+  color: var(--navy-100);
+}
+
+/* 불안도 숫자와 설명 */
+.theme-night .worry-anxiety-number,
+.theme-night .worry-anxiety-label {
+  color: inherit;
+}
+
+/* 불안도 선택 상태 */
+.theme-night .worry-anxiety-option.selected {
+  background: var(--navy-100);
+  color: var(--navy-600);
+}
+
+/* 다음 버튼 영역 */
+.theme-night .worry-input-footer {
+  background: var(--navy-600);
+}
+
+/* 다음 버튼 활성화 */
+.theme-night .worry-next-button:not(:disabled) {
+  background: var(--navy-100);
+  color: var(--navy-600);
+}
+
+/* 다음 버튼 비활성화 */
+.theme-night .worry-next-button:disabled {
+  background: var(--navy-400);
+  color: var(--navy-300);
+}
+
+/* 입력창 포커스 */
+.theme-night .worry-textarea:focus,
+.theme-night .worry-tomorrow-input:focus {
+  outline: 1px solid var(--navy-200);
+}
