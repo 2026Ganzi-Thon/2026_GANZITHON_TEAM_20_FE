@@ -1,6 +1,6 @@
 
 self.addEventListener("push", (event) => {
-  let data = {};
+  let data;
 
   try {
     data = event.data?.json() ?? {};
