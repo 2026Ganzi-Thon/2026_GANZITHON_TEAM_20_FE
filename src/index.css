@@ -36,7 +36,8 @@ body {
 
 .app-content {
   flex: 1;
-  padding: 20px;
+  min-width: 0;
+  padding: 0;
 }
 
 .bottom-nav {
@@ -57,4 +58,27 @@ body {
 .bottom-nav a.active {
   color: #333;
   font-weight: bold;
+}
+
+/* 나이트 테마 - 전체 레이아웃 */
+.theme-night .app-layout {
+  background-color: #14172b;
+}
+
+.theme-night .app-content {
+  background-color: #14172b;
+}
+
+/* 나이트 테마 - 하단 네비게이션 */
+.theme-night .bottom-nav {
+  background-color: #ecebf5;
+  border-top: none;
+}
+
+.theme-night .bottom-nav a {
+  color: #9a9cb8;
+}
+
+.theme-night .bottom-nav a.active {
+  color: #24243a;
 }

@@ -10,25 +10,25 @@ import {
   deleteVault,
 } from "../../api/settings";
 
+import {
+  subscribeToPush,
+  isPushSupported,
+} from "../../api/push";
+
 import "./Settings.css";
 
 const DEFAULT_TIME = "08:00";
 const TIMEZONE = "Asia/Seoul";
 const TIME_STORAGE_KEY = "nightvault-default-publication-time";
 
-const TIME_OPTIONS = Array.from(
-  { length: 24 },
-  (_, hour) => {
-    const value = `${String(hour).padStart(2, "0")}:00`;
+const TIME_OPTIONS = Array.from({ length: 24 }, (_, hour) => {
+  const value = `${String(hour).padStart(2, "0")}:00`;
 
-    return {
-      value,
-      label: `${hour < 12 ? "오전" : "오후"} ${
-        hour % 12 || 12
-      }:00`,
-    };
-  }
-);
+  return {
+    value,
+    label: `${hour < 12 ? "오전" : "오후"} ${hour % 12 || 12}:00`,
+  };
+});
 
 function readSavedTime() {
   try {
@@ -41,7 +41,7 @@ function readSavedTime() {
       return saved;
     }
   } catch {
-    // 저장소에 접근할 수 없으면 기본값 사용
+    // 브라우저 저장소 접근 불가
   }
 
   return DEFAULT_TIME;
@@ -110,6 +110,22 @@ function getErrorMessage(error) {
   return "서버에 연결하지 못했어요. 잠시 후 다시 시도해 주세요.";
 }
 
+function getPushErrorMessage(error) {
+  if (error?.message === "PUSH_DENIED") {
+    return "알림 권한이 허용되지 않았어요. 브라우저 설정에서 알림 권한을 확인해 주세요.";
+  }
+
+  if (error?.message === "PUSH_UNSUPPORTED") {
+    return "현재 브라우저에서는 푸시 알림을 사용할 수 없어요.";
+  }
+
+  if (error?.message === "VAPID_KEY_MISSING") {
+    return "서버의 푸시 알림 공개키를 확인할 수 없어요.";
+  }
+
+  return getErrorMessage(error);
+}
+
 function Settings() {
   const [defaultTime, setDefaultTime] = useState(readSavedTime);
   const [selectedTime, setSelectedTime] = useState(readSavedTime);
@@ -127,51 +143,123 @@ function Settings() {
   const [timeModalOpen, setTimeModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  // Partial writes must be followed by server reads, including after a failed request.
-  const refreshNotifications = useCallback(async (isActive = () => true) => {
-    const [settingsResult, reminderResult] = await Promise.allSettled([
-      getNotificationSettings(), getReminder(),
-    ]);
-    if (!isActive()) return null;
-    const settings = settingsResult.status === "fulfilled" ? settingsResult.value : null;
-    const reminderLoaded = reminderResult.status === "fulfilled";
-    const currentReminder = reminderLoaded ? reminderResult.value : null;
-    setNotificationSettings(settings);
-    if (reminderLoaded) {
-      setReminder(currentReminder);
-      setReminderError("");
-    } else {
-      setReminderError("재알림 정보를 확인하지 못했어요. 다시 조회해 주세요.");
-    }
-    if (!settings || !reminderLoaded) return null;
-    return { settings, reminder: currentReminder };
-  }, []);
+  // 알림 설정 및 재알림 조회
+  const refreshNotifications = useCallback(
+    async (isActive = () => true) => {
+      const [settingsResult, reminderResult] =
+        await Promise.allSettled([
+          getNotificationSettings(),
+          getReminder(),
+        ]);
+
+      if (!isActive()) return null;
+
+      const settings =
+        settingsResult.status === "fulfilled"
+          ? settingsResult.value
+          : null;
+
+      const reminderLoaded =
+        reminderResult.status === "fulfilled";
+
+      const currentReminder = reminderLoaded
+        ? reminderResult.value
+        : null;
+
+      setNotificationSettings(settings);
+
+      if (reminderLoaded) {
+        setReminder(currentReminder);
+        setReminderError("");
+      } else {
+        setReminderError(
+          "재알림 정보를 확인하지 못했어요. 다시 조회해 주세요."
+        );
+      }
+
+      if (settingsResult.status === "rejected") {
+        console.error(
+          "공개 알림 설정 조회 실패:",
+          settingsResult.reason
+        );
+      }
+
+      if (reminderResult.status === "rejected") {
+        console.error(
+          "재알림 조회 실패:",
+          reminderResult.reason
+        );
+      }
+
+      if (!settings || !reminderLoaded) {
+        return null;
+      }
+
+      return {
+        settings,
+        reminder: currentReminder,
+      };
+    },
+    []
+  );
 
   useEffect(() => {
     let active = true;
-    Promise.resolve().then(() => active ? refreshNotifications(() => active) : null).then(result => {
-      if (!active) return;
-      if (!result) setNotice("알림 상태를 확인하지 못했어요. 다시 조회해 주세요.");
-      setLoading(false);
-    });
-    return () => { active = false; };
+
+    const loadSettings = async () => {
+      try {
+        const result = await refreshNotifications(
+          () => active
+        );
+
+        if (active && !result) {
+          setNotice(
+            "일부 알림 정보를 확인하지 못했어요."
+          );
+        }
+      } catch (error) {
+        if (active) {
+          console.error(
+            "알림 설정 조회 실패:",
+            error
+          );
+          setNotice(getErrorMessage(error));
+        }
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadSettings();
+
+    return () => {
+      active = false;
+    };
   }, [refreshNotifications]);
 
+  // 알림 상태 다시 조회
   const handleRefreshNotifications = async () => {
     if (saving) return;
+
     setSaving(true);
     setNotice("");
+
     try {
       const result = await refreshNotifications();
-      setNotice(result ? "알림 상태를 다시 확인했어요." : "알림 상태를 확인하지 못했어요. 다시 조회해 주세요.");
+
+      setNotice(
+        result
+          ? "알림 상태를 다시 확인했어요."
+          : "알림 상태를 확인하지 못했어요. 다시 조회해 주세요."
+      );
     } finally {
       setSaving(false);
     }
   };
 
   // 기본 공개 시간 저장
-  // 현재 서버에 기본 공개 시간 변경 API가 없으므로
-  // 브라우저에 임시 저장
   const handleSaveTime = () => {
     if (saving) return;
 
@@ -185,7 +273,7 @@ function Settings() {
       setTimeModalOpen(false);
 
       setNotice(
-        "기본 공개 시간을 이 브라우저에 저장했어요. 실제 걱정 작성 화면 적용은 별도 연동이 필요해요."
+        "기본 공개 시간을 이 브라우저에 저장했어요."
       );
     } catch {
       setNotice(
@@ -194,30 +282,48 @@ function Settings() {
     }
   };
 
-  // 공개 알림 켜기는 푸시 구독 구현 후 연결
-  // 현재는 서버에서 이미 활성화된 알림을 끄는 것만 허용
+  // 공개 알림 ON/OFF
   const handleToggleNotification = async () => {
     if (saving || !notificationSettings) return;
 
-    if (!notificationSettings.publicationEnabled) {
-      setNotice(
-        "공개 알림 켜기는 브라우저 푸시 구독 연결 후 사용할 수 있어요."
-      );
-      return;
-    }
+    const currentlyEnabled = Boolean(
+      notificationSettings.publicationEnabled
+    );
 
     setSaving(true);
     setNotice("");
 
     try {
-      await updatePublicationNotification(false);
+      if (currentlyEnabled) {
+        await updatePublicationNotification(false);
+      } else {
+        if (!isPushSupported()) {
+          throw new Error("PUSH_UNSUPPORTED");
+        }
 
-      const result = await getNotificationSettings();
-      setNotificationSettings(result);
+        await subscribeToPush();
+        await updatePublicationNotification(true);
+      }
 
-      setNotice("공개 알림을 껐어요.");
+      const result = await refreshNotifications();
+
+      setNotice(
+        result
+          ? currentlyEnabled
+            ? "공개 알림을 껐어요."
+            : "공개 알림을 켰어요."
+          : "변경 요청 후 알림 상태를 확인하지 못했어요. 다시 조회해 주세요."
+      );
     } catch (error) {
-      setNotice(getErrorMessage(error));
+      console.error(
+        "공개 알림 설정 변경 실패:",
+        error
+      );
+
+      setNotice(getPushErrorMessage(error));
+
+      // 부분적으로 변경되었을 수 있으므로 서버 상태 재조회
+      await refreshNotifications();
     } finally {
       setSaving(false);
     }
@@ -225,7 +331,7 @@ function Settings() {
 
   // 예약된 재알림 취소
   const handleCancelReminder = async () => {
-    if (saving || !reminder) return;
+    if (saving || !reminder || reminderError) return;
 
     setSaving(true);
     setNotice("");
@@ -233,30 +339,53 @@ function Settings() {
     try {
       await cancelReminder();
 
-      setReminder(null);
-      setNotice("예약된 재알림을 취소했어요.");
+      const result = await refreshNotifications();
+
+      setNotice(
+        result
+          ? "예약된 재알림을 취소했어요."
+          : "취소 요청 후 알림 상태를 확인하지 못했어요."
+      );
     } catch (error) {
+      console.error("재알림 취소 실패:", error);
       setNotice(getErrorMessage(error));
+
+      await refreshNotifications();
     } finally {
       setSaving(false);
     }
   };
 
-  // The backend disable endpoint removes subscriptions, but does not cancel reminders.
+  // 서버의 전체 해제는 구독만 제거하므로 재알림도 별도로 취소한다.
   const handleDisableAllNotifications = async () => {
     if (saving || !notificationSettings) return;
+
     setSaving(true);
     setNotice("");
+
     try {
       const writes = await Promise.allSettled([
-        disableAllNotifications(), cancelReminder(),
+        disableAllNotifications(),
+        cancelReminder(),
       ]);
-      const current = await refreshNotifications();
-      const confirmed = writes.every(result => result.status === "fulfilled") &&
-        current && !current.settings.publicationEnabled &&
-        current.settings.subscriptionCount === 0 && current.reminder === null;
-      setNotice(confirmed ? "모든 알림을 껐어요." :
-        "모든 알림 끄기를 완료하지 못했어요. 상태를 확인한 뒤 다시 시도해 주세요.");
+      const result = await refreshNotifications();
+      const confirmed =
+        writes.every((write) => write.status === "fulfilled") &&
+        result &&
+        !result.settings.publicationEnabled &&
+        result.settings.subscriptionCount === 0 &&
+        result.reminder === null;
+
+      setNotice(
+        confirmed
+          ? "모든 알림을 껐어요."
+          : "모든 알림 끄기를 완료하지 못했어요. 상태를 확인한 뒤 다시 시도해 주세요."
+      );
+    } catch (error) {
+      console.error("모든 알림 끄기 실패:", error);
+      setNotice(getErrorMessage(error));
+
+      await refreshNotifications();
     } finally {
       setSaving(false);
     }
@@ -273,12 +402,10 @@ function Settings() {
       const response = await deleteVault();
 
       if (response.status === 204) {
-        // 서버에서 전체 삭제가 완료된 경우에만
-        // 이 기능에서 사용한 로컬 설정 제거
         try {
           localStorage.removeItem(TIME_STORAGE_KEY);
         } catch {
-          // 브라우저 저장소 접근 실패
+          // 저장소 접근 실패
         }
 
         window.location.replace("/start");
@@ -291,6 +418,7 @@ function Settings() {
         "삭제 요청의 완료 여부를 확인하지 못했어요. 서버 상태를 확인해 주세요."
       );
     } catch (error) {
+      console.error("금고 전체 삭제 실패:", error);
       setNotice(getErrorMessage(error));
     } finally {
       setSaving(false);
@@ -308,8 +436,8 @@ function Settings() {
   const notificationAvailable =
     notificationSettings !== null;
 
-  // Current Spring Reminder DTO: { worryId, sendAt }.
-  const reminderTime = reminder?.sendAt ?? null;
+  const reminderTime =
+    reminder?.sendAt ?? null;
 
   const hasReminder = Boolean(
     reminder && typeof reminder === "object"
@@ -323,10 +451,7 @@ function Settings() {
 
       <main className="nv-settings-main">
         {loading && (
-          <p
-            className="nv-settings-notice"
-            role="status"
-          >
+          <p className="nv-settings-notice" role="status">
             알림 설정을 불러오고 있어요...
           </p>
         )}
@@ -348,17 +473,12 @@ function Settings() {
           >
             <div className="nv-settings-card-content">
               <strong>기본 공개 시간</strong>
-              <p>
-                이후 만드는 걱정에만 적용해요.
-              </p>
-              <p>
-                이미 맡긴 걱정은 금고에서 개별 변경
-              </p>
+              <p>이후 만드는 걱정에만 적용해요.</p>
+              <p>이미 맡긴 걱정은 금고에서 개별 변경</p>
             </div>
 
             <div className="nv-settings-time-right">
               <span>{formatTime(defaultTime)}</span>
-
               <span
                 className="nv-settings-chevron"
                 aria-hidden="true"
@@ -378,18 +498,14 @@ function Settings() {
           <div className="nv-settings-card nv-settings-notification-card">
             <div className="nv-settings-card-content">
               <strong>공개 알림</strong>
-
+              <p>공개 시각에 한 번 알려드려요.</p>
               <p>
-                공개 시각에 한 번 알려드려요.
-              </p>
-
-              <p>
-                끄면 아직 보내지 않은 예약이 취소돼요.
+                끄면 아직 보내지 않은 공개 알림이 취소돼요.
               </p>
 
               {subscriptionCount === 0 && (
                 <p className="nv-settings-coming-soon">
-                  푸시 알림 연결 준비 중
+                  이 브라우저의 푸시 알림 연결이 필요할 수 있어요.
                 </p>
               )}
             </div>
@@ -401,11 +517,7 @@ function Settings() {
               aria-checked={notificationEnabled}
               aria-label="공개 알림"
               onClick={handleToggleNotification}
-              disabled={
-                !notificationAvailable ||
-                !notificationEnabled ||
-                saving
-              }
+              disabled={!notificationAvailable || saving}
               style={{
                 background: notificationEnabled
                   ? "#25243a"
@@ -427,13 +539,14 @@ function Settings() {
           <div className="nv-settings-card nv-settings-reminder-card">
             <div className="nv-settings-card-content">
               <strong>예약된 재알림</strong>
-
               <p>
-                {reminderError ? reminderError : hasReminder
-                  ? reminderTime
-                    ? formatReminderTime(reminderTime)
-                    : "예약 정보를 확인해 주세요."
-                  : "예약된 재알림이 없어요."}
+                {reminderError
+                  ? reminderError
+                  : hasReminder
+                    ? reminderTime
+                      ? formatReminderTime(reminderTime)
+                      : "예약 정보를 확인해 주세요."
+                    : "예약된 재알림이 없어요."}
               </p>
             </div>
 
@@ -441,7 +554,11 @@ function Settings() {
               type="button"
               className="nv-settings-cancel"
               onClick={handleCancelReminder}
-              disabled={!hasReminder || Boolean(reminderError) || saving}
+              disabled={
+                !hasReminder ||
+                Boolean(reminderError) ||
+                saving
+              }
             >
               취소
             </button>
@@ -469,23 +586,19 @@ function Settings() {
                 로그인 없이 이 브라우저에서만
                 금고에 접근해요.
               </li>
-
               <li>
                 브라우저 데이터를 지우거나 다른
                 기기에서 열면 기존 금고에
                 접근하거나 복구하기 어려울 수 있어요.
               </li>
-
               <li>
                 모든 기록은 작성일로부터 30일이
                 지나면 자동으로 삭제돼요.
               </li>
-
               <li>
                 파쇄하면 원문뿐 아니라 분석·활동
                 기록까지 함께 지워져요.
               </li>
-
               <li>
                 걱정 정리에 외부 AI를 사용해요.
                 실제 처리 범위는 운영 조건에
@@ -520,17 +633,20 @@ function Settings() {
           </p>
         </section>
 
-        {(!notificationAvailable || reminderError) && !loading && (
-          <button type="button" className="nv-settings-primary" onClick={handleRefreshNotifications} disabled={saving}>
-            알림 상태 다시 조회
-          </button>
-        )}
+        {(!notificationAvailable || reminderError) &&
+          !loading && (
+            <button
+              type="button"
+              className="nv-settings-primary"
+              onClick={handleRefreshNotifications}
+              disabled={saving}
+            >
+              알림 상태 다시 조회
+            </button>
+          )}
 
         {notice && (
-          <p
-            className="nv-settings-notice"
-            role="status"
-          >
+          <p className="nv-settings-notice" role="status">
             {notice}
           </p>
         )}
@@ -556,8 +672,6 @@ function Settings() {
 
             <p>
               현재는 이 브라우저에 임시 저장돼요.
-              실제 걱정 작성 화면 적용은 별도
-              연동이 필요해요.
             </p>
 
             <label

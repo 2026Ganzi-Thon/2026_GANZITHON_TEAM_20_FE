@@ -347,3 +347,193 @@
 .nv-settings-modal p {
   overflow-wrap: break-word;
 }
+
+
+/* ========================================
+   S-15 설정 화면 - NIGHT THEME
+======================================== */
+
+/* 전체 배경 */
+.theme-night .nv-settings {
+  background-color: var(--navy-600);
+  color: var(--navy-100);
+}
+
+/* 설정 제목 */
+.theme-night .nv-settings-header h1 {
+  color: var(--navy-100);
+}
+
+/* 섹션 제목 */
+.theme-night .nv-settings-section-title {
+  color: var(--navy-200);
+}
+
+/* ========================================
+   기본 공개 시간
+======================================== */
+
+.theme-night .nv-settings-time-card {
+  background-color: var(--navy-500);
+  border-color: var(--navy-500);
+  color: var(--navy-100);
+}
+
+.theme-night .nv-settings-time-card
+.nv-settings-card-content strong {
+  color: var(--navy-100);
+}
+
+.theme-night .nv-settings-time-card
+.nv-settings-card-content p {
+  color: var(--navy-200);
+}
+
+.theme-night .nv-settings-time-right,
+.theme-night .nv-settings-chevron {
+  color: var(--navy-200);
+}
+
+/* ========================================
+   알림 카드
+   Figma 기준 밝은 카드 유지
+======================================== */
+
+.theme-night .nv-settings-notification-card,
+.theme-night .nv-settings-reminder-card {
+  background-color: var(--white);
+  border-color: var(--navy-100);
+  color: var(--navy-400);
+}
+
+.theme-night .nv-settings-notification-card
+.nv-settings-card-content strong,
+.theme-night .nv-settings-reminder-card
+.nv-settings-card-content strong {
+  color: var(--navy-400);
+}
+
+.theme-night .nv-settings-notification-card
+.nv-settings-card-content p,
+.theme-night .nv-settings-reminder-card
+.nv-settings-card-content p {
+  color: var(--navy-200);
+}
+
+/* 알림 토글 */
+.theme-night .nv-settings-switch {
+  background-color: var(--navy-200);
+}
+
+.theme-night .nv-settings-switch-knob {
+  background-color: var(--white);
+}
+
+/* 예약된 재알림 취소 */
+.theme-night .nv-settings-cancel {
+  color: var(--navy-300);
+}
+
+/* ========================================
+   모든 알림 끄기
+======================================== */
+
+.theme-night .nv-settings-primary {
+  background-color: var(--navy-400);
+  color: var(--navy-100);
+  border: 1px solid var(--navy-200);
+}
+
+.theme-night .nv-settings-primary:hover:not(:disabled) {
+  background-color: var(--navy-500);
+}
+
+/* ========================================
+   이용·보관 안내
+======================================== */
+
+.theme-night .nv-settings-info-box {
+  background-color: var(--navy-100);
+}
+
+.theme-night .nv-settings-info-box li {
+  color: var(--navy-300);
+}
+
+.theme-night .nv-settings-info-box li::marker {
+  color: var(--navy-300);
+}
+
+/* ========================================
+   금고 전체 삭제
+======================================== */
+
+.theme-night .nv-settings-danger-description {
+  color: var(--navy-300);
+}
+
+/* 삭제 버튼이 공통 Primary 클래스를 사용하는 경우 */
+.theme-night .nv-settings-danger-section
+.nv-settings-primary {
+  background-color: var(--navy-400);
+  border: 1px solid var(--navy-100);
+  color: var(--navy-100);
+}
+
+.theme-night .nv-settings-danger-section
+.nv-settings-primary:hover:not(:disabled) {
+  background-color: var(--navy-500);
+}
+
+/* 설정 안내 문구 */
+.theme-night .nv-settings-notice {
+  background-color: var(--navy-400);
+  color: var(--navy-200);
+}
+
+/* ========================================
+   SET-05 금고 전체 삭제 확인 모달
+   Figma 기준 라이트 모달 유지
+======================================== */
+
+.theme-night .nv-settings-modal-overlay {
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+.theme-night .nv-settings-modal {
+  background-color: var(--white);
+  color: var(--navy-400);
+}
+
+.theme-night .nv-settings-modal h2 {
+  color: var(--navy-400);
+}
+
+.theme-night .nv-settings-modal p {
+  color: var(--navy-300);
+}
+
+/* 모달 확인 버튼 */
+.theme-night .nv-settings-modal-primary {
+  background-color: var(--navy-400);
+  color: var(--white);
+}
+
+/* 모달 취소 버튼 */
+.theme-night .nv-settings-modal-secondary {
+  background-color: var(--white);
+  border: 1px solid var(--navy-200);
+  color: var(--navy-400);
+}
+
+/* 공개 시간 선택 */
+.theme-night .nv-settings-select-label {
+  color: var(--navy-300);
+}
+
+.theme-night .nv-settings-time-select {
+  background-color: var(--white);
+  border-color: var(--navy-200);
+  color: var(--navy-400);
+}
+

@@ -31,12 +31,25 @@
   --beige-300: #D4A373;
   --beige-100: #F6EDE3;
 
-  /* Anxiety Level */
+  /* Anxiety Level - 변경하지 않음 */
   --anxiety-1: #D9D5F0;
   --anxiety-2: #B9B2E3;
   --anxiety-3: #988FD3;
   --anxiety-4: #776BC2;
   --anxiety-5: #5A4EA8;
+}
+
+/* Morning Theme */
+.theme-morning {
+  --bg: var(--white);
+  --surface: var(--white);
+  --text-primary: var(--navy-400);
+  --text-secondary: var(--navy-300);
+  --accent: var(--gold-200);
+
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text-primary);
 }
 
 /* Night Theme */
@@ -46,13 +59,8 @@
   --text-primary: var(--navy-100);
   --text-secondary: var(--navy-200);
   --accent: var(--gold-200);
-}
 
-/* Morning Theme */
-.theme-morning {
-  --bg: var(--cream);
-  --surface: var(--white);
-  --text-primary: var(--navy-400);
-  --text-secondary: var(--navy-300);
-  --accent: #B88A3E;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text-primary);
 }

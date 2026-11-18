@@ -246,3 +246,84 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+
+
+/* ========================================
+   S-05 AI 분석 중 - NIGHT THEME
+======================================== */
+
+/* 전체 페이지 */
+.theme-night .wa-page {
+  background-color: var(--navy-600);
+  color: var(--navy-100);
+}
+
+/* 닫기 버튼 */
+.theme-night .wa-close {
+  color: var(--navy-100);
+  background: transparent;
+}
+
+/* 로딩 애니메이션 */
+.theme-night .wa-spinner {
+  border-color: var(--navy-300);
+  border-top-color: var(--navy-100);
+}
+
+.theme-night .wa-spinner-stopped {
+  border-color: var(--navy-300);
+  border-top-color: var(--navy-200);
+}
+
+/* 메인 문구 */
+.theme-night .wa-message h1 {
+  color: var(--navy-100);
+}
+
+/* 보조 문구 */
+.theme-night .wa-message p {
+  color: var(--navy-200);
+}
+
+/* 작은 상태 배지 */
+.theme-night .wa-status-pill {
+  background-color: var(--navy-400);
+  color: var(--navy-100);
+}
+
+.theme-night .wa-small-spinner {
+  color: var(--navy-200);
+}
+
+/* 하단 상태 안내 박스 */
+.theme-night .wa-notice {
+  background-color: var(--navy-400);
+}
+
+/* 하단 안내 박스 제목 */
+.theme-night .wa-notice-title {
+  color: var(--navy-100);
+}
+
+/* 하단 안내 박스 설명 */
+.theme-night .wa-notice p:not(.wa-notice-title) {
+  color: var(--navy-200);
+}
+
+/* 네트워크 오류 안내 */
+.theme-night .wa-network-notice {
+  color: var(--navy-200);
+}
+
+/* 실패 시 버튼 */
+.theme-night .wa-retry-button {
+  background-color: var(--navy-100);
+  color: var(--navy-600);
+}
+
+.theme-night .wa-retry-button:hover {
+  background-color: var(--navy-200);
+}
+
+
