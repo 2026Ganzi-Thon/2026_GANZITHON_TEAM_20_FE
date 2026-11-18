@@ -356,7 +356,7 @@ function Settings() {
     }
   };
 
-  // 모든 알림 끄기
+  // 서버의 전체 해제는 구독만 제거하므로 재알림도 별도로 취소한다.
   const handleDisableAllNotifications = async () => {
     if (saving || !notificationSettings) return;
 
@@ -364,14 +364,22 @@ function Settings() {
     setNotice("");
 
     try {
-      await disableAllNotifications();
-
+      const writes = await Promise.allSettled([
+        disableAllNotifications(),
+        cancelReminder(),
+      ]);
       const result = await refreshNotifications();
+      const confirmed =
+        writes.every((write) => write.status === "fulfilled") &&
+        result &&
+        !result.settings.publicationEnabled &&
+        result.settings.subscriptionCount === 0 &&
+        result.reminder === null;
 
       setNotice(
-        result
+        confirmed
           ? "모든 알림을 껐어요."
-          : "알림 해제 요청 후 상태를 확인하지 못했어요."
+          : "모든 알림 끄기를 완료하지 못했어요. 상태를 확인한 뒤 다시 시도해 주세요."
       );
     } catch (error) {
       console.error("모든 알림 끄기 실패:", error);
@@ -429,10 +437,7 @@ function Settings() {
     notificationSettings !== null;
 
   const reminderTime =
-    reminder?.scheduledAt ??
-    reminder?.scheduled_at ??
-    reminder?.remindAt ??
-    null;
+    reminder?.sendAt ?? null;
 
   const hasReminder = Boolean(
     reminder && typeof reminder === "object"

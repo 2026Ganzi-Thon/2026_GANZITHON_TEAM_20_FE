@@ -140,7 +140,7 @@ const getReminderDate = (data) => {
   }
 
   const dateString =
-    data.scheduledAt ?? data.remindAt ?? null;
+    data.sendAt ?? null;
 
   if (!dateString) {
     return null;
