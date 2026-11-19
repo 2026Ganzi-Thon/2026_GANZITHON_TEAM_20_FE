@@ -4,10 +4,10 @@ import api from "./client";
 // 기본 공개 시각 조회
 export const getDefaultPublication = async () => {
   const response = await api.get("/worry-publication/default", {
-    params: { timeZone: "Asia/Seoul" },
+    params: { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone },
   });
 
-  return response.data;
+  return { ...response.data, serverNow: Date.parse(response.headers.date) || Date.now() };
 };
 
 // 공개 알림 설정 조회

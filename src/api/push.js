@@ -46,7 +46,23 @@ export async function subscribeToPush() {
     throw new Error("PUSH_DENIED");
   }
 
+  // Ask directly from the click gesture, before network or worker awaits (mobile Safari).
+  if (Notification.permission !== 'granted') {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') throw new Error('PUSH_DENIED');
+  }
   const registration = await registerServiceWorker();
+  if (!registration.active) {
+    const worker = registration.installing || registration.waiting;
+    if (!worker) throw new Error('PUSH_WORKER_UNAVAILABLE');
+    await new Promise((resolve, reject) => {
+      const finish = error => { clearTimeout(timer); worker.removeEventListener('statechange', changed); error ? reject(error) : resolve(); };
+      const changed = () => { if (worker.state === 'activated') finish(); else if (worker.state === 'redundant') finish(new Error('PUSH_WORKER_UNAVAILABLE')); };
+      const timer = setTimeout(() => finish(new Error('PUSH_WORKER_TIMEOUT')), 10000);
+      worker.addEventListener('statechange', changed);
+      changed();
+    });
+  }
 
   // 기존 구독 확인
   let subscription =
@@ -62,12 +78,6 @@ export async function subscribeToPush() {
   }
 
   if (!subscription) {
-    const permission = await Notification.requestPermission();
-
-    if (permission !== "granted") {
-      throw new Error("PUSH_DENIED");
-    }
-
     subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(publicKey),

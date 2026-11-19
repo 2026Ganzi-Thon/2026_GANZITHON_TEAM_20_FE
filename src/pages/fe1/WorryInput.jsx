@@ -1,6 +1,9 @@
+import { countCharacters } from '../../features/fe2/domain.js'
+import usePrivateNavigation from '../../hooks/usePrivateNavigation.js'
+import { readDraft } from '../../session/privateDraft.js'
 
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import "./WorryInput.css";
 
@@ -13,11 +16,11 @@ const ANXIETY_OPTIONS = [
 ];
 
 function WorryInput() {
-  const navigate = useNavigate();
+  const navigate = usePrivateNavigation();
   const location = useLocation();
 
   // S-04에서 뒤로가기 시 전달받은 입력 데이터
-  const restoredData = location.state ?? {};
+  const restoredData = readDraft(location.state);
 
   // 기존 입력값이 있으면 복원, 없으면 초기값 사용
   const [worry, setWorry] = useState(
@@ -35,8 +38,8 @@ function WorryInput() {
   // 필수 항목 검증
   const isValid =
     worry.trim().length > 0 &&
-    worry.length <= 500 &&
-    anxietyLevel !== null;
+    countCharacters(worry) <= 500 &&
+    anxietyLevel !== null && countCharacters(tomorrowCheck) <= 100;
 
   const handleNext = () => {
     if (!isValid) return;
@@ -46,9 +49,9 @@ function WorryInput() {
     navigate("/worry-confirm", {
       state: {
         ...restoredData,
-        worry: worry.trim(),
+        worry,
         anxietyLevel,
-        tomorrowCheck: tomorrowCheck.trim(),
+        tomorrowCheck,
       },
     });
   };
@@ -85,11 +88,11 @@ function WorryInput() {
             placeholder="지금 떠오르는 걱정을 적어주세요"
             value={worry}
             onChange={(e) => setWorry(e.target.value)}
-            maxLength={500}
+
           />
 
           <div className="worry-character-count">
-            {worry.length}/500
+            {countCharacters(worry)}/500
           </div>
         </section>
 
@@ -153,11 +156,11 @@ function WorryInput() {
             onChange={(e) =>
               setTomorrowCheck(e.target.value)
             }
-            maxLength={100}
+
           />
 
           <div className="worry-character-count">
-            {tomorrowCheck.length}/100
+            {countCharacters(tomorrowCheck)}/100
           </div>
         </section>
       </main>

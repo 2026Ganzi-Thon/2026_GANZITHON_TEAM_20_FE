@@ -1,0 +1,1713 @@
+{
+  "date": "2026-11-15",
+  "figmaFile": "B3t4ttRoLZUafyfVuuKWKV",
+  "figmaReadOnly": true,
+  "measurements": [
+    {
+      "name": "vault-light",
+      "url": "/vault",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-vault-row",
+          "x": 24,
+          "y": 148,
+          "width": 342,
+          "height": 104
+        },
+        {
+          "selector": ".fe2-header",
+          "x": 0,
+          "y": 48,
+          "width": 390,
+          "height": 48
+        }
+      ]
+    },
+    {
+      "name": "action-light",
+      "url": "/worries/example-presentation/action",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-steps",
+          "x": 24,
+          "y": 189,
+          "width": 342,
+          "height": 184
+        },
+        {
+          "selector": ".fe2-step",
+          "x": 24,
+          "y": 189,
+          "width": 342,
+          "height": 56
+        },
+        {
+          "selector": ".fe2-action-actions",
+          "x": 0,
+          "y": 686,
+          "width": 390,
+          "height": 158
+        }
+      ]
+    },
+    {
+      "name": "action-light",
+      "url": "/worries/example-presentation/action",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-steps",
+          "x": 24,
+          "y": 189,
+          "width": 342,
+          "height": 184
+        },
+        {
+          "selector": ".fe2-step",
+          "x": 24,
+          "y": 189,
+          "width": 342,
+          "height": 56
+        },
+        {
+          "selector": ".fe2-action-actions",
+          "x": 0,
+          "y": 686,
+          "width": 390,
+          "height": 158
+        }
+      ]
+    },
+    {
+      "name": "rest-intro-light",
+      "url": "/worries/example-presentation/rest",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-rest-intro>.fe2-illustration-slot",
+          "x": 95,
+          "y": 216.015625,
+          "width": 200,
+          "height": 200
+        },
+        {
+          "selector": ".fe2-rest-copy",
+          "x": 45,
+          "y": 436.015625,
+          "width": 300,
+          "height": 83.375
+        },
+        {
+          "selector": ".fe2-pill",
+          "x": 104.1875,
+          "y": 539.390625,
+          "width": 181.609375,
+          "height": 34.59375
+        },
+        {
+          "selector": ".fe2-actions",
+          "x": 0,
+          "y": 694,
+          "width": 390,
+          "height": 150
+        }
+      ]
+    },
+    {
+      "name": "empathy-light",
+      "url": "/worries/example-presentation/empathy",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-empathy-card",
+          "x": 24,
+          "y": 295.5,
+          "width": 342,
+          "height": 269
+        },
+        {
+          "selector": ".fe2-actions",
+          "x": 0,
+          "y": 764,
+          "width": 390,
+          "height": 80
+        }
+      ]
+    },
+    {
+      "name": "shred-light",
+      "url": "/worries/example-presentation/shred",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-delete-scope",
+          "x": 24,
+          "y": 189,
+          "width": 342,
+          "height": 217
+        },
+        {
+          "selector": ".fe2-delete-warning",
+          "x": 24,
+          "y": 426,
+          "width": 342,
+          "height": 52
+        },
+        {
+          "selector": ".fe2-actions",
+          "x": 0,
+          "y": 686,
+          "width": 390,
+          "height": 158
+        }
+      ]
+    },
+    {
+      "name": "lock-light",
+      "url": "/vault",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": "dialog",
+          "x": 0,
+          "y": 420,
+          "width": 390,
+          "height": 424
+        },
+        {
+          "selector": ".fe2-info",
+          "x": 24,
+          "y": 528,
+          "width": 342,
+          "height": 72
+        }
+      ]
+    },
+    {
+      "name": "time-light",
+      "url": "/vault",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": "dialog",
+          "x": 0,
+          "y": 310.5,
+          "width": 390,
+          "height": 533.5
+        },
+        {
+          "selector": ".fe2-date",
+          "x": 20,
+          "y": 405,
+          "width": 350,
+          "height": 26
+        },
+        {
+          "selector": ".fe2-time-wheel",
+          "x": 20,
+          "y": 447,
+          "width": 350,
+          "height": 169
+        },
+        {
+          "selector": "dialog>.fe2-primary",
+          "x": 20,
+          "y": 692,
+          "width": 350,
+          "height": 54
+        }
+      ]
+    },
+    {
+      "name": "record-detail-light",
+      "url": "/records/example-history",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-comparison",
+          "x": 24,
+          "y": 115,
+          "width": 342,
+          "height": 213.125
+        },
+        {
+          "selector": ".fe2-record-original",
+          "x": 24,
+          "y": 348.125,
+          "width": 342,
+          "height": 49.84375
+        },
+        {
+          "selector": ".fe2-summary-card",
+          "x": 24,
+          "y": 484.703125,
+          "width": 342,
+          "height": 125.65625
+        },
+        {
+          "selector": ".fe2-record-facts",
+          "x": 24,
+          "y": 630.359375,
+          "width": 342,
+          "height": 148.421875
+        }
+      ]
+    },
+    {
+      "name": "demo-light",
+      "url": "/demo",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-demo-badge",
+          "x": 24,
+          "y": 112,
+          "width": 132.65625,
+          "height": 32
+        },
+        {
+          "selector": ".fe2-demo section",
+          "x": 24,
+          "y": 160,
+          "width": 342,
+          "height": 222
+        }
+      ]
+    },
+    {
+      "name": "rest-running-light",
+      "url": "/worries/example-presentation/rest",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-timer",
+          "x": 85,
+          "y": 262.40625,
+          "width": 220,
+          "height": 220
+        }
+      ]
+    },
+    {
+      "name": "rest-stop-light",
+      "url": "/worries/example-presentation/rest",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": "dialog",
+          "x": 36,
+          "y": 299.5625,
+          "width": 318,
+          "height": 270.875
+        }
+      ]
+    },
+    {
+      "name": "result-light",
+      "url": "/activities/activity-1/result",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-result-heading",
+          "x": 24,
+          "y": 68,
+          "width": 342,
+          "height": 451
+        },
+        {
+          "selector": ".fe2-result-heading .fe2-illustration-slot",
+          "x": 95,
+          "y": 151.90625,
+          "width": 200,
+          "height": 200
+        },
+        {
+          "selector": ".fe2-result-copy",
+          "x": 45,
+          "y": 371.90625,
+          "width": 300,
+          "height": 63.1875
+        },
+        {
+          "selector": ".fe2-rating",
+          "x": 24,
+          "y": 539,
+          "width": 342,
+          "height": 135
+        },
+        {
+          "selector": ".fe2-actions",
+          "x": 0,
+          "y": 694,
+          "width": 390,
+          "height": 150
+        }
+      ]
+    },
+    {
+      "name": "shred-done-light",
+      "url": "/worries/example-presentation/shred",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-shred-complete>.fe2-illustration-slot",
+          "x": 95,
+          "y": 231.90625,
+          "width": 200,
+          "height": 200
+        },
+        {
+          "selector": ".fe2-shred-copy",
+          "x": 45,
+          "y": 451.90625,
+          "width": 300,
+          "height": 58.1875
+        }
+      ]
+    },
+    {
+      "name": "record-delete-light",
+      "url": "/records/example-history",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": "dialog",
+          "x": 36,
+          "y": 281.75,
+          "width": 318,
+          "height": 280.5
+        }
+      ]
+    },
+    {
+      "name": "records-empty-initial",
+      "url": "/records",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "records-empty-light",
+      "url": "/records",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-illustration-placeholder",
+          "x": 135,
+          "y": 285.796875,
+          "width": 120,
+          "height": 120
+        },
+        {
+          "selector": ".fe2-empty-copy",
+          "x": 96.359375,
+          "y": 421.796875,
+          "width": 197.28125,
+          "height": 78.390625
+        },
+        {
+          "selector": ".fe2-empty>.fe2-button",
+          "x": 24,
+          "y": 690,
+          "width": 342,
+          "height": 56
+        }
+      ]
+    },
+    {
+      "name": "vault-night",
+      "url": "/vault",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "time-night",
+      "url": "/vault",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": "dialog",
+          "x": 0,
+          "y": 310,
+          "width": 390,
+          "height": 534
+        },
+        {
+          "selector": ".fe2-time-wheel",
+          "x": 20,
+          "y": 447,
+          "width": 350,
+          "height": 169
+        }
+      ]
+    },
+    {
+      "name": "calendar-night",
+      "url": "/vault",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-calendar-dialog",
+          "x": 12,
+          "y": 234,
+          "width": 366,
+          "height": 376
+        }
+      ]
+    },
+    {
+      "name": "demo-night",
+      "url": "/demo",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "record-detail-light",
+      "url": "/records/example-history",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-comparison",
+          "x": 24,
+          "y": 101,
+          "width": 342,
+          "height": 213
+        },
+        {
+          "selector": ".fe2-summary-card",
+          "x": 24,
+          "y": 471,
+          "width": 342,
+          "height": 127
+        },
+        {
+          "selector": ".fe2-record-facts",
+          "x": 24,
+          "y": 618,
+          "width": 342,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "name": "record-detail-light",
+      "url": "/records/example-history",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-comparison",
+          "x": 24,
+          "y": 115,
+          "width": 342,
+          "height": 213
+        },
+        {
+          "selector": ".fe2-summary-card",
+          "x": 24,
+          "y": 485,
+          "width": 342,
+          "height": 127
+        },
+        {
+          "selector": ".fe2-record-facts",
+          "x": 24,
+          "y": 632,
+          "width": 342,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "name": "edit-light",
+      "url": "/worries/example-presentation/edit",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "edit-invalid-light",
+      "url": "/worries/example-presentation/edit",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-editor-min-error",
+          "x": 20,
+          "y": 444.5,
+          "width": 350,
+          "height": 20
+        },
+        {
+          "selector": ".fe2-counter",
+          "x": 20,
+          "y": 404,
+          "width": 350,
+          "height": 24.5
+        }
+      ]
+    },
+    {
+      "name": "edit-invalid-night",
+      "url": "/worries/example-presentation/edit",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-editor-min-error",
+          "x": 20,
+          "y": 444.5,
+          "width": 350,
+          "height": 20
+        },
+        {
+          "selector": ".fe2-counter",
+          "x": 20,
+          "y": 404,
+          "width": 350,
+          "height": 24.5
+        }
+      ]
+    },
+    {
+      "name": "edit-before-save-failure",
+      "url": "/worries/example-presentation/edit",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "edit-save-failure",
+      "url": "/worries/example-presentation/edit",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-editor-save-error",
+          "x": 20,
+          "y": 442,
+          "width": 350,
+          "height": 40
+        }
+      ]
+    },
+    {
+      "name": "records-before-error",
+      "url": "/records",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "error-light",
+      "url": "/records",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-error-illustration",
+          "x": 133,
+          "y": 266,
+          "width": 124,
+          "height": 124
+        }
+      ]
+    },
+    {
+      "name": "action-night",
+      "url": "/worries/example-presentation/action",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "switch-night",
+      "url": "/worries/example-presentation",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": "dialog",
+          "x": 36,
+          "y": 271.75,
+          "width": 318,
+          "height": 300.5
+        }
+      ]
+    },
+    {
+      "name": "lock-light",
+      "url": "/vault",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": "dialog",
+          "x": 0,
+          "y": 420,
+          "width": 390,
+          "height": 424
+        }
+      ]
+    },
+    {
+      "name": "time-light",
+      "url": "/vault",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": "dialog",
+          "x": 0,
+          "y": 310,
+          "width": 390,
+          "height": 534
+        },
+        {
+          "selector": ".fe2-time-wheel",
+          "x": 20,
+          "y": 447,
+          "width": 350,
+          "height": 169
+        }
+      ]
+    },
+    {
+      "name": "record-detail-light",
+      "url": "/records/example-history",
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-comparison",
+          "x": 24,
+          "y": 115,
+          "width": 342,
+          "height": 213
+        },
+        {
+          "selector": ".fe2-summary-card",
+          "x": 24,
+          "y": 485,
+          "width": 342,
+          "height": 127
+        },
+        {
+          "selector": ".fe2-record-facts",
+          "x": 24,
+          "y": 632,
+          "width": 342,
+          "height": 148
+        }
+      ]
+    }
+  ],
+  "responsiveChecks": [
+    {
+      "url": "/records",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/records",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/edit",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/edit",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/vault",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": [
+        {
+          "x": 0,
+          "y": 86,
+          "right": 320,
+          "bottom": 640
+        }
+      ]
+    },
+    {
+      "url": "/vault",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": [
+        {
+          "x": 189,
+          "y": 366,
+          "right": 579,
+          "bottom": 900
+        }
+      ]
+    },
+    {
+      "url": "/worries/example-presentation/action",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/action",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/rest",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": [
+        {
+          "x": 20,
+          "y": 184.5625,
+          "right": 300,
+          "bottom": 455.4375
+        }
+      ]
+    },
+    {
+      "url": "/worries/example-presentation/rest",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": [
+        {
+          "x": 225,
+          "y": 327.5625,
+          "right": 543,
+          "bottom": 598.4375
+        }
+      ]
+    },
+    {
+      "url": "/activities/activity-1/result",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/activities/activity-1/result",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/shred",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/shred",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/records/example-history",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/records/example-history",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/demo",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/demo",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/records",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/records",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/vault",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": [
+        {
+          "x": 0,
+          "y": 212,
+          "right": 320,
+          "bottom": 640
+        }
+      ]
+    },
+    {
+      "url": "/vault",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": [
+        {
+          "x": 189,
+          "y": 476,
+          "right": 579,
+          "bottom": 900
+        }
+      ]
+    },
+    {
+      "url": "/demo",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/demo",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/edit",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/edit",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/edit",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/edit",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/records",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/records",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation",
+      "width": 320,
+      "height": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": [
+        {
+          "x": 20,
+          "y": 159.75,
+          "right": 300,
+          "bottom": 480.25
+        }
+      ]
+    },
+    {
+      "url": "/worries/example-presentation",
+      "width": 768,
+      "height": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": [
+        {
+          "x": 225,
+          "y": 299.75,
+          "right": 543,
+          "bottom": 600.25
+        }
+      ]
+    }
+  ],
+  "assetChecks": [
+    {
+      "url": "http://127.0.0.1:5173/records?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/records-imgFrame.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/records-imgFrame1.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/records-imgFrame2.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/worries/example-presentation?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/vault-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/worries/example-presentation/edit?theme=night",
+      "assets": [
+        {
+          "src": "/fe2/figma/nightEdit-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/nightEdit-imgIconLock.svg",
+          "width": 14,
+          "height": 14,
+          "naturalWidth": 14,
+          "naturalHeight": 14
+        },
+        {
+          "src": "/fe2/figma/nightEditInvalid-imgIconAlert.svg",
+          "width": 14,
+          "height": 14,
+          "naturalWidth": 14,
+          "naturalHeight": 14
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/vault?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/vault-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconUnlock.svg",
+          "width": 20,
+          "height": 20,
+          "naturalWidth": 20,
+          "naturalHeight": 20
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconUnlock.svg",
+          "width": 20,
+          "height": 20,
+          "naturalWidth": 20,
+          "naturalHeight": 20
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconUnlock.svg",
+          "width": 20,
+          "height": 20,
+          "naturalWidth": 20,
+          "naturalHeight": 20
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconLock.svg",
+          "width": 20,
+          "height": 20,
+          "naturalWidth": 20,
+          "naturalHeight": 20
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/worries/example-presentation/action?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/vault-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/worries/example-presentation/rest?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/vault-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/activities/activity-1/result",
+      "assets": [
+        {
+          "src": "/fe2/figma/vault-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/result-imgCiCheckBig.svg",
+          "width": 80,
+          "height": 80,
+          "naturalWidth": 80,
+          "naturalHeight": 80
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/worries/example-presentation/shred?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/vault-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/shredDone-imgIconShred.svg",
+          "width": 80,
+          "height": 80,
+          "naturalWidth": 80,
+          "naturalHeight": 80
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/records/example-history?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/recordDetail-imgIconArrow.svg",
+          "width": 20,
+          "height": 20,
+          "naturalWidth": 20,
+          "naturalHeight": 20
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/demo?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/vault-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/demo-imgIconClock.svg",
+          "width": 18,
+          "height": 18,
+          "naturalWidth": 18,
+          "naturalHeight": 18
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/records?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/records-imgFrame.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/records-imgFrame1.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/records-imgFrame2.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/vault?theme=night",
+      "assets": [
+        {
+          "src": "/fe2/figma/nightEdit-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/nightTime-imgIconUnlock.svg",
+          "width": 20,
+          "height": 20,
+          "naturalWidth": 20,
+          "naturalHeight": 20
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/nightTime-imgIconUnlock.svg",
+          "width": 20,
+          "height": 20,
+          "naturalWidth": 20,
+          "naturalHeight": 20
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/nightTime-imgIconUnlock.svg",
+          "width": 20,
+          "height": 20,
+          "naturalWidth": 20,
+          "naturalHeight": 20
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconLock.svg",
+          "width": 20,
+          "height": 20,
+          "naturalWidth": 20,
+          "naturalHeight": 20
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconLock.svg",
+          "width": 20,
+          "height": 20,
+          "naturalWidth": 20,
+          "naturalHeight": 20
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/demo?theme=night",
+      "assets": [
+        {
+          "src": "/fe2/figma/nightEdit-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/nightDemo-imgIconClock.svg",
+          "width": 18,
+          "height": 18,
+          "naturalWidth": 18,
+          "naturalHeight": 18
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/worries/example-presentation/edit?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/vault-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/edit-imgIconLock.svg",
+          "width": 14,
+          "height": 14,
+          "naturalWidth": 14,
+          "naturalHeight": 14
+        },
+        {
+          "src": "/fe2/figma/editInvalid-imgIconAlert.svg",
+          "width": 14,
+          "height": 14,
+          "naturalWidth": 14,
+          "naturalHeight": 14
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/worries/example-presentation/edit?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/vault-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/edit-imgIconLock.svg",
+          "width": 14,
+          "height": 14,
+          "naturalWidth": 14,
+          "naturalHeight": 14
+        },
+        {
+          "src": "/fe2/figma/editFailure-imgIconAlert.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/records?theme=light",
+      "assets": [
+        {
+          "src": "/fe2/figma/error-imgIllust.svg",
+          "width": 214,
+          "height": 214,
+          "naturalWidth": 214,
+          "naturalHeight": 214
+        },
+        {
+          "src": "/fe2/figma/records-imgFrame.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/records-imgFrame1.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/records-imgFrame2.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        }
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:5173/worries/example-presentation",
+      "assets": [
+        {
+          "src": "/fe2/figma/nightEdit-imgGroup1.svg",
+          "width": 75,
+          "height": 13,
+          "naturalWidth": 75,
+          "naturalHeight": 13
+        },
+        {
+          "src": "/fe2/figma/vault-imgIconBack.svg",
+          "width": 24,
+          "height": 24,
+          "naturalWidth": 24,
+          "naturalHeight": 24
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        },
+        {
+          "src": "/fe2/figma/records-imgIconChev.svg",
+          "width": 16,
+          "height": 16,
+          "naturalWidth": 16,
+          "naturalHeight": 16
+        }
+      ]
+    }
+  ],
+  "browserErrors": []
+}

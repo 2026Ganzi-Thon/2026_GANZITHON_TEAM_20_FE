@@ -2,6 +2,7 @@ import { api, errorCode } from "./client";
 
 // 현재 게스트 세션 확인
 export async function checkGuest() {
+  if (import.meta.env.DEV && import.meta.env.VITE_FE2_MOCK === "true") return "READY";
   try {
     await api.get("/guest-sessions/current");
     return "READY";

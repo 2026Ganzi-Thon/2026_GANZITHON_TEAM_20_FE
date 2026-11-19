@@ -36,3 +36,9 @@ export const getWorryRequest = async (
 
   return response.data;
 };
+// Keep the same key after a lost response to an explicit user retry.
+export const retryWorryRequest = async (requestId, data, idempotencyKey, analysisContext) => {
+  const response = await client.post('/worry-requests/' + encodeURIComponent(requestId) + '/retry', data,
+    { headers: { 'Idempotency-Key': idempotencyKey, 'X-Analysis-Context': analysisContext } });
+  return response.data;
+};

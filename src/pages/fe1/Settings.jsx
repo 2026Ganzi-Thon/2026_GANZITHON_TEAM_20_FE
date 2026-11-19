@@ -1,3 +1,4 @@
+import { logError } from '../../api/logError.js'
 
 import { useCallback, useEffect, useState } from "react";
 
@@ -180,14 +181,14 @@ function Settings() {
       if (settingsResult.status === "rejected") {
         console.error(
           "공개 알림 설정 조회 실패:",
-          settingsResult.reason
+          logError(settingsResult.reason)
         );
       }
 
       if (reminderResult.status === "rejected") {
         console.error(
           "재알림 조회 실패:",
-          reminderResult.reason
+          logError(reminderResult.reason)
         );
       }
 
@@ -220,9 +221,7 @@ function Settings() {
       } catch (error) {
         if (active) {
           console.error(
-            "알림 설정 조회 실패:",
-            error
-          );
+            "알림 설정 조회 실패:", logError(error));
           setNotice(getErrorMessage(error));
         }
       } finally {
@@ -316,9 +315,7 @@ function Settings() {
       );
     } catch (error) {
       console.error(
-        "공개 알림 설정 변경 실패:",
-        error
-      );
+        "공개 알림 설정 변경 실패:", logError(error));
 
       setNotice(getPushErrorMessage(error));
 
@@ -347,7 +344,7 @@ function Settings() {
           : "취소 요청 후 알림 상태를 확인하지 못했어요."
       );
     } catch (error) {
-      console.error("재알림 취소 실패:", error);
+      console.error("재알림 취소 실패:", logError(error));
       setNotice(getErrorMessage(error));
 
       await refreshNotifications();
@@ -382,7 +379,7 @@ function Settings() {
           : "모든 알림 끄기를 완료하지 못했어요. 상태를 확인한 뒤 다시 시도해 주세요."
       );
     } catch (error) {
-      console.error("모든 알림 끄기 실패:", error);
+      console.error("모든 알림 끄기 실패:", logError(error));
       setNotice(getErrorMessage(error));
 
       await refreshNotifications();
@@ -418,7 +415,7 @@ function Settings() {
         "삭제 요청의 완료 여부를 확인하지 못했어요. 서버 상태를 확인해 주세요."
       );
     } catch (error) {
-      console.error("금고 전체 삭제 실패:", error);
+      console.error("금고 전체 삭제 실패:", logError(error));
       setNotice(getErrorMessage(error));
     } finally {
       setSaving(false);

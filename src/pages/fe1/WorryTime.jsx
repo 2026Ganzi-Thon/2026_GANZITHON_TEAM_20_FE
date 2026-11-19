@@ -1,6 +1,10 @@
+import { countCharacters } from '../../features/fe2/domain.js'
+import { logError } from '../../api/logError.js'
+import usePrivateNavigation from '../../hooks/usePrivateNavigation.js'
+import { readDraft } from '../../session/privateDraft.js'
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 import {
   ChevronLeft,
   ChevronDown,
@@ -8,14 +12,17 @@ import {
   BellOff,
 } from "lucide-react";
 
-import { submitWorry } from "../../api/worry";
+import { submitWorry, retryWorryRequest } from "../../api/worry";
 import { subscribeToPush, isPushSupported } from "../../api/push";
 import {
+  getDefaultPublication,
   getNotificationSettings,
   updatePublicationNotification,
 } from "../../api/settings";
 
 import "./WorryTime.css";
+import useRetryCooldown from '../../hooks/useRetryCooldown.js';
+import { firstFuturePublication, isValidPublication } from '../../api/publication.js';
 
 const HOUR = 60 * 60 * 1000;
 const DAY = 24 * HOUR;
@@ -38,7 +45,7 @@ const NOTIFICATION_ERROR_CONTENT = {
   unsupported: {
     title: "알림을 켤 수 없어요",
     description:
-      "이 브라우저는 알림을 지원하지 않아요. 다른 브라우저에서는 켤 수 있어요.",
+      "이 환경에서는 알림을 지원하지 않아요. 알림 없이도 계속 이용할 수 있어요.",
   },
   failed: {
     title: "알림을 켤 수 없어요",
@@ -65,20 +72,10 @@ const getSavedDefaultTime = () => {
   return { hour: 8, minute: 0 };
 };
 
-// 현재부터 최소 9시간 이후의 기본 공개 시각
+// Initial local display; the server proposal is loaded before submission is enabled.
 const getDefaultPublishDate = () => {
-  const minimum = new Date(Date.now() + 9 * HOUR);
-  const result = new Date(minimum);
-
   const { hour, minute } = getSavedDefaultTime();
-
-  result.setHours(hour, minute, 0, 0);
-
-  if (result < minimum) {
-    result.setDate(result.getDate() + 1);
-  }
-
-  return result;
+  return firstFuturePublication(Date.now(), hour, minute);
 };
 
 // 날짜 표시
@@ -113,11 +110,16 @@ const getDays = (year, month) => {
 };
 
 function WorryTime() {
-  const navigate = useNavigate();
+  const navigate = usePrivateNavigation();
+  const [cooldown, beginCooldown] = useRetryCooldown();
+  const [publicationReady, setPublicationReady] = useState(false);
+  const [publicationError, setPublicationError] = useState('');
+  const [proposalAttempt, setProposalAttempt] = useState(0);
+  const clockOffset = useRef(0);
   const location = useLocation();
 
   // S-03에서 전달받은 입력값
-  const inputData = location.state ?? {};
+  const inputData = readDraft(location.state);
 
   // 공개 날짜 및 시간
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -190,11 +192,32 @@ function WorryTime() {
 
   useEffect(() => {
     const interval = window.setInterval(() => {
-      setNow(Date.now());
+      setNow(Date.now() + clockOffset.current);
     }, 30000);
 
     return () => window.clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    let active = true;
+    getDefaultPublication().then(data => {
+      if (!active) return;
+      const serverNow = data.serverNow;
+      const proposed = new Date(data.publishAt);
+      if (!Number.isFinite(proposed.getTime())) throw new Error('Invalid publication proposal');
+      clockOffset.current = serverNow - Date.now();
+      setNow(serverNow);
+      if (!inputData.publishAt || !isValidPublication(inputData.publishAt, serverNow)) {
+        const { hour, minute } = getSavedDefaultTime();
+        const selected = hour === 8 && minute === 0 ? proposed : firstFuturePublication(serverNow, hour, minute);
+        setSelectedDate(selected);
+        setCalendarMonth(new Date(selected.getFullYear(), selected.getMonth(), 1));
+      }
+      setPublicationReady(true);
+      setPublicationError('');
+    }).catch(() => { if (active) setPublicationError('기본 공개 시간을 불러오지 못했어요. 다시 확인해 주세요.'); });
+    return () => { active = false; };
+  }, [inputData.publishAt, proposalAttempt]);
 
   // AL-09 팝업 접근성 및 스크롤 처리
   useEffect(() => {
@@ -253,9 +276,7 @@ function WorryTime() {
         }
       } catch (error) {
         console.error(
-          "공개 알림 설정 조회 실패:",
-          error
-        );
+          "공개 알림 설정 조회 실패:", logError(error));
 
         if (active) {
           setNotificationEnabled(false);
@@ -320,9 +341,7 @@ function WorryTime() {
       }
     } catch (error) {
       console.error(
-        "공개 알림 설정 실패:",
-        error
-      );
+        "공개 알림 설정 실패:", logError(error));
 
       const message = error?.message;
 
@@ -350,7 +369,7 @@ function WorryTime() {
 
   // 공개 시간 범위
   const minDate = useMemo(
-    () => new Date(now + 9 * HOUR),
+    () => new Date(now + 1),
     [now]
   );
 
@@ -360,7 +379,7 @@ function WorryTime() {
   );
 
   const isWithinRange = (date) =>
-    date >= minDate && date <= maxDate;
+    date >= minDate && date < maxDate;
 
   // 현재 선택된 시간
   const period =
@@ -484,7 +503,7 @@ function WorryTime() {
   );
 
   const canSubmit =
-    isWithinRange(selectedDate) &&
+    publicationReady && cooldown === 0 && isWithinRange(selectedDate) &&
     !isSubmitting &&
     !submitted;
 
@@ -534,7 +553,7 @@ function WorryTime() {
 
     // 선택 메모 검증
     if (
-      (inputData.tomorrowCheck ?? "").length >
+      countCharacters(inputData.tomorrowCheck ?? "") >
       100
     ) {
       setSubmitError(
@@ -548,10 +567,7 @@ function WorryTime() {
     const selectedTime = selectedDate.getTime();
 
     if (
-      selectedTime <
-        currentTime + 9 * HOUR ||
-      selectedTime >
-        currentTime + 30 * DAY
+      !isValidPublication(selectedTime, currentTime + clockOffset.current)
     ) {
       setSubmitError(
         "선택한 공개 시간을 다시 확인해 주세요."
@@ -565,13 +581,13 @@ function WorryTime() {
 
     // openapi.yaml의 WorryInput 형식
     const payload = {
-      text: inputData.worry.trim(),
+      text: inputData.worry,
       anxiety: inputData.anxietyLevel,
 
       ...(inputData.tomorrowCheck?.trim()
         ? {
             memo:
-              inputData.tomorrowCheck.trim(),
+              inputData.tomorrowCheck,
           }
         : {}),
 
@@ -579,11 +595,9 @@ function WorryTime() {
     };
 
     try {
-      const result = await submitWorry(
-        payload,
-        idempotencyKeyRef.current,
-        analysisContextRef.current
-      );
+      const result = inputData.retryRequestId
+        ? await retryWorryRequest(inputData.retryRequestId, payload, idempotencyKeyRef.current, analysisContextRef.current)
+        : await submitWorry(payload, idempotencyKeyRef.current, analysisContextRef.current);
 
       const responseData =
         result?.data ?? result;
@@ -622,6 +636,7 @@ function WorryTime() {
         },
       });
     } catch (error) {
+      if (error.response?.status === 429) beginCooldown(error);
       console.error(
         "걱정 접수 실패:",
         {
@@ -811,12 +826,13 @@ function WorryTime() {
       </header>
 
       <main className="wt-content">
+        {publicationError && <p role="alert">{publicationError} <button type="button" onClick={() => setProposalAttempt(value => value + 1)}>다시 확인</button></p>}
         {/* 공개 시간 안내 */}
         <section className="wt-intro">
           <h2>언제 열어볼까요?</h2>
 
           <p>
-            지금부터 약 9시간 후에 열려요
+            선택한 공개 시각에 열려요
           </p>
         </section>
 
@@ -1032,7 +1048,9 @@ function WorryTime() {
           disabled={!canSubmit}
           onClick={handleSubmit}
         >
-          {submitted
+          {cooldown > 0
+            ? cooldown + "초 뒤 다시 시도"
+            : submitted
             ? "접수 완료"
             : isSubmitting
               ? "금고에 맡기는 중..."

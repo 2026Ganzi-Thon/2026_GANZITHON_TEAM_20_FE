@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   useNavigate,
   useSearchParams,
@@ -13,9 +13,12 @@ import {
 import { errorCode } from "../../api/client";
 
 import "./Start.css";
+import useRetryCooldown from '../../hooks/useRetryCooldown.js';
 
 function Start() {
   const navigate = useNavigate();
+  const [cooldown, beginCooldown] = useRetryCooldown();
+  const inFlight = useRef(false);
   const [searchParams] = useSearchParams();
 
   // 기존 게스트 세션이 만료되었는지 확인
@@ -27,7 +30,8 @@ function Start() {
 
   // 시작하기 버튼 클릭
   const handleStart = async () => {
-    if (isLoading) return;
+    if (inFlight.current || cooldown) return;
+    inFlight.current = true;
 
     setIsLoading(true);
     setErrorMessage("");
@@ -46,7 +50,7 @@ function Start() {
         replace: true,
       });
     } catch (error) {
-      console.error("게스트 세션 생성 실패:", error);
+      console.error("게스트 세션 생성 실패:", { status: error.response?.status, code: errorCode(error) });
 
       const code = errorCode(error);
 
@@ -58,7 +62,10 @@ function Start() {
         return;
       }
 
-      if (code === "CSRF_REJECTED") {
+      if (error.response?.status === 429) {
+        beginCooldown(error);
+        setErrorMessage("요청이 많아요. 안내된 시간이 지나면 다시 눌러 주세요.");
+      } else if (code === "CSRF_REJECTED") {
         setErrorMessage(
           "요청을 확인하지 못했어요. 다시 시도해 주세요."
         );
@@ -72,6 +79,7 @@ function Start() {
         );
       }
     } finally {
+      inFlight.current = false;
       setIsLoading(false);
     }
   };
@@ -181,9 +189,11 @@ function Start() {
             type="button"
             className="start-button"
             onClick={handleStart}
-            disabled={isLoading}
+            disabled={isLoading || cooldown > 0}
           >
-            {isLoading
+            {cooldown > 0
+              ? cooldown + "초 뒤 다시 시도"
+              : isLoading
               ? "처리 중..."
               : isRestart
                 ? "새로 시작"

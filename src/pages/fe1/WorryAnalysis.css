@@ -327,3 +327,6 @@
 }
 
 
+
+.wa-retry-button:disabled { opacity:.5; cursor:default; }
+.wa-home-button { margin-top:16px; min-height:44px; border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }

@@ -1,3 +1,4 @@
+import { logError } from '../../api/logError.js'
 
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -25,7 +26,7 @@ const ERROR_CONTENT = {
   },
   unsupported: {
     description:
-      "이 브라우저는 알림을 지원하지 않아요. 다른 브라우저에서는 켤 수 있어요.",
+      "이 환경에서는 알림을 지원하지 않아요. 알림 없이도 계속 이용할 수 있어요.",
   },
   failed: {
     description:
@@ -46,7 +47,7 @@ const formatPublishAt = (publishAt) => {
   }
 
   const formatted = new Intl.DateTimeFormat("ko-KR", {
-    timeZone: "Asia/Seoul",
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     month: "long",
     day: "numeric",
     weekday: "short",
@@ -66,7 +67,7 @@ const formatReminderTime = (minutes, baseTime) => {
   const date = new Date(baseTime + minutes * 60 * 1000);
 
   return new Intl.DateTimeFormat("ko-KR", {
-    timeZone: "Asia/Seoul",
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
@@ -188,7 +189,7 @@ function WorryComplete() {
 
       setExistingReminder(hasActiveReminder(result));
     } catch (error) {
-      console.error("기존 재알림 조회 실패:", error);
+      console.error("기존 재알림 조회 실패:", logError(error));
 
       // 조회에 실패하면 기존 예약 여부를 확정하지 않음
       setExistingReminder(false);
@@ -258,7 +259,7 @@ function WorryComplete() {
       // 성공 응답을 받은 뒤에만 완료 처리
       setSheetType(null);
     } catch (error) {
-      console.error("재알림 예약 실패:", error);
+      console.error("재알림 예약 실패:", logError(error));
 
       setReminderStatus("");
       openErrorSheet(error);

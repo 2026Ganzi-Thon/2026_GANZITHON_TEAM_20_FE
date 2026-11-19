@@ -1,0 +1,764 @@
+{
+  "date": "2026-11-15",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "states": [
+    {
+      "name": "01-vault-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "02-lock-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": [
+        {
+          "selector": "dialog",
+          "x": 0,
+          "y": 420,
+          "width": 390,
+          "height": 424
+        }
+      ]
+    },
+    {
+      "name": "03-release-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": [
+        {
+          "selector": "dialog",
+          "x": 0,
+          "y": 310,
+          "width": 390,
+          "height": 534
+        },
+        {
+          "selector": ".fe2-time-wheel",
+          "x": 20,
+          "y": 447,
+          "width": 350,
+          "height": 169
+        }
+      ]
+    },
+    {
+      "name": "04-locked-delete-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "05-detail-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-reflection",
+          "x": 24,
+          "y": 116,
+          "width": 342,
+          "height": 174
+        },
+        {
+          "selector": ".fe2-summary-card",
+          "x": 24,
+          "y": 438,
+          "width": 342,
+          "height": 106
+        },
+        {
+          "selector": ".fe2-help-option",
+          "x": 24,
+          "y": 811,
+          "width": 342,
+          "height": 79
+        }
+      ]
+    },
+    {
+      "name": "06-edit-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "07-edit-invalid-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "08-edit-invalid-night",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-editor textarea",
+          "x": 20,
+          "y": 257,
+          "width": 342,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "name": "09-edit-night",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "10-action-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "11-switch-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "12-rest-intro-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "13-rest-running-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "14-rest-paused-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "15-rest-stop-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "16-empathy-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "17-result-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "18-shred-confirm-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "19-shred-pending-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-feedback",
+          "x": 24,
+          "y": 622,
+          "width": 342,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "20-shred-complete-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "21-records-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "22-record-detail-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "23-record-delete-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "24-demo-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "25-records-empty-light",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "26-vault-night",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-vault-row.is-available",
+          "x": 24,
+          "y": 150.5,
+          "width": 342,
+          "height": 104
+        }
+      ]
+    },
+    {
+      "name": "27-lock-night",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": [
+        {
+          "selector": "dialog",
+          "x": 0,
+          "y": 420,
+          "width": 390,
+          "height": 424
+        }
+      ]
+    },
+    {
+      "name": "28-release-night",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "29-demo-night",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": []
+    },
+    {
+      "name": "30-edit-save-failure",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-editor textarea",
+          "x": 20,
+          "y": 212,
+          "width": 342,
+          "height": 148
+        }
+      ]
+    },
+    {
+      "name": "31-common-error",
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "overflow": false,
+      "elements": [
+        {
+          "selector": ".fe2-state",
+          "x": 24,
+          "y": 73,
+          "width": 342,
+          "height": 404
+        }
+      ]
+    }
+  ],
+  "responsive": [
+    {
+      "url": "/vault",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": [
+        {
+          "x": 0,
+          "right": 320
+        }
+      ]
+    },
+    {
+      "url": "/vault",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": [
+        {
+          "x": 189,
+          "right": 579
+        }
+      ]
+    },
+    {
+      "url": "/worries/example-presentation/edit",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/edit",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/action",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/action",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/rest",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/rest",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/empathy",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/empathy",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/shred",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/shred",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/records",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/records",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/records/example-history",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/records/example-history",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/demo",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/demo",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/vault",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": [
+        {
+          "x": 0,
+          "right": 320
+        }
+      ]
+    },
+    {
+      "url": "/vault",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": [
+        {
+          "x": 189,
+          "right": 579
+        }
+      ]
+    },
+    {
+      "url": "/worries/example-presentation",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/edit",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/edit",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": [
+        {
+          "x": 20,
+          "right": 300
+        }
+      ]
+    },
+    {
+      "url": "/worries/example-presentation",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": [
+        {
+          "x": 225,
+          "right": 543
+        }
+      ]
+    },
+    {
+      "url": "/worries/example-presentation/rest",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": [
+        {
+          "x": 20,
+          "right": 300
+        }
+      ]
+    },
+    {
+      "url": "/worries/example-presentation/rest",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": [
+        {
+          "x": 225,
+          "right": 543
+        }
+      ]
+    },
+    {
+      "url": "/activities/activity-1/result",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/activities/activity-1/result",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/shred",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/worries/example-presentation/shred",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/records/example-history",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": [
+        {
+          "x": 20,
+          "right": 300
+        }
+      ]
+    },
+    {
+      "url": "/records/example-history",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": [
+        {
+          "x": 225,
+          "right": 543
+        }
+      ]
+    },
+    {
+      "url": "/records",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/records",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    },
+    {
+      "url": "/vault",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": [
+        {
+          "x": 0,
+          "right": 320
+        }
+      ]
+    },
+    {
+      "url": "/vault",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": [
+        {
+          "x": 189,
+          "right": 579
+        }
+      ]
+    },
+    {
+      "url": "/demo",
+      "w": 320,
+      "h": 640,
+      "overflow": false,
+      "appWidth": 320,
+      "dialogs": []
+    },
+    {
+      "url": "/demo",
+      "w": 768,
+      "h": 900,
+      "overflow": false,
+      "appWidth": 390,
+      "dialogs": []
+    }
+  ],
+  "detailHeight": 1181
+}

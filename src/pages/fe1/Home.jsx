@@ -1,3 +1,4 @@
+import { logError } from '../../api/logError.js'
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +12,7 @@ import {
   Bell,
 } from "lucide-react";
 
-import { getVaultSummary } from "../../api/vault";
+import { getVaultSummary, getCurrentActivity } from "../../api/vault";
 
 import {
   getReminder,
@@ -19,6 +20,7 @@ import {
 } from "../../api/settings";
 
 import "./Home.css";
+import { subscribeFe2Changes } from "../../features/fe2/integration.js";
 
 /* ========================================
    날짜 및 시간 표시
@@ -35,7 +37,7 @@ const formatDateTime = (dateString) => {
   }
 
   const formatter = new Intl.DateTimeFormat("ko-KR", {
-    timeZone: "Asia/Seoul",
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     month: "numeric",
     day: "numeric",
     hour: "numeric",
@@ -60,7 +62,7 @@ const formatPublishAt = (dateString) => {
 
   const getKoreanDateParts = (value) => {
     const parts = new Intl.DateTimeFormat("en-US", {
-      timeZone: "Asia/Seoul",
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       year: "numeric",
       month: "numeric",
       day: "numeric",
@@ -107,7 +109,7 @@ const formatPublishAt = (dateString) => {
   }
 
   const timeParts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Seoul",
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     hour: "numeric",
     minute: "2-digit",
     hour12: false,
@@ -164,6 +166,17 @@ function Home() {
 
   // 금고 요약 API 데이터
   const [vaultSummary, setVaultSummary] = useState(null);
+  const [currentActivity, setCurrentActivity] = useState(null);
+  const [activityError, setActivityError] = useState('');
+  const [dismissedRequests,setDismissedRequests] = useState([]);
+  useEffect(() => {
+    let active = true;
+    const refresh = () => getCurrentActivity().then(data => { if (active) { setCurrentActivity(data); setActivityError(''); } }).catch(() => { if (active) setActivityError('진행 중인 활동을 확인하지 못했어요.'); });
+    refresh();
+    const unsubscribe = subscribeFe2Changes(refresh);
+    window.addEventListener('focus', refresh);
+    return () => { active = false; unsubscribe(); window.removeEventListener('focus', refresh); };
+  }, []);
 
   // 금고 요약 API 상태
   const [isLoading, setIsLoading] = useState(true);
@@ -193,14 +206,13 @@ function Home() {
 
         setVaultSummary(data);
 
-        console.log("금고 요약 API 응답:", data);
+
       } catch (error) {
         if (cancelled) return;
 
         console.error(
           "금고 요약 API 오류:",
-          error.response?.status,
-          error.response?.data || error.message
+          logError(error)
         );
 
         setApiError("금고 정보를 불러오지 못했습니다.");
@@ -212,9 +224,13 @@ function Home() {
     };
 
     fetchVaultSummary();
+    const unsubscribe = subscribeFe2Changes(fetchVaultSummary);
+    window.addEventListener("focus", fetchVaultSummary);
 
     return () => {
       cancelled = true;
+      unsubscribe();
+      window.removeEventListener("focus", fetchVaultSummary);
     };
   }, []);
 
@@ -240,7 +256,7 @@ function Home() {
           return;
         }
 
-        console.log("재알림 조회 API 응답:", data);
+
 
         const reminderDate = getReminderDate(data);
 
@@ -254,8 +270,7 @@ function Home() {
 
         console.error(
           "재알림 조회 API 오류:",
-          error.response?.status,
-          error.response?.data || error.message
+          logError(error)
         );
 
         // API 문서에서 예약 없음 응답 형식을 확인해야 함
@@ -295,8 +310,7 @@ function Home() {
     } catch (error) {
       console.error(
         "재알림 취소 API 오류:",
-        error.response?.status,
-        error.response?.data || error.message
+        logError(error)
       );
 
       setReminderError(
@@ -320,7 +334,19 @@ function Home() {
     ? vaultSummary.analysisRequests
     : [];
 
+  const visibleRequests = analysisRequests.filter(request => !dismissedRequests.includes(request.requestId));
   const nearestPublishAt = vaultSummary?.nearestPublishAt;
+  const hasPending = analysisRequests.some(request => request.status === 'PENDING');
+  useEffect(() => {
+    if (!hasPending) return;
+    let active = true;
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'hidden') return;
+      getVaultSummary().then(data => { if (active) setVaultSummary(data); }).catch(() => {});
+    }, 5000);
+    return () => { active = false; window.clearInterval(timer); };
+  }, [hasPending]);
+
 
   const reminderDate = getReminderDate(reminder);
 
@@ -331,8 +357,8 @@ function Home() {
   const isEmpty =
     lockedCount === 0 &&
     publicCount === 0 &&
-    analysisRequests.length === 0 &&
-    !reminderDate;
+    visibleRequests.length === 0 &&
+    !reminderDate && !currentActivity?.activityId;
 
   const isPublic = publicCount > 0;
 
@@ -417,6 +443,7 @@ function Home() {
     <div className="nv-home">
       {renderHeader()}
 
+      {activityError && <p className="nv-home-inline-error" role="alert">{activityError}</p>}
       {/* ====================================
           ① 기록이 없는 상태
       ==================================== */}
@@ -491,6 +518,9 @@ function Home() {
       {!isEmpty && (
         <main className="nv-home-content">
 
+          {currentActivity?.activityId && <button type="button" className="nv-home-info-card" onClick={() => navigate('/activities/' + encodeURIComponent(currentActivity.activityId))}>
+            <Circle size={23} /><div><span>진행 중인 활동</span><strong>{currentActivity.helpType === 'ACTION' ? '10분 액션 · ' + (currentActivity.progress?.doneCount ?? 0) + '/3 단계' : currentActivity.helpType === 'REST' ? '짧은 휴식 · ' + (currentActivity.progress?.timeOver ? '완료할 수 있어요' : currentActivity.state === 'PAUSED' ? '일시정지' : '진행 중') : '그냥 들어줘'}</strong></div><ChevronRight className="nv-home-info-arrow" size={22} />
+          </button>}
           {/* 공개 가능한 걱정 */}
           {isPublic && (
             <section className="nv-home-vault-card nv-home-vault-public">
@@ -507,7 +537,7 @@ function Home() {
 
               <button
                 type="button"
-                onClick={() => navigate("/records")}
+                onClick={() => navigate("/vault")}
               >
                 금고 열기
               </button>
@@ -515,28 +545,9 @@ function Home() {
           )}
 
           {/* 정리 중인 걱정 */}
-          {analysisRequests.length > 0 && (
-            <button
-              type="button"
-              className="nv-home-info-card"
-              onClick={() => navigate("/records")}
-            >
-              <Circle size={23} />
-
-              <div>
-                <span>정리 중</span>
-
-                <strong>
-                  걱정 {analysisRequests.length}개를 정리하고 있어요
-                </strong>
-              </div>
-
-              <ChevronRight
-                className="nv-home-info-arrow"
-                size={22}
-              />
-            </button>
-          )}
+          {visibleRequests.map(request => <div key={request.requestId}><button type="button" className="nv-home-info-card" onClick={() => navigate('/worry-analysis', { state: { requestId: request.requestId } })}>
+            <Circle size={23} /><div><span>{request.status === 'FAILED' ? '정리 실패' : '정리 중'}</span><strong>{request.status === 'FAILED' ? '정리하지 못했어요 · 다시 시도' : '걱정 1개를 정리하고 있어요'}</strong></div><ChevronRight className="nv-home-info-arrow" size={22} />
+          </button>{request.status === 'FAILED' && <button type="button" className="nv-home-cancel" aria-label="정리 실패 안내 닫기" onClick={() => setDismissedRequests(ids => [...ids,request.requestId])}>닫기</button>}</div>)}
 
           {/* ====================================
               재알림 예약 카드
@@ -605,7 +616,7 @@ function Home() {
 
               <button
                 type="button"
-                onClick={() => navigate("/records")}
+                onClick={() => navigate("/vault")}
               >
                 잠긴 걱정 보기
               </button>
@@ -615,7 +626,7 @@ function Home() {
           {/* 정리 중인 걱정만 있는 경우 */}
           {isLocked &&
             lockedCount === 0 &&
-            analysisRequests.length > 0 && (
+            visibleRequests.some(request => request.status === 'PENDING') && (
               <p className="nv-home-processing-message">
                 걱정을 정리하고 있어요.
                 <br />
