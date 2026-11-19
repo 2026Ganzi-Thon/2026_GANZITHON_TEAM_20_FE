@@ -2,7 +2,7 @@ import {calendarDays,dayValue,canSelectDay} from '../src/features/fe2/calendar.j
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {createSpringApi,normalizeWorry} from '../src/features/fe2/springContract.js'
-const worry={worryId:'w1',visibility:'PUBLIC',createdAt:'2026-11-14T10:00:00Z',publishAt:'2026-11-15T00:00:00Z',summary:'사용자 정리',text:'걱정 원문',memo:'메모',anxietyBefore:4,anxietyAfter:null,firstViewedAt:null,analysis:{summary:'AI 원본',recommendation:{type:'ACTION',reason:'추천 이유'},actionSteps:['첫째','둘째','셋째'],restGuide:'휴식 안내',empathyMessage:'공감 문구'}}
+const worry={worryId:'w1',visibility:'PUBLIC',createdAt:'2026-11-14T10:00:00Z',publishAt:'2026-11-15T00:00:00Z',summary:'사용자 정리',summaryEdited:true,text:'걱정 원문',memo:'메모',anxietyBefore:4,anxietyAfter:null,firstViewedAt:null,analysis:{summary:'AI 원본',recommendation:{type:'ACTION',reason:'추천 이유'},actionSteps:['첫째','둘째','셋째'],restGuide:'휴식 안내',empathyMessage:'공감 문구'}}
 const action={activityId:'a1',worryId:'w1',helpType:'ACTION',state:'IN_PROGRESS',serverTime:'2026-11-15T10:00:00Z',action:{steps:[{stepNo:1,done:true},{stepNo:2,done:false},{stepNo:3,done:false}]},rest:null,feedback:null}
 function setup(handler,options){const calls=[];const api=createSpringApi(async(method,url,data,options)=>{calls.push({method,url,data,options});const value=await handler({method,url,data,options});return value?.httpStatus?{status:value.httpStatus,data:value.body}:{status:200,data:value}},options);return {api,calls}}
 test('실제 잠금 DTO는 민감 필드를 전달받아도 화면 모델에 포함하지 않는다',()=>{
@@ -70,4 +70,28 @@ test('달력은 실제 요일·윤년·허용 날짜 범위를 계산한다',()=
  const leap=calendarDays(2028,1);assert.equal(leap.filter(Boolean).length,29);assert.equal(leap[new Date(2028,1,1).getDay()],1)
  const april=calendarDays(2026,3);assert.equal(april[3],1);assert.equal(april.filter(Boolean).at(-1),30)
  assert.equal(dayValue(2026,10,5),'2026-11-05');assert.equal(canSelectDay('2026-11-04','2026-11-05','2026-12-04'),false);assert.equal(canSelectDay('2026-11-05','2026-11-05','2026-12-04'),true)
+})
+
+test('수정 표시는 원문 비교 대신 서버 플래그를 따른다',()=>{
+ const analysis={...worry.analysis};delete analysis.summary
+ assert.equal(normalizeWorry({...worry,analysis,summaryEdited:false}).summary_edited,false)
+ assert.equal(normalizeWorry({...worry,analysis,summaryEdited:true}).summary_edited,true)
+ assert.equal(normalizeWorry({...worry,summary:'원래와 같음',analysis:{...analysis,summary:'원래와 같음'},summaryEdited:true}).summary_edited,true)
+})
+
+test('다음 걱정은 현재 항목을 제외하고 모든 공개 커서에서 미열람 여부를 확인한다', async () => {
+ const {api,calls}=setup(({url})=>url.includes('cursor=next')?{items:[{...worry,worryId:'other',firstViewedAt:null}],nextCursor:null}:{items:[worry],nextCursor:'next'})
+ assert.equal(await api.nextUnviewed('w1'),true)
+ assert.equal(calls.length,2)
+ const empty=setup(()=>({items:[{...worry,firstViewedAt:'2026-11-19T00:00:00Z'}],nextCursor:null}))
+ assert.equal(await empty.api.nextUnviewed('w1'),false)
+})
+test('24시간 시연 이동은 키를 헤더로 보내고 정확한 PLUS_24H 프리셋을 사용한다',async()=>{
+ const {api,calls}=setup(()=>({demo:true}))
+ await api.demoAdvance({'X-Demo-Key':'qa-only'},'PLUS_24H')
+ assert.deepEqual(calls[0].data,{preset:'PLUS_24H'})
+ assert.equal(calls[0].options.headers['X-Demo-Key'],'qa-only')
+})
+test('공개 모델은 서버가 실수로 원본 요약을 보내도 화면에 전달하지 않는다',()=>{
+ assert.equal(normalizeWorry(worry).ai_content.original_summary,undefined)
 })

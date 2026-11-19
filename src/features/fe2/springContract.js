@@ -7,14 +7,14 @@ export const normalizeWorry = w => {
   const analysis = w.analysis
   return { ...base, display_summary: w.summary, distress_before: w.anxietyBefore, distress_after: w.anxietyAfter ?? null,
     is_unviewed: !w.firstViewedAt, worry_text: w.text, tomorrow_note: w.memo,
-    summary_edited: analysis ? w.summary !== analysis.summary : false,
+    summary_edited: Boolean(w.summaryEdited),
     allowed_help: ['ACTION','REST','EMPATHY','SHRED'],
-    ai_content: analysis ? { display_summary: w.summary, original_summary: analysis.summary, recommended_help: analysis.recommendation.type,
+    ai_content: analysis ? { display_summary: w.summary, recommended_help: analysis.recommendation.type,
       action_steps: analysis.actionSteps, rest_guidance: analysis.restGuide, empathy_message: analysis.empathyMessage } : undefined }
 }
 export function normalizeActivity(a, worry) {
   return { activity_id: a.activityId, worry_id: a.worryId, type: a.helpType, status: a.state,
-    ends_at: a.rest?.endsAt, remaining_seconds: a.rest?.remainingSeconds, duration_seconds: a.rest?.durationSeconds,
+    ends_at: a.rest?.endsAt, remaining_seconds: a.rest?.remainingSeconds, duration_seconds: a.rest?.durationSeconds, server_time:a.serverTime, time_over:a.rest?.timeOver,
     helpfulness: a.feedback?.answer, next_unviewed_exists: a.nextUnviewedExists,
     steps: a.action?.steps.map(s => ({ step_number: s.stepNo, checked: s.done, title: worry?.ai_content?.action_steps?.[s.stepNo-1] })),
     started_at: a.startedAt, ended_at: a.endedAt }
@@ -107,10 +107,23 @@ export function createSpringApi(request, { onStopped = () => {} } = {}) {
     deleteWorry:id=>request('delete','/worries/'+enc(id)),
     // Current backend exposes no deletion-job polling. Never fabricate completion for DELETING/404.
     deletionJob:async()=>{throw {code:'DELETION_PENDING'}},
+    async nextUnviewed(worryId,options) {
+      if (!worryId) return false
+      let cursor = null
+      const visited = new Set()
+      do {
+        const page = await get('/worries?visibility=PUBLIC&limit=100'+(cursor?'&cursor='+enc(cursor):''),options)
+        if (page.items.some(w=>w.worryId!==worryId && !w.firstViewedAt)) return true
+        cursor = page.nextCursor
+        if (cursor && visited.has(cursor)) throw new Error('Repeated cursor')
+        visited.add(cursor)
+      } while (cursor)
+      return false
+    },
     demoStatus:headers=>get('/demo/status',{headers}),
     demoSession:headers=>send('post','/demo/session',undefined,{headers}),
     demoPresets:headers=>send('post','/demo/presets',undefined,{headers}),
-    demoAdvance:headers=>send('post','/demo/time-machine',{preset:'TO_PUBLISH'}, {headers}),
+    demoAdvance:(headers,preset='TO_PUBLISH')=>send('post','/demo/time-machine',{preset}, {headers}),
     demoReset:headers=>send('post','/demo/reset',undefined,{headers}),
   }
 }

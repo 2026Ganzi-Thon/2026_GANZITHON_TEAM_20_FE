@@ -1,0 +1,687 @@
+
+/* ========================================
+   S-06 봉인 완료 화면
+======================================== */
+
+.wc-page {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  margin: 0 auto;
+
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  font-family: "SUITE", sans-serif;
+  color: #22223f;
+}
+
+.wc-page button {
+  font-family: inherit;
+}
+
+/* ========================================
+   중앙 콘텐츠
+======================================== */
+
+.wc-main {
+  flex: 1;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px 20px;
+  box-sizing: border-box;
+}
+
+.wc-center {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  transform: translateY(8px);
+}
+
+/* ========================================
+   봉인 아이콘
+======================================== */
+
+.wc-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #24243e;
+  margin-bottom: 64px;
+}
+
+.wc-icon svg {
+  width: 64px;
+  height: 64px;
+}
+
+/* ========================================
+   완료 문구
+======================================== */
+
+.wc-message {
+  width: 100%;
+  text-align: center;
+}
+
+.wc-message h1 {
+  margin: 0;
+
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: -0.5px;
+
+  color: #24243e;
+}
+
+.wc-message p {
+  margin: 10px 0 0;
+
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+
+  color: #9899b5;
+}
+
+/* ========================================
+   공개 예정 시각
+======================================== */
+
+.wc-publish-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+  margin-top: 24px;
+  padding: 10px 15px;
+
+  min-height: 36px;
+  max-width: 100%;
+
+  box-sizing: border-box;
+  background: #eeedf5;
+  border-radius: 999px;
+
+  color: #272740;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.wc-publish-pill svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* ========================================
+   하단 버튼 영역
+======================================== */
+
+.wc-footer {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+  width: 100%;
+
+  padding: 0 24px 24px;
+  box-sizing: border-box;
+}
+
+.wc-footer button {
+  width: 100%;
+  min-height: 56px;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+/* 새 걱정 맡기기 - Figma 첫 번째 버튼 */
+
+.wc-new-button {
+  border: none;
+  background: #24243f;
+  color: #ffffff;
+}
+
+.wc-new-button:hover {
+  background: #343453;
+}
+
+/* 홈으로 - Figma 두 번째 버튼 */
+
+.wc-home-button {
+  background: #eeedf5;
+  border: none;
+  color: #24243f;
+}
+
+.wc-home-button:hover {
+  background: #e6e4ef;
+}
+
+/* 조금 뒤에 다시 알려주세요 - 텍스트 버튼 */
+
+.wc-reminder-button {
+  min-height: 44px !important;
+  margin-top: 4px;
+
+  background: transparent;
+  color: #8889a5;
+  border: none;
+
+  font-size: 12px !important;
+}
+
+.wc-reminder-button:hover:not(:disabled) {
+  background: #f8f7fb;
+}
+
+.wc-reminder-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* 예약 상태 안내 */
+
+.wc-reminder-status {
+  margin: 0 0 4px;
+
+  color: #77758f;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ========================================
+   AL-04 / AL-09 공통 Bottom Sheet
+======================================== */
+
+.wc-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  background: rgba(25, 24, 42, 0.46);
+}
+
+.wc-sheet {
+  width: 100%;
+  max-width: 430px;
+  max-height: 90dvh;
+  overflow-y: auto;
+
+  padding: 14px 24px 30px;
+  box-sizing: border-box;
+
+  border-radius: 26px 26px 0 0;
+  background: #ffffff;
+
+  color: #24243f;
+  font-family: "SUITE", sans-serif;
+
+  animation: wc-sheet-slide-up 0.25s ease-out;
+}
+
+.wc-sheet-handle {
+  width: 46px;
+  height: 5px;
+
+  margin: 0 auto 24px;
+
+  border-radius: 999px;
+  background: #e9e7f1;
+}
+
+.wc-sheet-title {
+  margin: 0 0 8px;
+
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.wc-sheet-description {
+  margin: 0 0 24px;
+
+  color: #8e8fa8;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   AL-04 재알림 선택지
+======================================== */
+
+.wc-reminder-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wc-reminder-option {
+  width: 100%;
+  min-height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 14px 20px;
+  box-sizing: border-box;
+
+  border: none;
+  border-radius: 15px;
+  background: #eeedf5;
+
+  color: #24243f;
+  cursor: pointer;
+}
+
+.wc-reminder-option:hover:not(:disabled) {
+  background: #e8e6f0;
+}
+
+.wc-reminder-option:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.wc-reminder-option-label {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.wc-reminder-option-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wc-reminder-option-time {
+  color: #8e8fa8;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* 라디오 버튼 */
+
+.wc-reminder-radio {
+  width: 27px;
+  height: 27px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #a4a4bc;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.wc-reminder-radio.selected {
+  border-color: #24243f;
+}
+
+.wc-reminder-radio.selected::after {
+  content: "";
+
+  width: 13px;
+  height: 13px;
+
+  border-radius: 50%;
+  background: #24243f;
+}
+
+/* 재알림 안내 */
+
+.wc-reminder-help {
+  margin: 22px 0 24px;
+
+  color: #8e8fa8;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.wc-reminder-replace {
+  margin: -8px 0 18px;
+  padding: 12px;
+
+  border-radius: 10px;
+  background: #f4f2f9;
+
+  color: #77758f;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ========================================
+   Bottom Sheet 확인 버튼
+======================================== */
+
+.wc-sheet-submit {
+  width: 100%;
+  min-height: 60px;
+
+  border: none;
+  border-radius: 13px;
+
+  background: #24243f;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wc-sheet-submit:hover:not(:disabled) {
+  background: #343453;
+}
+
+.wc-sheet-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   AL-09 오류 안내
+======================================== */
+
+.wc-error-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+  margin-bottom: 16px;
+
+  border-radius: 50%;
+  background: #eeedf5;
+  color: #77758f;
+}
+
+.wc-error-title {
+  margin: 0 0 8px;
+
+  color: #24243f;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.wc-error-description {
+  margin: 0;
+
+  color: #8e8fa8;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.wc-error-notice {
+  margin: 20px 0 14px;
+  padding: 16px 14px;
+
+  border-radius: 12px;
+  background: #eeedf5;
+
+  color: #77758f;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   완료 정보가 없는 경우
+======================================== */
+
+.wc-invalid {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 20px;
+  padding: 24px;
+  box-sizing: border-box;
+
+  font-family: "SUITE", sans-serif;
+  text-align: center;
+  color: #24243f;
+}
+
+.wc-invalid p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.wc-invalid button {
+  padding: 14px 24px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #24243f;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ========================================
+   Bottom Sheet 애니메이션
+======================================== */
+
+@keyframes wc-sheet-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-sheet {
+    animation: none;
+  }
+}
+
+/* ========================================
+   작은 모바일 화면 대응
+======================================== */
+
+@media (max-width: 375px) {
+  .wc-main {
+    padding: 20px 16px;
+  }
+
+  .wc-icon {
+    margin-bottom: 52px;
+  }
+
+  .wc-icon svg {
+    width: 58px;
+    height: 58px;
+  }
+
+  .wc-message h1 {
+    font-size: 19px;
+  }
+
+  .wc-message p {
+    font-size: 12px;
+  }
+
+  .wc-publish-pill {
+    font-size: 11px;
+    padding: 9px 12px;
+  }
+
+  .wc-footer {
+    padding: 0 20px 20px;
+    gap: 10px;
+  }
+
+  .wc-footer button {
+    min-height: 52px;
+    font-size: 13px;
+  }
+
+  .wc-sheet {
+    padding: 12px 20px 24px;
+  }
+
+  .wc-reminder-option {
+    min-height: 64px;
+    padding: 12px 16px;
+  }
+
+  .wc-reminder-option-label {
+    font-size: 15px;
+  }
+}
+
+/* ========================================
+   화면 높이가 작은 경우
+======================================== */
+
+@media (max-height: 700px) {
+  .wc-icon {
+    margin-bottom: 40px;
+  }
+
+  .wc-center {
+    transform: none;
+  }
+
+  .wc-footer {
+    padding-bottom: 16px;
+  }
+}
+
+
+/* ========================================
+   S-06 봉인 완료 - NIGHT THEME
+======================================== */
+
+/* 전체 화면 */
+.theme-night .wc-page,
+.theme-night .wc-invalid {
+  background-color: var(--navy-600);
+  color: var(--navy-100);
+}
+
+/* 봉인 아이콘 */
+.theme-night .wc-icon {
+  color: var(--navy-100);
+}
+
+/* 메인 문구 */
+.theme-night .wc-message h1 {
+  color: var(--navy-100);
+}
+
+/* 보조 문구 */
+.theme-night .wc-message p {
+  color: var(--navy-200);
+}
+
+/* 공개 예정 시간 */
+.theme-night .wc-publish-pill {
+  background-color: var(--navy-400);
+  color: var(--navy-100);
+}
+
+.theme-night .wc-publish-pill svg {
+  color: var(--navy-100);
+}
+
+/* 새 걱정 맡기기 - Primary 버튼 */
+.theme-night .wc-new-button {
+  background-color: var(--navy-100);
+  color: var(--navy-600);
+}
+
+.theme-night .wc-new-button:hover {
+  background-color: #dcdbe9;
+}
+
+/* 홈으로 - Secondary 버튼 */
+.theme-night .wc-home-button {
+  background-color: var(--navy-500);
+  color: var(--navy-100);
+}
+
+.theme-night .wc-home-button:hover {
+  background-color: var(--navy-400);
+}
+
+/* 조금 뒤에 다시 알려주세요 */
+.theme-night .wc-reminder-button {
+  background: transparent;
+  color: var(--navy-300);
+}
+
+.theme-night .wc-reminder-button:hover:not(:disabled) {
+  background-color: var(--navy-500);
+}
+
+/* 예약 상태 안내 */
+.theme-night .wc-reminder-status {
+  color: var(--navy-200);
+}
+
+/* ========================================
+   AL-04 / AL-09 Bottom Sheet
+   화면정의에 따라 라이트 유지
+======================================== */
+
+.theme-night .wc-sheet {
+  background-color: var(--white);
+  color: var(--navy-400);
+}
+
+/* ========================================
+   완료 정보가 없는 경우
+======================================== */
+
+.theme-night .wc-invalid p {
+  color: var(--navy-200);
+}
+
+.theme-night .wc-invalid button {
+  background-color: var(--navy-100);
+  color: var(--navy-600);
+}

@@ -1,18 +1,17 @@
 import axios from 'axios'
+import client from '../../api/client.js'
 import { createSpringApi } from './springContract.js'
 import { FE2_DATA_CHANGED_EVENT } from './integration.js'
 
 // Production uses the inspected Spring contract. Draft fixtures are development only.
 export const mockEnabled = import.meta.env.DEV && import.meta.env.VITE_FE2_MOCK === 'true'
-const http = axios.create({
+const http = mockEnabled ? axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api/v1',
   withCredentials: true,
   timeout: 15000,
   headers: { Accept: 'application/json', 'Cache-Control': 'no-store' },
-})
-let csrfToken
-let csrfHeader = 'X-CSRF-TOKEN'
-let csrfLoading
+}) : client
+
 let serverOffset = 0
 let mockAdapter
 const intents = new Map()
@@ -28,11 +27,6 @@ export async function request(method, url, data, options = {}) {
     mockAdapter ??= import('./mockAdapter.js').then(module => module.adapter)
   }
   const headers = { ...options.headers }
-  if (method !== 'get' && !mockEnabled && !csrfToken) {
-    csrfLoading ??= http.get('/csrf').then(response => {if(!response.data?.token || !response.data?.headerName) throw new Error('Invalid CSRF response');csrfToken=response.data.token;csrfHeader=response.data.headerName}).finally(()=>{csrfLoading=null})
-    await csrfLoading
-  }
-  if (method !== 'get' && csrfToken) headers[csrfHeader] = csrfToken
   if (options.intent) headers['Idempotency-Key'] = intentKey(options.intent)
   let response
   try { response = await http.request({
@@ -42,7 +36,6 @@ export async function request(method, url, data, options = {}) {
     if(!mockEnabled && error.response?.data?.code) {
       const {code,message}=error.response.data
       error.response.data={error:{code,message}}
-      if(code==='CSRF_REJECTED') csrfToken=undefined
     }
     throw error
   }
@@ -52,8 +45,6 @@ export async function request(method, url, data, options = {}) {
   if (mockEnabled && response.status !== 204 && (!response.data || !Object.hasOwn(response.data, 'data'))) throw new Error('Unexpected API response envelope')
   if (!mockEnabled && response.status !== 204 && (!response.data || typeof response.data !== 'object')) throw new Error('Invalid API JSON response')
   const result = response.status === 204 ? null : mockEnabled ? response.data?.data : response.data
-  if (url === '/session') csrfToken = result?.csrf_token
-  if (url === '/demo/session' || url === '/guest-sessions') csrfToken = undefined
   return { data: result, status: response.status }
 }
 const get = (url, options) => request('get', url, undefined, options).then(r => r.data)
@@ -68,6 +59,7 @@ export function forgetActivity(a) {
 }
 const draftApi = {
   markViewed: async () => null,
+  nextUnviewed: async worryId => worryId ? (await api.vault()).available.some(w=>w.id!==worryId && w.is_unviewed) : false,
   session: options => get('/session', options),
   vault: (cursor, options) => get(`/vault/worries?status=all&limit=20${cursor ? `&cursor=${id(cursor)}` : ''}`, options),
   lock: (worryId, options) => get(`/worries/${id(worryId)}/lock`, options),

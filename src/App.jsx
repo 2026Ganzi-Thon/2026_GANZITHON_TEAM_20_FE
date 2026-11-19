@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Layout from './layouts/Layout'
 import Start from './pages/fe1/Start'
 import Home from './pages/fe1/Home'
 import Settings from './pages/fe1/Settings'
+import WorryInput from './pages/fe1/WorryInput'
+import WorryTime from './pages/fe1/WorryTime'
+import WorryAnalysis from './pages/fe1/WorryAnalysis'
+import WorryComplete from './pages/fe1/WorryComplete'
+import useNightTheme from './hooks/useNightTheme'
 import Records from './pages/fe2/Records'
 import { checkGuest } from './api/guest'
 import Fe2Layout from './features/fe2/Layout.jsx'
@@ -14,10 +19,6 @@ import { ActionPage, RestPage, EmpathyPage, ShredPage, ResultPage, ActivityLink 
 import { RecordDetail } from './features/fe2/Records.jsx'
 import Demo from './features/fe2/Demo.jsx'
 import NotFound from './features/fe2/NotFound.jsx'
-
-function WorryInputPlaceholder() {
-  return <div style={{ padding: '40px 24px' }}><h1>걱정 입력 화면</h1><p>이곳에 S-03 걱정 입력 화면을 구현할 예정입니다.</p></div>
-}
 
 // FE1 guest gate. FE2 retains its own session/error handling; demo uses its operator gate.
 function GuestGate() {
@@ -36,12 +37,30 @@ function GuestGate() {
   if (status === 'INVALID') return location.pathname === '/start' && new URLSearchParams(location.search).get('mode') === 'restart' ? <Start /> : <Navigate to="/start?mode=restart" replace />
   return location.pathname === '/start' ? <Navigate to="/" replace /> : <Outlet />
 }
+function SessionEvents() {
+  const navigate = useNavigate()
+  useEffect(() => {
+    const auth = event => {
+      if (window.location.pathname === '/demo') return
+      const target = event.detail === 'GUEST_SESSION_INVALID' ? '/start?mode=restart' : '/start'
+      if (window.location.pathname + window.location.search !== target) navigate(target, { replace:true })
+    }
+    const changed = () => window.location.reload()
+    window.addEventListener('wooly:auth-error',auth)
+    window.addEventListener('wooly:external-session-change',changed)
+    return () => { window.removeEventListener('wooly:auth-error',auth); window.removeEventListener('wooly:external-session-change',changed) }
+  }, [navigate])
+  return null
+}
 function AppRoutes() {
   const location = useLocation()
   return <Routes>
     <Route element={<GuestGate key={location.pathname} />}>
       <Route path="/start" element={<Start />} />
-      <Route path="/worry-input" element={<WorryInputPlaceholder />} />
+      <Route path="/worry-input" element={<WorryInput />} />
+      <Route path="/worry-confirm" element={<WorryTime />} />
+      <Route path="/worry-analysis" element={<WorryAnalysis />} />
+      <Route path="/worry-complete" element={<WorryComplete />} />
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/settings" element={<Settings />} />
@@ -64,4 +83,4 @@ function AppRoutes() {
     <Route path="*" element={<NotFound />} />
   </Routes>
 }
-export default function App() { return <BrowserRouter><AppRoutes /></BrowserRouter> }
+export default function App() { const night=useNightTheme(); return <div className={night?"theme-night":"theme-morning"}><BrowserRouter><SessionEvents /><AppRoutes /></BrowserRouter></div> }

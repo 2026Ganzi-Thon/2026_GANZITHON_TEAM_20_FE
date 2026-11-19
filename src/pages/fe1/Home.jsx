@@ -1,19 +1,54 @@
+import { logError } from '../../api/logError.js'
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
   Shield,
   KeyRound,
   Circle,
   ChevronRight,
   Settings,
+  Bell,
 } from "lucide-react";
 
-import { getVaultSummary } from "../../api/vault";
+import { getVaultSummary, getCurrentActivity } from "../../api/vault";
+
+import {
+  getReminder,
+  cancelReminder,
+} from "../../api/settings";
+
 import "./Home.css";
 import { subscribeFe2Changes } from "../../features/fe2/integration.js";
 
-// 공개 예정 시각 표시
+/* ========================================
+   날짜 및 시간 표시
+======================================== */
+
+// 한국 시간 기준으로 날짜 표시
+const formatDateTime = (dateString) => {
+  if (!dateString) return null;
+
+  const date = new Date(dateString);
+
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  const formatter = new Intl.DateTimeFormat("ko-KR", {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  return formatter.format(date);
+};
+
+// 오늘 / 내일 / 날짜 구분
 const formatPublishAt = (dateString) => {
   if (!dateString) return null;
 
@@ -25,20 +60,41 @@ const formatPublishAt = (dateString) => {
 
   const now = new Date();
 
-  const today = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate()
+  const getKoreanDateParts = (value) => {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }).formatToParts(value);
+
+    const getPart = (type) =>
+      Number(parts.find((part) => part.type === type)?.value);
+
+    return {
+      year: getPart("year"),
+      month: getPart("month"),
+      day: getPart("day"),
+    };
+  };
+
+  const todayParts = getKoreanDateParts(now);
+  const targetParts = getKoreanDateParts(date);
+
+  const todayUTC = Date.UTC(
+    todayParts.year,
+    todayParts.month - 1,
+    todayParts.day
   );
 
-  const targetDay = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate()
+  const targetUTC = Date.UTC(
+    targetParts.year,
+    targetParts.month - 1,
+    targetParts.day
   );
 
   const dayDiff = Math.round(
-    (targetDay.getTime() - today.getTime()) / 86400000
+    (targetUTC - todayUTC) / 86400000
   );
 
   let dayLabel;
@@ -48,11 +104,25 @@ const formatPublishAt = (dateString) => {
   } else if (dayDiff === 1) {
     dayLabel = "내일";
   } else {
-    dayLabel = `${date.getMonth() + 1}월 ${date.getDate()}일`;
+    dayLabel =
+      `${targetParts.month}월 ${targetParts.day}일`;
   }
 
-  const hour = date.getHours();
-  const minute = String(date.getMinutes()).padStart(2, "0");
+  const timeParts = new Intl.DateTimeFormat("en-US", {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: false,
+    hourCycle: "h23",
+  }).formatToParts(date);
+
+  const hour = Number(
+    timeParts.find((part) => part.type === "hour")?.value
+  );
+
+  const minute =
+    timeParts.find((part) => part.type === "minute")?.value ??
+    "00";
 
   const period = hour < 12 ? "오전" : "오후";
   const displayHour = hour % 12 || 12;
@@ -60,15 +130,67 @@ const formatPublishAt = (dateString) => {
   return `${dayLabel} ${period} ${displayHour}:${minute}`;
 };
 
+/* ========================================
+   재알림 응답 처리
+======================================== */
+
+// 재알림 조회 API의 실제 응답 구조 확인 필요
+// 확인되지 않은 응답은 예약이 있다고 표시하지 않음
+const getReminderDate = (data) => {
+  if (!data || typeof data !== "object") {
+    return null;
+  }
+
+  const dateString =
+    data.sendAt ?? null;
+
+  if (!dateString) {
+    return null;
+  }
+
+  const date = new Date(dateString);
+
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return dateString;
+};
+
+/* ========================================
+   홈 화면
+======================================== */
+
 function Home() {
   const navigate = useNavigate();
 
   // 금고 요약 API 데이터
   const [vaultSummary, setVaultSummary] = useState(null);
+  const [currentActivity, setCurrentActivity] = useState(null);
+  const [activityError, setActivityError] = useState('');
+  const [dismissedRequests,setDismissedRequests] = useState([]);
+  useEffect(() => {
+    let active = true;
+    const refresh = () => getCurrentActivity().then(data => { if (active) { setCurrentActivity(data); setActivityError(''); } }).catch(() => { if (active) setActivityError('진행 중인 활동을 확인하지 못했어요.'); });
+    refresh();
+    const unsubscribe = subscribeFe2Changes(refresh);
+    window.addEventListener('focus', refresh);
+    return () => { active = false; unsubscribe(); window.removeEventListener('focus', refresh); };
+  }, []);
 
-  // API 상태
+  // 금고 요약 API 상태
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
+
+  // 재알림 API 상태
+  const [reminder, setReminder] = useState(null);
+  const [reminderError, setReminderError] = useState("");
+  const [isReminderCancelling, setIsReminderCancelling] =
+    useState(false);
+
+  /* ========================================
+     금고 요약 조회
+  ======================================== */
 
   useEffect(() => {
     let cancelled = false;
@@ -90,8 +212,7 @@ function Home() {
 
         console.error(
           "금고 요약 API 오류:",
-          error.response?.status,
-          error.response?.data || error.message
+          logError(error)
         );
 
         setApiError("금고 정보를 불러오지 못했습니다.");
@@ -104,14 +225,106 @@ function Home() {
 
     fetchVaultSummary();
     const unsubscribe = subscribeFe2Changes(fetchVaultSummary);
+    window.addEventListener("focus", fetchVaultSummary);
 
     return () => {
       cancelled = true;
       unsubscribe();
+      window.removeEventListener("focus", fetchVaultSummary);
     };
   }, []);
 
-  // 실제 API 데이터
+  /* ========================================
+     재알림 예약 조회
+  ======================================== */
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchReminder = async () => {
+      try {
+        setReminderError("");
+
+        const data = await getReminder();
+
+        if (cancelled) return;
+
+        // 204 No Content → 예약 없음
+        if (!data) {
+          console.log("현재 예약된 재알림이 없습니다.");
+          setReminder(null);
+          return;
+        }
+
+
+
+        const reminderDate = getReminderDate(data);
+
+        if (reminderDate) {
+          setReminder(data);
+        } else {
+          setReminder(null);
+        }
+      } catch (error) {
+        if (cancelled) return;
+
+        console.error(
+          "재알림 조회 API 오류:",
+          logError(error)
+        );
+
+        // API 문서에서 예약 없음 응답 형식을 확인해야 함
+        // 조회 실패를 예약 없음으로 단정하지 않음
+        setReminder(null);
+
+        setReminderError(
+          "재알림 예약 상태를 확인하지 못했어요."
+        );
+      }
+    };
+
+    fetchReminder();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  /* ========================================
+     재알림 예약 취소
+  ======================================== */
+
+  const handleCancelReminder = async () => {
+    if (isReminderCancelling) return;
+
+    setIsReminderCancelling(true);
+    setReminderError("");
+
+    try {
+      await cancelReminder();
+
+      // 서버에서 취소 성공한 뒤 카드 제거
+      setReminder(null);
+
+      console.log("재알림 예약 취소 완료");
+    } catch (error) {
+      console.error(
+        "재알림 취소 API 오류:",
+        logError(error)
+      );
+
+      setReminderError(
+        "재알림을 취소하지 못했어요. 다시 시도해 주세요."
+      );
+    } finally {
+      setIsReminderCancelling(false);
+    }
+  };
+
+  /* ========================================
+     서버 데이터
+  ======================================== */
+
   const lockedCount = vaultSummary?.lockedCount ?? 0;
   const publicCount = vaultSummary?.publicCount ?? 0;
 
@@ -121,24 +334,48 @@ function Home() {
     ? vaultSummary.analysisRequests
     : [];
 
+  const visibleRequests = analysisRequests.filter(request => !dismissedRequests.includes(request.requestId));
   const nearestPublishAt = vaultSummary?.nearestPublishAt;
+  const hasPending = analysisRequests.some(request => request.status === 'PENDING');
+  useEffect(() => {
+    if (!hasPending) return;
+    let active = true;
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'hidden') return;
+      getVaultSummary().then(data => { if (active) setVaultSummary(data); }).catch(() => {});
+    }, 5000);
+    return () => { active = false; window.clearInterval(timer); };
+  }, [hasPending]);
 
-  // 화면 상태 판단
+
+  const reminderDate = getReminderDate(reminder);
+
+  /* ========================================
+     화면 상태 판단
+  ======================================== */
+
   const isEmpty =
     lockedCount === 0 &&
     publicCount === 0 &&
-    analysisRequests.length === 0;
+    visibleRequests.length === 0 &&
+    !reminderDate && !currentActivity?.activityId;
 
   const isPublic = publicCount > 0;
 
   const isLocked = !isEmpty && !isPublic;
 
-  // 걱정 입력 페이지 이동
+  /* ========================================
+     화면 이동
+  ======================================== */
+
   const goToWorryInput = () => {
     navigate("/worry-input");
   };
 
-  // 공통 헤더
+  /* ========================================
+     공통 헤더
+  ======================================== */
+
   const renderHeader = () => (
     <header className="nv-home-header">
       <h1>심야 걱정 금고</h1>
@@ -154,7 +391,10 @@ function Home() {
     </header>
   );
 
-  // API 로딩
+  /* ========================================
+     API 로딩 화면
+  ======================================== */
+
   if (isLoading) {
     return (
       <div className="nv-home">
@@ -169,7 +409,10 @@ function Home() {
     );
   }
 
-  // API 오류
+  /* ========================================
+     API 오류 화면
+  ======================================== */
+
   if (apiError) {
     return (
       <div className="nv-home">
@@ -192,11 +435,19 @@ function Home() {
     );
   }
 
+  /* ========================================
+     홈 화면 렌더링
+  ======================================== */
+
   return (
     <div className="nv-home">
       {renderHeader()}
 
-      {/* ① 기록이 없는 상태 */}
+      {activityError && <p className="nv-home-inline-error" role="alert">{activityError}</p>}
+      {/* ====================================
+          ① 기록이 없는 상태
+      ==================================== */}
+
       {isEmpty && (
         <main className="nv-home-empty">
           <div className="nv-home-empty-center">
@@ -241,6 +492,15 @@ function Home() {
             </p>
           </div>
 
+          {reminderError && (
+            <p
+              className="nv-home-inline-error"
+              role="alert"
+            >
+              {reminderError}
+            </p>
+          )}
+
           <button
             type="button"
             className="nv-home-primary"
@@ -251,10 +511,17 @@ function Home() {
         </main>
       )}
 
-      {/* ② 공개 전 / ③ 공개 가능 */}
+      {/* ====================================
+          ② 기록이 있는 홈 화면
+      ==================================== */}
+
       {!isEmpty && (
         <main className="nv-home-content">
-          {/* 공개 가능한 걱정이 있을 때 */}
+
+          {currentActivity?.activityId && <button type="button" className="nv-home-info-card" onClick={() => navigate('/activities/' + encodeURIComponent(currentActivity.activityId))}>
+            <Circle size={23} /><div><span>진행 중인 활동</span><strong>{currentActivity.helpType === 'ACTION' ? '10분 액션 · ' + (currentActivity.progress?.doneCount ?? 0) + '/3 단계' : currentActivity.helpType === 'REST' ? '짧은 휴식 · ' + (currentActivity.progress?.timeOver ? '완료할 수 있어요' : currentActivity.state === 'PAUSED' ? '일시정지' : '진행 중') : '그냥 들어줘'}</strong></div><ChevronRight className="nv-home-info-arrow" size={22} />
+          </button>}
+          {/* 공개 가능한 걱정 */}
           {isPublic && (
             <section className="nv-home-vault-card nv-home-vault-public">
               <div className="nv-home-vault-icon">
@@ -278,27 +545,55 @@ function Home() {
           )}
 
           {/* 정리 중인 걱정 */}
-          {analysisRequests.length > 0 && (
-            <button
-              type="button"
-              className="nv-home-info-card"
-              onClick={() => navigate("/vault")}
-            >
-              <Circle size={23} />
+          {visibleRequests.map(request => <div key={request.requestId}><button type="button" className="nv-home-info-card" onClick={() => navigate('/worry-analysis', { state: { requestId: request.requestId } })}>
+            <Circle size={23} /><div><span>{request.status === 'FAILED' ? '정리 실패' : '정리 중'}</span><strong>{request.status === 'FAILED' ? '정리하지 못했어요 · 다시 시도' : '걱정 1개를 정리하고 있어요'}</strong></div><ChevronRight className="nv-home-info-arrow" size={22} />
+          </button>{request.status === 'FAILED' && <button type="button" className="nv-home-cancel" aria-label="정리 실패 안내 닫기" onClick={() => setDismissedRequests(ids => [...ids,request.requestId])}>닫기</button>}</div>)}
+
+          {/* ====================================
+              재알림 예약 카드
+          ==================================== */}
+
+          {reminderDate && (
+            <section className="nv-home-info-card nv-home-reminder-card">
+              <Bell size={23} strokeWidth={1.7} />
 
               <div>
-                <span>정리 중</span>
+                <span>재알림 예약됨</span>
 
                 <strong>
-                  걱정 {analysisRequests.length}개를 정리하고 있어요
+                  {formatPublishAt(reminderDate) ??
+                    formatDateTime(reminderDate)}
+                  에 한 번 알려드려요
                 </strong>
               </div>
 
-              <ChevronRight size={22} />
-            </button>
+              <button
+                type="button"
+                className="nv-home-cancel"
+                onClick={handleCancelReminder}
+                disabled={isReminderCancelling}
+              >
+                {isReminderCancelling
+                  ? "취소 중"
+                  : "취소"}
+              </button>
+            </section>
           )}
 
-          {/* 잠긴 걱정 */}
+          {/* 재알림 API 오류 */}
+          {reminderError && (
+            <p
+              className="nv-home-inline-error"
+              role="alert"
+            >
+              {reminderError}
+            </p>
+          )}
+
+          {/* ====================================
+              잠긴 걱정 카드
+          ==================================== */}
+
           {lockedCount > 0 && (
             <section className="nv-home-vault-card">
               <div className="nv-home-vault-icon">
@@ -306,11 +601,16 @@ function Home() {
                 <KeyRound size={15} />
               </div>
 
-              <h2>걱정 {lockedCount}개가 잠겨 있어요</h2>
+              <h2>
+                걱정 {lockedCount}개가 잠겨 있어요
+              </h2>
 
               <p>
                 {nearestPublishAt
-                  ? `${formatPublishAt(nearestPublishAt)}에 열려요`
+                  ? `${
+                      formatPublishAt(nearestPublishAt) ??
+                      "공개 예정 시각"
+                    }에 열려요`
                   : "공개 예정인 걱정이 있어요"}
               </p>
 
@@ -326,7 +626,7 @@ function Home() {
           {/* 정리 중인 걱정만 있는 경우 */}
           {isLocked &&
             lockedCount === 0 &&
-            analysisRequests.length > 0 && (
+            visibleRequests.some(request => request.status === 'PENDING') && (
               <p className="nv-home-processing-message">
                 걱정을 정리하고 있어요.
                 <br />
@@ -334,7 +634,10 @@ function Home() {
               </p>
             )}
 
-          {/* 걱정 추가 버튼 */}
+          {/* ====================================
+              걱정 추가 버튼
+          ==================================== */}
+
           <button
             type="button"
             className="nv-home-primary"

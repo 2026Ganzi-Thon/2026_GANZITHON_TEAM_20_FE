@@ -1,0 +1,175 @@
+{
+  "date": "2026-11-19",
+  "backendCommit": "1d01bd50ed4a0b173b53f280e80cecf1cbb8e06d",
+  "documents": [
+    {
+      "path": "AI/AI_README.md",
+      "blobSha": "2f7b63a9b70d057e4c5e1546b02051e913c1702c",
+      "characters": 5690,
+      "scope": "Reference and frontend boundary; server implementation not revalidated"
+    },
+    {
+      "path": "CHECKLIST.md",
+      "blobSha": "5008848dce642b7793ad1f922fbe84b572cb5187",
+      "characters": 9672,
+      "scope": "Frontend requirements, shared policy, deployment or demo checklist"
+    },
+    {
+      "path": "README.md",
+      "blobSha": "930c3e2284ed8dd14ae26ffff9ae1288b341dc2b",
+      "characters": 513,
+      "scope": "Reference and frontend boundary; server implementation not revalidated"
+    },
+    {
+      "path": "docs/api/demo-guide.md",
+      "blobSha": "06762b7e093f61e42c5a5d1d55c7302f146a7806",
+      "characters": 3237,
+      "scope": "Frontend requirements, shared policy, deployment or demo checklist"
+    },
+    {
+      "path": "docs/api/frontend-guide.md",
+      "blobSha": "c29fe40579a6b0ebbfcedf1038a4f836c7a9a846",
+      "characters": 13933,
+      "scope": "Frontend requirements, shared policy, deployment or demo checklist"
+    },
+    {
+      "path": "docs/api/stage5-6.md",
+      "blobSha": "c91575e3d6ea61a9ff1617abede95fb172df903a",
+      "characters": 5107,
+      "scope": "Frontend requirements, shared policy, deployment or demo checklist"
+    },
+    {
+      "path": "docs/demo-analysis-test-record.md",
+      "blobSha": "0a3fe4ccce9261ede11f1af27e2f3c3bf7cae9c2",
+      "characters": 2330,
+      "scope": "Reference and frontend boundary; server implementation not revalidated"
+    },
+    {
+      "path": "docs/demo-scenario.md",
+      "blobSha": "3089bfbee3144577397f2e942752ddd93c83fa10",
+      "characters": 5717,
+      "scope": "Frontend requirements, shared policy, deployment or demo checklist"
+    },
+    {
+      "path": "docs/deployment-review-record.md",
+      "blobSha": "0d7dc95e2a864be771660250c09ed89a15ea0afd",
+      "characters": 6105,
+      "scope": "Reference and frontend boundary; server implementation not revalidated"
+    },
+    {
+      "path": "docs/deployment.md",
+      "blobSha": "3d60d2bf0f3b193c157f7a53eb86066bf730cc49",
+      "characters": 8525,
+      "scope": "Frontend requirements, shared policy, deployment or demo checklist"
+    },
+    {
+      "path": "docs/development-plan.md",
+      "blobSha": "324e1de4bb52ef5f45a415dfc32accd289764a0e",
+      "characters": 6571,
+      "scope": "Reference and frontend boundary; server implementation not revalidated"
+    },
+    {
+      "path": "docs/erd/erd.md",
+      "blobSha": "73a7d13153c5833b971fec7c5d9a214563e4f814",
+      "characters": 8413,
+      "scope": "Reference and frontend boundary; server implementation not revalidated"
+    },
+    {
+      "path": "docs/frontend-integration-review.md",
+      "blobSha": "3b0df22c29ddc4ed25bec561e56f274e52358e12",
+      "characters": 10791,
+      "scope": "Frontend requirements, shared policy, deployment or demo checklist"
+    },
+    {
+      "path": "docs/review-followup.md",
+      "blobSha": "beb01725485fea9dc59e3cff8ab66a1c52a1e9e7",
+      "characters": 5428,
+      "scope": "Reference and frontend boundary; server implementation not revalidated"
+    },
+    {
+      "path": "docs/roles/BE1_README.md",
+      "blobSha": "9eb5cbb9ee0c101d9b154f826d1b7c09f1f91129",
+      "characters": 3927,
+      "scope": "Reference and frontend boundary; server implementation not revalidated"
+    },
+    {
+      "path": "docs/roles/BE2_README.md",
+      "blobSha": "dfd7a3e8de7b665c5e96ff70c3c761940d673a35",
+      "characters": 4533,
+      "scope": "Reference and frontend boundary; server implementation not revalidated"
+    },
+    {
+      "path": "docs/roles/BE2_design.md",
+      "blobSha": "e7a27218d60becc424dfc352a2a1fd12983246af",
+      "characters": 50890,
+      "scope": "Reference and frontend boundary; server implementation not revalidated"
+    },
+    {
+      "path": "docs/spec/BE2_rules.md",
+      "blobSha": "7beb25f3b5b609906343016792046495f5b92004",
+      "characters": 9766,
+      "scope": "Frontend requirements, shared policy, deployment or demo checklist"
+    },
+    {
+      "path": "docs/spec/crisis-routing-evidence.md",
+      "blobSha": "0e4345f41a7bdd1759285ea076a68719d939be0c",
+      "characters": 8548,
+      "scope": "Reference and frontend boundary; server implementation not revalidated"
+    },
+    {
+      "path": "docs/spec/screen_policy.md",
+      "blobSha": "7d3136b052df6cefb26af1528ae1b330598a8f51",
+      "characters": 13316,
+      "scope": "Frontend requirements, shared policy, deployment or demo checklist"
+    },
+    {
+      "path": "scripts/dev/README.md",
+      "blobSha": "55fac5b7c2c847a595b3cf041a3f03a6761c9412",
+      "characters": 1811,
+      "scope": "Frontend requirements, shared policy, deployment or demo checklist"
+    }
+  ],
+  "release": {
+    "lint": "PASS",
+    "tests": 35,
+    "failed": 0,
+    "build": "PASS",
+    "sampleFixturesExcluded": true
+  },
+  "realBrowser": {
+    "guestCsrfRejectedOnceThenRecovered": true,
+    "inputBackRestoredWithoutHistoryPlaintext": true,
+    "analysisReloadRestoresRequestId": true,
+    "lostDraftRequiresReentry": true,
+    "retrySameRequestSucceeded": true,
+    "recordViewPostObserved": true,
+    "wholeVaultDeleted": true,
+    "sessionAfterDeletion": 401,
+    "freshGuestDemoEntryWithoutBadge": true
+  },
+  "isolatedBrowser": {
+    "serverRestTimeOverRequired": true,
+    "zeroDoesNotOscillateToOne": true,
+    "nextUnviewedFalseHidesButton": true,
+    "nextUnviewedTrueShowsButton": true,
+    "demoNoBadgeBeforeAuthorization": true,
+    "demo404NeutralUnavailable": true,
+    "demoPlus24Contract": true,
+    "demoKeyNotInStorage": true,
+    "deletion202WaitAndReentry": true,
+    "deletionNoAutomaticRetry": true,
+    "deletion404NotSuccess": true,
+    "deletion204Success": true,
+    "global401RestartRoute": true,
+    "csrfPromiseDeduplication": true,
+    "sessionChangeCancelsOldRequests": true,
+    "sessionChangesSerialized": true,
+    "inflightCsrfCanceledOnSessionChange": true,
+    "twoTabInvalidationAndDraftClear": true,
+    "failedCardDismissalDoesNotDelete": true,
+    "unicode500Allowed501Rejected": true,
+    "originalWhitespacePreserved": true,
+    "errorLogExcludesInput": true
+  },
+  "pageErrors": []
+}

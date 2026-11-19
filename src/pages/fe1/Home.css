@@ -1,4 +1,8 @@
 
+/* ========================================
+   홈 화면 기본 레이아웃
+======================================== */
+
 .nv-home {
   min-height: 100%;
   display: flex;
@@ -6,7 +10,12 @@
   background: #ffffff;
   color: #25243a;
   font-family: "SUITE", sans-serif;
+  box-sizing: border-box;
 }
+
+/* ========================================
+   헤더
+======================================== */
 
 .nv-home-header {
   display: flex;
@@ -31,6 +40,10 @@
   color: #999bb8;
   cursor: pointer;
 }
+
+/* ========================================
+   기록이 없는 홈 화면
+======================================== */
 
 .nv-home-empty {
   flex: 1;
@@ -80,6 +93,10 @@
   color: #999bb8;
 }
 
+/* ========================================
+   주요 버튼
+======================================== */
+
 .nv-home-primary {
   width: 100%;
   min-height: 65px;
@@ -87,7 +104,7 @@
   border: none;
   border-radius: 14px;
   background: #25243a;
-  color: white;
+  color: #ffffff;
   font-family: inherit;
   font-size: 18px;
   font-weight: 500;
@@ -98,7 +115,9 @@
   background: #34334e;
 }
 
-/* 기록이 있는 홈 화면 */
+/* ========================================
+   기록이 있는 홈 화면
+======================================== */
 
 .nv-home-content {
   display: flex;
@@ -106,6 +125,10 @@
   gap: 18px;
   padding: 20px 30px 35px;
 }
+
+/* ========================================
+   상태별 정보 카드
+======================================== */
 
 .nv-home-info-card {
   width: 100%;
@@ -120,10 +143,15 @@
   color: #7d7e9e;
   font-family: inherit;
   text-align: left;
+  box-sizing: border-box;
 }
 
 button.nv-home-info-card {
   cursor: pointer;
+}
+
+.nv-home-info-card > svg:first-child {
+  flex-shrink: 0;
 }
 
 .nv-home-info-card > div {
@@ -146,23 +174,74 @@ button.nv-home-info-card {
   line-height: 1.4;
 }
 
-.nv-home-cancel {
+.nv-home-info-arrow {
   flex-shrink: 0;
+  margin-left: auto;
+  color: #999bb8;
+}
+
+/* ========================================
+   재알림 카드
+======================================== */
+
+.nv-home-reminder-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #eeedf7;
+}
+
+.nv-home-reminder-card > svg {
+  flex-shrink: 0;
+  color: #81829d;
+}
+
+.nv-home-reminder-card > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.nv-home-reminder-card strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.nv-home-cancel,
+.nv-home-reminder-card .nv-home-cancel {
+  flex-shrink: 0;
+  padding: 8px 4px;
   border: none;
   background: transparent;
   color: #a2a3bc;
   font-family: inherit;
+  font-size: 12px;
   cursor: pointer;
 }
+
+.nv-home-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nv-home-inline-error {
+  margin: 0;
+  color: #b34b4b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ========================================
+   금고 카드
+======================================== */
 
 .nv-home-vault-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 34px 26px 30px;
-  border: 1px solid #e4e4e9;
+  border: 1px solid #25243a;
   border-radius: 24px;
-  background: white;
+  background: #25243a;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.09);
   text-align: center;
 }
@@ -203,16 +282,74 @@ button.nv-home-info-card {
   border: none;
   border-radius: 13px;
   background: #9d9fbb;
-  color: white;
+  color: #ffffff;
   font-family: inherit;
   font-size: 16px;
   cursor: pointer;
 }
 
-.nv-home-vault-public {
-  background: #eeedf7;
-  border-color: #eeedf7;
+/* ========================================
+   공개된 걱정 카드 - 라이트
+======================================== */
+
+.nv-home-vault-card.nv-home-vault-public {
+  background: #ffffff;
+  border: 1px solid #e4e4e9;
 }
+
+.nv-home-vault-public .nv-home-vault-icon,
+.nv-home-vault-public h2 {
+  color: #25243a;
+}
+
+.nv-home-vault-public p {
+  color: #8889a3;
+}
+
+.nv-home-vault-public > button {
+  background: #25243a;
+  color: #ffffff;
+}
+
+/* ========================================
+   잠긴 걱정 카드 - 라이트
+======================================== */
+
+.nv-home-vault-card:not(.nv-home-vault-public) {
+  background: #25243a;
+  border: 1px solid #25243a;
+}
+
+.nv-home-vault-card:not(.nv-home-vault-public)
+  .nv-home-vault-icon,
+.nv-home-vault-card:not(.nv-home-vault-public) h2 {
+  color: #ffffff;
+}
+
+.nv-home-vault-card:not(.nv-home-vault-public) p {
+  color: #999bb8;
+}
+
+.nv-home-vault-card:not(.nv-home-vault-public) > button {
+  background: #9d9fbb;
+  color: #ffffff;
+}
+
+/* ========================================
+   정리 중 안내
+======================================== */
+
+.nv-home-processing-message {
+  margin: 20px 0;
+  color: #8889a3;
+  font-size: 14px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* ========================================
+   개발용 버튼
+======================================== */
 
 .nv-home-dev {
   display: flex;
@@ -232,6 +369,142 @@ button.nv-home-info-card {
   cursor: pointer;
 }
 
+
+/* ========================================
+   HOME-06 나이트 테마
+======================================== */
+
+/* 전체 배경 */
+.theme-night .nv-home {
+  background: #14172b;
+  color: #ecebf5;
+  min-height: 100dvh;
+}
+
+/* 헤더 */
+.theme-night .nv-home-header h1 {
+  color: #ecebf5;
+}
+
+.theme-night .nv-home-settings {
+  color: #9a9cb8;
+}
+
+/* 정리 중 / 진행 중 활동 카드 */
+.theme-night .nv-home-info-card {
+  background: #9a9cb8;
+  color: #ecebf5;
+}
+
+.theme-night .nv-home-info-card span,
+.theme-night .nv-home-info-card strong {
+  color: #ecebf5;
+}
+
+.theme-night .nv-home-info-card svg {
+  color: #ecebf5;
+}
+
+/* 재알림 카드 */
+.theme-night .nv-home-reminder-card {
+  background: #9a9cb8;
+}
+
+.theme-night .nv-home-reminder-card span,
+.theme-night .nv-home-reminder-card strong,
+.theme-night .nv-home-reminder-card > svg {
+  color: #ecebf5;
+}
+
+.theme-night .nv-home-reminder-card .nv-home-cancel {
+  color: #ecebf5;
+}
+
+/* 잠긴 걱정 카드 */
+.theme-night
+  .nv-home-vault-card:not(.nv-home-vault-public) {
+  background: #24243a;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.theme-night
+  .nv-home-vault-card:not(.nv-home-vault-public)
+  .nv-home-vault-icon,
+.theme-night
+  .nv-home-vault-card:not(.nv-home-vault-public) h2 {
+  color: #ecebf5;
+}
+
+.theme-night
+  .nv-home-vault-card:not(.nv-home-vault-public) p {
+  color: #9a9cb8;
+}
+
+/* 잠긴 걱정 보기 버튼 */
+.theme-night
+  .nv-home-vault-card:not(.nv-home-vault-public)
+  > button {
+  background: #6e6f8a;
+  color: #ecebf5;
+}
+
+/* 공개된 걱정 카드 */
+.theme-night .nv-home-vault-card.nv-home-vault-public {
+  background: #24243a;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.theme-night .nv-home-vault-public .nv-home-vault-icon,
+.theme-night .nv-home-vault-public h2 {
+  color: #ecebf5;
+}
+
+.theme-night .nv-home-vault-public p {
+  color: #9a9cb8;
+}
+
+/* 공개된 걱정 카드 버튼 */
+.theme-night .nv-home-vault-public > button {
+  background: #6e6f8a;
+  color: #ecebf5;
+}
+
+/* 걱정 더 맡기기 */
+.theme-night .nv-home-primary {
+  background: #24243a;
+  color: #ecebf5;
+}
+
+.theme-night .nv-home-primary:hover {
+  background: #343650;
+}
+
+/* 빈 화면 */
+.theme-night .nv-home-empty-center h2 {
+  color: #ecebf5;
+}
+
+.theme-night .nv-home-empty-center p,
+.theme-night .nv-home-processing-message {
+  color: #9a9cb8;
+}
+
+.theme-night .nv-home-illustration {
+  background: transparent;
+}
+
+.theme-night .nv-home-illustration svg path,
+.theme-night .nv-home-illustration svg circle {
+  stroke: #ecebf5;
+}
+
+
+/* ========================================
+   모바일 대응
+======================================== */
+
 @media (max-width: 380px) {
   .nv-home-header {
     padding-left: 20px;
@@ -245,19 +518,109 @@ button.nv-home-info-card {
   }
 
   .nv-home-dev {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 0 20px;
+  }
+
+  .nv-home-info-card {
+    padding: 15px;
+    gap: 12px;
   }
 
   .nv-home-info-card strong {
-    font-size: 15px;
+    font-size: 14px;
   }
 }
 
-.nv-home-processing-message {
-  margin: 20px 0;
-  color: #8889a3;
-  font-size: 14px;
-  line-height: 1.8;
-  text-align: center;
+/* 홈 콘텐츠 간격 */
+.nv-home-content {
+  gap: 18px;
+  padding: 20px 30px 110px;
+}
+
+/* 금고 카드 높이 조정 */
+.nv-home-vault-card {
+  padding: 30px 26px 28px;
+  border-radius: 24px;
+}
+
+/* 아이콘 */
+.nv-home-vault-icon {
+  margin-bottom: 16px;
+}
+
+/* 카드 제목 */
+.nv-home-vault-card h2 {
+  margin-bottom: 8px;
+}
+
+/* 카드 설명 */
+.nv-home-vault-card p {
+  margin-bottom: 24px;
+}
+
+/* 카드 버튼 */
+.nv-home-vault-card > button {
+  min-height: 56px;
+}
+
+/* 앱 전체 나이트 배경 */
+.theme-night {
+  min-height: 100dvh;
+  background-color: var(--navy-600);
+}
+
+/* 모바일 화면 바깥쪽 배경도 통일 */
+body:has(.theme-night) {
+  background-color: var(--navy-600);
+}
+
+/* ========================================
+   NIGHT THEME - 금고 카드 색상
+======================================== */
+
+/* 공개된 걱정 - 밝은 회보라색 */
+.theme-night .nv-home-vault-card.nv-home-vault-public {
+  background-color: #ECEBF5;
+  border-color: #ECEBF5;
+}
+
+/* 공개된 걱정 - 아이콘과 제목 */
+.theme-night .nv-home-vault-public .nv-home-vault-icon,
+.theme-night .nv-home-vault-public h2 {
+  color: #24243A;
+}
+
+/* 공개된 걱정 - 설명 */
+.theme-night .nv-home-vault-public p {
+  color: #6E6F8A;
+}
+
+/* 공개된 걱정 - 버튼 */
+.theme-night .nv-home-vault-public > button {
+  background-color: #24243A;
+  color: #FFFFFF;
+}
+
+/* 잠긴 걱정 - 어두운 Navy */
+.theme-night .nv-home-vault-card:not(.nv-home-vault-public) {
+  background-color: #24243A;
+  border-color: #24243A;
+}
+
+/* 잠긴 걱정 - 아이콘과 제목 */
+.theme-night .nv-home-vault-card:not(.nv-home-vault-public)
+  .nv-home-vault-icon,
+.theme-night .nv-home-vault-card:not(.nv-home-vault-public) h2 {
+  color: #ECEBF5;
+}
+
+/* 잠긴 걱정 - 설명 */
+.theme-night .nv-home-vault-card:not(.nv-home-vault-public) p {
+  color: #9A9CB8;
+}
+
+/* 잠긴 걱정 - 버튼 */
+.theme-night .nv-home-vault-card:not(.nv-home-vault-public) > button {
+  background-color: #6E6F8A;
+  color: #FFFFFF;
 }

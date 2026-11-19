@@ -1,0 +1,332 @@
+
+/* S-05 AI 분석 중 화면 */
+
+.wa-page {
+  width: 100%;
+  min-height: 100dvh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  font-family: "SUITE", sans-serif;
+}
+
+/* 상단 헤더 */
+
+.wa-header {
+  width: 100%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.wa-close {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #252525;
+  cursor: pointer;
+}
+
+.wa-close:hover {
+  opacity: 0.7;
+}
+
+/* 메인 콘텐츠 */
+
+.wa-main {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  margin-top: -36px;
+}
+
+/* 원형 로딩 */
+
+.wa-loading-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 44px;
+}
+
+.wa-spinner {
+  width: 92px;
+  height: 92px;
+  border: 9px solid #e9e9e9;
+  border-top-color: #777777;
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: wa-spin 1.1s linear infinite;
+}
+
+.wa-spinner-stopped {
+  animation: none;
+  border-color: #e5e5e5;
+  border-top-color: #a3a3a3;
+}
+
+@keyframes wa-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 중앙 안내 문구 */
+
+.wa-message {
+  text-align: center;
+  width: 100%;
+}
+
+.wa-message h1 {
+  margin: 0;
+  color: #222222;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.7px;
+  word-break: keep-all;
+}
+
+.wa-message p {
+  margin: 12px 0 0;
+  color: #999999;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* 나가도 정리는 계속돼요 */
+
+.wa-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  margin-top: 32px;
+  padding: 0 18px;
+  background: #f3f3f3;
+  border-radius: 999px;
+  color: #777777;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.wa-small-spinner {
+  animation: wa-spin 1.3s linear infinite;
+}
+
+/* 하단 안내 */
+
+.wa-footer {
+  width: 100%;
+  padding: 0 24px 36px;
+  box-sizing: border-box;
+}
+
+.wa-notice {
+  width: 100%;
+  background: #f4f1ff;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.wa-notice-title {
+  margin: 0 0 8px;
+  color: #5e5682;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.wa-notice p:not(.wa-notice-title) {
+  margin: 0;
+  color: #817b99;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.wa-network-notice {
+  margin-top: 10px !important;
+}
+
+/* 실패 시 버튼 */
+
+.wa-retry-button {
+  margin-top: 30px;
+  min-width: 160px;
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+  background: #777777;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.wa-retry-button:hover {
+  background: #666666;
+}
+
+/* 모바일 대응 */
+
+@media (max-width: 375px) {
+  .wa-message h1 {
+    font-size: 22px;
+  }
+
+  .wa-spinner {
+    width: 82px;
+    height: 82px;
+    border-width: 8px;
+  }
+
+  .wa-footer {
+    padding: 0 20px 28px;
+  }
+
+  .wa-notice {
+    padding: 16px;
+  }
+}
+
+/* 애니메이션 최소화 설정 */
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-spinner,
+  .wa-small-spinner {
+    animation: none;
+  }
+}
+
+/* S-05 모바일 화면 너비 고정 */
+
+.wa-page {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+/* 내부 요소가 화면 밖으로 넘치지 않도록 */
+.wa-header,
+.wa-main,
+.wa-footer {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* 하단 안내 영역 */
+.wa-notice {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+
+/* ========================================
+   S-05 AI 분석 중 - NIGHT THEME
+======================================== */
+
+/* 전체 페이지 */
+.theme-night .wa-page {
+  background-color: var(--navy-600);
+  color: var(--navy-100);
+}
+
+/* 닫기 버튼 */
+.theme-night .wa-close {
+  color: var(--navy-100);
+  background: transparent;
+}
+
+/* 로딩 애니메이션 */
+.theme-night .wa-spinner {
+  border-color: var(--navy-300);
+  border-top-color: var(--navy-100);
+}
+
+.theme-night .wa-spinner-stopped {
+  border-color: var(--navy-300);
+  border-top-color: var(--navy-200);
+}
+
+/* 메인 문구 */
+.theme-night .wa-message h1 {
+  color: var(--navy-100);
+}
+
+/* 보조 문구 */
+.theme-night .wa-message p {
+  color: var(--navy-200);
+}
+
+/* 작은 상태 배지 */
+.theme-night .wa-status-pill {
+  background-color: var(--navy-400);
+  color: var(--navy-100);
+}
+
+.theme-night .wa-small-spinner {
+  color: var(--navy-200);
+}
+
+/* 하단 상태 안내 박스 */
+.theme-night .wa-notice {
+  background-color: var(--navy-400);
+}
+
+/* 하단 안내 박스 제목 */
+.theme-night .wa-notice-title {
+  color: var(--navy-100);
+}
+
+/* 하단 안내 박스 설명 */
+.theme-night .wa-notice p:not(.wa-notice-title) {
+  color: var(--navy-200);
+}
+
+/* 네트워크 오류 안내 */
+.theme-night .wa-network-notice {
+  color: var(--navy-200);
+}
+
+/* 실패 시 버튼 */
+.theme-night .wa-retry-button {
+  background-color: var(--navy-100);
+  color: var(--navy-600);
+}
+
+.theme-night .wa-retry-button:hover {
+  background-color: var(--navy-200);
+}
+
+
+
+.wa-retry-button:disabled { opacity:.5; cursor:default; }
+.wa-home-button { margin-top:16px; min-height:44px; border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }

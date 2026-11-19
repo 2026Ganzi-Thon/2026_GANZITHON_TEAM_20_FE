@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
-import { api, forgetActivity, notifyDataChanged, serverNow } from './api.js'
+import { api, forgetActivity, mockEnabled, notifyDataChanged, serverNow } from './api.js'
 import { canComplete, dateLabel, HELP, RATINGS, remainingSeconds } from './domain.js'
 import { Actions, Button, Feedback, Header, Icon, Modal, ResourceState } from './components.jsx'
 import { useMutation, useResource, useServerClock } from './hooks.js'
@@ -23,7 +23,7 @@ export function ActionPage() {
   }
   async function pause() {
     const result = await mutation.run(() => api.activityCommand(a.activity_id, 'pause'))
-    if (result.ok) { forgetActivity(a); notifyDataChanged(); navigate('/') }
+    if (result.ok) { forgetActivity(a); notifyDataChanged(); navigate('/worries/'+worryId) }
   }
   return <><Header title="10분 액션" back={`/worries/${worryId}`} /><main className="fe2-content fe2-action"><ResourceState resource={resource}>{a && <>
     <h2 className="title-2">지금 할 수 있는 작은 행동이에요</h2><p className="fe2-muted">순서는 자유롭게. 제한 시간은 없어요.</p>
@@ -45,9 +45,17 @@ export function RestPage() {
     let active = true
     const update = () => api.activity(activeId).then(value => { if (active) { setStarted(value); setSyncError('') } }).catch(() => { if (active) setSyncError('휴식 상태를 확인하지 못했어요. 연결이 돌아오면 다시 확인할게요.') })
     const timer = setInterval(update, 5000)
+    const visible = () => { if (document.visibilityState === 'visible') update() }
     window.addEventListener('focus', update)
-    return () => { active = false; clearInterval(timer); window.removeEventListener('focus', update) }
+    document.addEventListener('visibilitychange', visible)
+    return () => { active = false; clearInterval(timer); window.removeEventListener('focus', update); document.removeEventListener('visibilitychange', visible) }
   }, [activeId])
+  useEffect(() => {
+    if (!activeId || seconds !== 0 || a?.time_over === true || mockEnabled) return
+    const controller = new AbortController()
+    api.activity(activeId, { signal:controller.signal }).then(value => { if (!controller.signal.aborted) setStarted(value) }).catch(() => { if (!controller.signal.aborted) setSyncError('휴식 종료 상태를 확인하지 못했어요. 다시 확인할게요.') })
+    return () => controller.abort()
+  }, [activeId, seconds, a?.time_over])
   async function start() {
     const result = await mutation.run(() => api.start(worryId, 'REST'))
     if (result.ok) { setStarted(result.data); notifyDataChanged() }
@@ -57,15 +65,18 @@ export function RestPage() {
     if (result.ok) {
       if (name === 'stop') { forgetActivity(a); notifyDataChanged(); navigate(`/worries/${worryId}`) }
       else { setStarted(result.data); notifyDataChanged() }
+    } else {
+      const refreshed = await mutation.run(() => api.activity(a.activity_id))
+      if (refreshed.ok) setStarted(refreshed.data)
     }
   }
-  const ready = seconds === 0
+  const ready = seconds === 0 && (mockEnabled || a?.time_over === true)
   return <><Header title="짧은 휴식" back={`/worries/${worryId}`} /><main className="fe2-content fe2-rest"><ResourceState resource={detail}><ResourceState resource={current}>
-    {!a ? <div className="fe2-rest-intro"><div className="fe2-illustration-slot"><Icon name="moon" /></div><div className="fe2-rest-copy"><h2 className="title-2">3분만 쉬어가요</h2><p className="fe2-muted">{detail.data?.ai_content.rest_guidance}</p></div><span className="fe2-pill">직접 시작할 때까지 기다릴게요</span></div> : <div className="fe2-timer-wrap"><div className="fe2-timer" role="timer" aria-label={`남은 시간 ${Math.floor(seconds / 60)}분 ${seconds % 60}초`}><strong>{String(Math.floor(seconds / 60)).padStart(2, '0')}:{String(seconds % 60).padStart(2, '0')}</strong><span>{a.status === 'PAUSED' ? '일시정지' : '남은 시간'}</span></div><p className="fe2-muted">{ready ? '휴식을 마치려면 완료를 눌러 주세요' : '천천히, 서두르지 않아도 돼요'}</p></div>}
+    {!a ? <div className="fe2-rest-intro"><div className="fe2-illustration-slot"><Icon name="moon" /></div><div className="fe2-rest-copy"><h2 className="title-2">3분만 쉬어가요</h2><p className="fe2-muted">{detail.data?.ai_content.rest_guidance}</p></div><span className="fe2-pill">직접 시작할 때까지 기다릴게요</span></div> : <div className="fe2-timer-wrap"><div className="fe2-timer" role="timer" aria-label={`남은 시간 ${Math.floor(seconds / 60)}분 ${seconds % 60}초`}><strong>{String(Math.floor(seconds / 60)).padStart(2, '0')}:{String(seconds % 60).padStart(2, '0')}</strong><span>{a.status === 'PAUSED' ? '일시정지' : '남은 시간'}</span></div><p className="fe2-muted">{ready ? '휴식을 마치려면 완료를 눌러 주세요' : seconds === 0 ? '휴식 종료 상태를 확인하고 있어요' : '천천히, 서두르지 않아도 돼요'}</p></div>}
     <Feedback error>{mutation.error || completion.error || syncError}</Feedback>
   </ResourceState></ResourceState></main>{!detail.loading && !detail.error && !current.loading && !current.error && <Actions>
     {!a ? <><Button onClick={start} disabled={mutation.busy}>시작하기</Button><Button secondary onClick={() => navigate(`/worries/${worryId}`)}>다음에 할게요</Button></> : <>
-      <Button disabled={mutation.busy || completion.busy} onClick={() => ready ? completion.complete(a) : command(a.status === 'PAUSED' ? 'resume' : 'pause')}>{ready ? '휴식 완료' : a.status === 'PAUSED' ? '재개하기' : '일시정지'}</Button>
+      <Button disabled={mutation.busy || completion.busy || seconds === 0 && !ready} onClick={() => ready ? completion.complete(a) : command(a.status === 'PAUSED' ? 'resume' : 'pause')}>{ready ? '휴식 완료' : seconds === 0 ? '종료 확인 중…' : a.status === 'PAUSED' ? '재개하기' : '일시정지'}</Button>
       <Button secondary disabled={mutation.busy || completion.busy} onClick={() => setConfirm(true)}>그만두기</Button></>}
   </Actions>}{confirm && <Modal className="fe2-rest-stop-modal" title="휴식을 그만둘까요?" onClose={() => setConfirm(false)} busy={mutation.busy}>
     <p className="fe2-muted fe2-modal-description">남은 {Math.floor(seconds / 60)}분 {seconds % 60}초는 저장되지 않아요. 다시 시작하면 처음 3분부터 시작해요.</p><Feedback error>{mutation.error}</Feedback>
@@ -82,6 +93,7 @@ export function EmpathyPage() {
 export function ResultPage() {
   const { activityId } = useParams(), resource = useResource('activity', [activityId]), mutation = useMutation()
   const [rating, setRating] = useState(null), a = resource.data
+  const next = useResource('nextUnviewed', [a?.worry_id])
   async function rate(value) {
     const result = await mutation.run(() => api.rate(activityId, value))
     if (result.ok) { setRating(value); notifyDataChanged() }
@@ -90,7 +102,7 @@ export function ResultPage() {
     <div className="fe2-result-heading"><div className="fe2-illustration-slot"><Icon name="check" /></div><div className="fe2-result-copy"><h1 className="title-1">{{ ACTION: '10분 액션을 마쳤어요', REST: '짧은 휴식을 마쳤어요', EMPATHY: '공감 메시지를 읽었어요' }[a.type]}</h1><p className="fe2-muted">{a.completion_message || '작게라도 움직인 게 기록으로 남아요'}</p></div></div>
     <section className="fe2-rating"><h2>도움이 됐나요?</h2><p className="fe2-muted fe2-small">선택하지 않아도 완료는 그대로예요</p><div className="fe2-choice-row">{Object.entries(RATINGS).map(([value, label]) => <button key={value} disabled={mutation.busy} aria-pressed={(rating || a.helpfulness) === value} onClick={() => rate(value)}>{label}</button>)}</div>
       <Feedback error>{mutation.error ? '활동은 완료됐지만 평가를 저장하지 못했어요. 다시 선택해 주세요.' : ''}</Feedback></section>
-  </> : a && <Feedback error>아직 완료되지 않은 활동이에요.</Feedback>}</ResourceState></main>{a?.status === 'COMPLETED' && <Actions><Link to="/" className="fe2-button fe2-primary">홈으로</Link><Link to="/vault" className="fe2-button fe2-secondary">다음 걱정 보기</Link></Actions>}</>
+  </> : a && <Feedback error>아직 완료되지 않은 활동이에요.</Feedback>}</ResourceState></main>{a?.status === 'COMPLETED' && <Actions><Link to="/" className="fe2-button fe2-primary">홈으로</Link>{next.data === true && <Link to="/vault" className="fe2-button fe2-secondary">다음 걱정 보기</Link>}</Actions>}</>
 }
 
 export function ShredPage() {

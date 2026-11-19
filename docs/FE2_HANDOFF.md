@@ -1,3 +1,5 @@
+> 최신 통합 상태·API 보완·검증 한계는 [FRONTEND_INTEGRATION_QA.md](FRONTEND_INTEGRATION_QA.md)를 우선 확인하세요. 아래의 미통합/이전 계약 문구는 당시 검토 이력입니다.
+
 > 2026-11-16 통합: origin/main 60c45c389c8588aaa31ac0c1f2c5dadf3f0d0f8b(FE1 홈·시작·게스트 인증)을 feat/fe2에 병합했다. main 직접 변경 없음. FE2 최초 업로드는 91b6b771173766424c726edff66269f69b6b5b62이다. 과거 보류·FE1 미포함 문구는 당시 검수 이력이다.
 
 > 디자인 최신 재검수: [FE2_DESIGN_RECHECK.md](FE2_DESIGN_RECHECK.md). Git 업로드/통합은 디자인 확인 때문에 보류했다.

@@ -1,3 +1,5 @@
+> 최신 통합 상태·API 보완·검증 한계는 [FRONTEND_INTEGRATION_QA.md](FRONTEND_INTEGRATION_QA.md)를 우선 확인하세요. 아래의 미통합/이전 계약 문구는 당시 검토 이력입니다.
+
 > 최신 디자인 수정·검증은 [FE2_DESIGN_RECHECK.md](FE2_DESIGN_RECHECK.md)를 우선한다. 이전 빈 상태 대체/전체 SUITE 설명은 이 문서로 정정했다.
 
 # FE2 구현·실행 메모

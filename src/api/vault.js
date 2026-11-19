@@ -8,3 +8,9 @@ export const getVaultSummary = async () => {
   }
   return (await client.get('/vault/summary')).data
 }
+
+// Home continuation contains only activity metadata, never worry content.
+export const getCurrentActivity = async () => {
+  const response = await client.get('/activities/current');
+  return response.status === 204 ? null : response.data;
+};

@@ -13,6 +13,7 @@ export function remainingSeconds(activity, serverNow) {
   if (!activity) return 180
   if (activity.status === 'PAUSED') return Math.max(0, activity.remaining_seconds ?? 0)
   if (activity.status === 'READY_TO_COMPLETE' || activity.status === 'COMPLETED') return 0
+  if (activity.server_time && activity.remaining_seconds != null) return Math.min(180, Math.max(0, Math.ceil(activity.remaining_seconds - Math.max(0, (serverNow - Date.parse(activity.server_time)) / 1000))))
   if (activity.ends_at) return Math.min(180, Math.max(0, Math.ceil((Date.parse(activity.ends_at) - serverNow) / 1000)))
   return Math.max(0, activity.remaining_seconds ?? 180)
 }
